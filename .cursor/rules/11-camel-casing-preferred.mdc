@@ -1,0 +1,7 @@
+---
+description: Prefer camelCase file names
+globs: **/*
+---
+
+- Files that do not contain React Components should be in camelCase.
+- Only React Component files should use PascalCase

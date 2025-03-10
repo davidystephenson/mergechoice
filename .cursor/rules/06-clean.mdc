@@ -1,0 +1,117 @@
+---
+description: Write clean, readable, transparent code
+globs: **/*
+---
+- Always write functional and declarative programming patterns
+- Never use classes
+- Always write DRY (Don't Repeat Yourself) code
+- Prefer early returns to avoid nested conditions and improve readability
+- Prefer descriptive, explicit variable names over short, ambiguous ones to enhance code readability
+- Always define hardcoded values with named constants to improve code clarity and maintainability
+- Do not catch all errors
+  - In many cases throwing an error is the right behavior
+  - The original error message is generally the most useful
+- Prefer lines under 100 characters long, except for template literals.
+- Prefer breaking down multi-step logic into single step lines with their own constant variable.
+- Prefer the function keyword when creating a named function.
+- Avoid nested logical expressions that require parentheses
+- Avoid `let` variables
+- Omit semicolons unless syntactically necessary.
+- Always use `async`/`await` for handling asynchronous logic.
+- Never use `.then` syntax for handing promises.
+- Never return objects from arrow functions without an explicit return statement:
+
+```ts
+// BAD - Object returned in expression without function body
+const docs = ids.map(id => ({ id, date: new Date() }))
+
+// GOOD - Object returned in function with body and explicit return
+const docs = ids.map(id => {
+  return { id, date: new Date() }
+})
+```
+
+- Abstract `switch`/`case` blocks that need to define values into their own functions that return the value:
+
+```ts
+// BAD - Combine `let` with `switch`/`case`
+let versionData
+switch (input.type) {
+  case 'boolean': {
+    versionData = { type: 'boolean' }
+    break
+  }
+  case 'text': {
+    versionData = { type: 'text'}
+    break
+  }
+}
+
+// GOOD - Use `const` and `function` to wrap `switch`/`case`
+function getVersionData (type: 'boolean' | 'text') {
+  switch (type) {
+    case 'boolean': {
+      return { type: 'boolean' }
+    }
+    case 'text': {
+      return { type: 'text' }
+    }
+  }
+}
+const versionData = getVersionData(input.type)
+```
+
+- Abstract `try`/`catch` blocks that need to define values into their own function that return the value:
+
+```ts
+// Bad
+// register.ts
+let userRecord
+try {
+  userRecord = await auth.createUser({
+    email: input.email,
+    password: input.password
+  })
+} catch (error) {
+  throw new HttpsError('internal', 'Error creating user account')
+}
+
+// Good
+// createUser.ts
+export default function createUser (email: string, password: string) {
+  try {
+    return userRecord = await auth.createUser({
+      email: input.email,
+      password: input.password
+    })
+  } catch (error) {
+    throw new HttpsError('internal', 'Error creating user account')
+  }
+}
+
+// register.ts
+const user = await createUser(input.email, input.password)
+```
+
+- Always export individual types or variables inline, do not create unnecessary export structures:
+
+```ts
+// BAD - unecessary export structures
+const baseSchema = z.object({ id: z.string() })
+const ownerSchema = z.object({ ownerId: z.string() })
+export {
+  baseSchema,
+  ownerSchema
+}
+
+// GOOD - Individual inline exports
+export const baseSchema = z.object({ id: z.string() })
+export const ownerSchema = z.object({ ownerId: z.string() })
+
+// BAD - Unnecessary re-export structure
+import { thing } from './thing'
+export { thing }
+
+// GOOD - Direct re-export
+export { thing } from './thing'
+```

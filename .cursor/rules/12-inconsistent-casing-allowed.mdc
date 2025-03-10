@@ -1,0 +1,9 @@
+---
+description: Mixing camcelCase and PascalCase file names is encouraged
+globs: **/*
+---
+
+- It is encouraged for some file names use camcelCase and some files use PascaleCase inside the same feature.
+- It is safe for files with different casing to import from each other.
+- It is encouraged for one directory to contain mostly files one case and only one or a few files of another case.
+- Files that do not contain React Components should be in camelCase.

@@ -1,0 +1,18 @@
+---
+description: Use TypeScript for everything
+globs: **/*
+---
+
+- Use TypeScript for all code
+- Implement proper type safety and inference
+- Give every function an explicit return type
+- Prefer interfaces over types
+- Avoid TypeScript enums, use const maps instead (Zod `z.enums` are fine)
+- Avoid try/catch statements, let errors throw naturally when possible
+- Use guard clauses that throw errors to check types when logically necessary
+- Never use type assertions like the `as` keywords except for making values readonly with `as const`
+- Never use the unsafe `any` type, use the `unknown` type and generic type parameters are encouraged
+- Never use custom type guards, as their internal logic is not type safe
+- Never use the `!` operator to avoid type checking if a value is defined
+- Always annotate implicit `any`s with a safe type, use `unknown` if necessary.
+- Check each file carefully for import and type issues
