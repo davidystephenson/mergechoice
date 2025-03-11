@@ -15,9 +15,20 @@ const choiceSchema = z.object({
   b: uuidSchema
 })
 
+const operationSchema = z.array(uuidSchema)
+
+const episodeSchema = z.object({
+  type: z.string(),
+  items: z.array(itemSchema)
+})
+
 export const flowSchema = z.object({
-  seed: uuidSchema.optional(),
+  seed: uuidSchema,
   choice: choiceSchema.optional(),
-  items: z.array(itemSchema).optional()
+  items: z.record(uuidSchema, itemSchema).optional(),
+  operations: z.record(uuidSchema, operationSchema).optional(),
+  history: z.array(episodeSchema).optional(),
+  selectedOption: z.enum(['a', 'b']).optional(),
+  selectedUuid: uuidSchema.optional()
 })
 export type Flow = z.infer<typeof flowSchema>

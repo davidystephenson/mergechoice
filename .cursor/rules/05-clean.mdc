@@ -15,6 +15,32 @@ globs: **/*
 - Omit semicolons unless syntactically necessary.
 - Always use `async`/`await` for handling asynchronous logic.
 - Never use `.then` syntax for handing promises.
+- Never use `switch`/`case` blocks, use `if` instead to keep code flexible:
+
+```ts
+// BAD - `switch`/`case`
+switch (input.type) {
+  case 'boolean': {
+    return { type: 'boolean' }
+  }
+  case 'text': {
+    return { type: 'text'}
+  }
+  default: {
+    throw new Error('Invalid type')
+  }
+}
+
+// GOOD - `if`
+if (type === 'boolean') {
+  return { type: 'boolean' }
+}
+if (type === 'text') {
+  return { type: 'text' }
+}
+throw new Error('Invalid type')
+```
+
 - Prefer `== null` to detect nullish values:
 
 ```ts

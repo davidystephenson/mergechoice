@@ -8,7 +8,7 @@ globs: **/*
 - If you think everything is working, test with `npm run test`
 - `npm run test` runs the command `jest --coverage`
 - If tests fail, fix the code to follow the tests.
-- Never edit the tests or any code in the `/tests` directory, leave that to the human developer
+- Never edit the code in the `/tests` directory or add new tests, leave that to the human developer
 - If you think the tests are written incorrectly, stop and ask for help
 - The human developer always wants to maintain 100% test coverage for statements, branches, functions, and lines
 - If the human developer needs to update the tests to achieve that goal, stop and ask for help

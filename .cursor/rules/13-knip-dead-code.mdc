@@ -30,3 +30,4 @@ globs: **/*
   - Never ignore results from `npm run deadcode`
   - If you see a result, you should remove it
   - If you are confident removing a result is a bad idea, stop and ask for help
+  - Do not edit `my-reporter.js`, leave that to the human developer
