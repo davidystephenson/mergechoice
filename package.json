@@ -21,15 +21,16 @@
   "type": "commonjs",
   "main": "index.js",
   "scripts": {
-    "check": "npx tsc && npm run deadcode && npm run lint",
+    "check": "npx tsc && npm run test && npm run deadcode && npm run lint",
     "deadcode": "npx knip --reporter ./my-reporter.js",
     "lint": "npx ts-standard --fix",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "test:coverage": "jest --coverage"
+    "test": "jest --coverage",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
-    "typescript": "^5.8.2"
+    "rand-seed": "^2.1.7",
+    "typescript": "^5.8.2",
+    "zod": "^3.24.2"
   },
   "devDependencies": {
     "@types/jest": "^29.5.5",

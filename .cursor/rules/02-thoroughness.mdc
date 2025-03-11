@@ -5,7 +5,6 @@ globs: **/*
 - Always implement all requested functionality
 - Never write code that is unneccessary to complete the task
 - Never leave todos, placeholders or missing pieces
-- Never leave comments or unnecessary annotations
 - Never ask for permission to run commands or apply changes
 - If you think there might not be a correct answer, say so
 - If you do not know the answer, stop and ask for help instead of guessing

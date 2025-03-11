@@ -45,7 +45,7 @@ if (isError) {
 }
 
 // GOOD - Define a function 
-const message = function getMessage) {
+const message = function getMessage () {
   if (isError) {
     return 'Error occurred'
   }
@@ -59,36 +59,6 @@ const message = function getMessage) {
 const message = isError ? 'Error occurred' 
   : isLoading ? 'Loading...' 
   : 'Success!'
-```
-
-- Abstract `switch`/`case` blocks that need to define values into their own functions that return the value:
-
-```ts
-// BAD - Combine `let` with `switch`/`case`
-let versionData
-switch (input.type) {
-  case 'boolean': {
-    versionData = { type: 'boolean' }
-    break
-  }
-  case 'text': {
-    versionData = { type: 'text'}
-    break
-  }
-}
-
-// GOOD - Combine `const` and `function` to wrap `switch`/`case`
-function getVersionData (type: 'boolean' | 'text') {
-  switch (type) {
-    case 'boolean': {
-      return { type: 'boolean' }
-    }
-    case 'text': {
-      return { type: 'text' }
-    }
-  }
-}
-const versionData = getVersionData(input.type)
 ```
 
 - Abstract `try`/`catch` blocks that need to define values into their own function that return the value:

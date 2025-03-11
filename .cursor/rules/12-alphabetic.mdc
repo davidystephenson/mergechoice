@@ -53,7 +53,7 @@ const subtypesSchema = booleanSubtypeShcema
 ```ts
 // Good
 const blue = '0000FF'
-const green = '00FF00
+const green = '00FF00'
 const red = 'FF0000'
 const message = `The codes are ${red}, ${green}, ${blue}`
 ```
