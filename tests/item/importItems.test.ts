@@ -1,6 +1,5 @@
 import { createFlow, importItems } from '../../src/index'
 import verifyItemInOperations from './verifyItemInOperations'
-import verifyItemInResult from './verifyItemInResult'
 
 describe('importItems', () => {
   const flow = createFlow({ seed: 'test' })
@@ -13,6 +12,14 @@ describe('importItems', () => {
 
   const flowWithThreeItems = importItems({ flow, items: threeItems })
   const flowWithTwoItems = importItems({ flow, items: twoItems })
+
+  it('should throw an error if the items are empty', () => {
+    expect(() => importItems({ flow, items: [] })).toThrow()
+  })
+
+  it('throws an error if the item UUIDs are not unique', () => {
+    expect(() => importItems({ flow, items: [item1, item1] })).toThrow()
+  })
 
   describe('should return a flow with the items', () => {
     it('should include the items indexed by uuid', () => {

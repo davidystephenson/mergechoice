@@ -1,4 +1,4 @@
-import { Flow, Item } from '../../src/flowTypes'
+import { Flow, Item } from '../../src/index'
 
 export default function verifyItemInOperations (props: {
   flow: Flow
@@ -14,8 +14,8 @@ export default function verifyItemInOperations (props: {
     if (inB) {
       return true
     }
-    const inResult = operation.result.includes(props.item.uuid)
-    if (inResult) {
+    const inOutput = operation.output.includes(props.item.uuid)
+    if (inOutput) {
       return true
     }
     return false

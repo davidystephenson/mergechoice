@@ -6,6 +6,12 @@ The `src/index.ts` file defines the entry point for the library.
 `index.ts` should not define anything, it should only import from other files and export them.
 Not every function, type, or const needs to be exported, only the ones that are intended to be used outside the library as required by the tests.
 
+## UUIDs
+
+UUIDs are a type of string or number that are used to identify unique items.
+UUIDs must be supplied externally.
+Do not generate UUIDs inside the library or install any UUID related packages.
+
 ## `tests/`
 
 The `tests/` directory contains the tests for the library.
