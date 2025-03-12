@@ -16,36 +16,39 @@ describe('getChoice', () => {
   const importedFlow = importItems({ flow, items })
   const importedOperations = Object.values(importedFlow.operations)
 
-  describe('if the flow has at least two new items', () => {
-    it('should return an choice', () => {
+  describe('if an empty flow imports at least two new items', () => {
+    it('should return a choice', () => {
       const choice = getChoice({ flow: importedFlow })
       expect(choice).toBeDefined()
     })
 
+    const choice = getChoice({ flow: importedFlow })
+    if (choice == null) {
+      throw new Error('Choice should be defined')
+    }
+
     it('should return a choice whose a and b are a new item UUIDs', () => {
-      const choice = getChoice({ flow: importedFlow })
-      if (choice == null) {
-        throw new Error('Choice should be defined')
-      }
       const someA = items.some(item => item.uuid === choice.a)
       expect(someA).toBe(true)
       const someB = items.some(item => item.uuid === choice.b)
       expect(someB).toBe(true)
     })
+    const operation = importedOperations.find(operation => {
+      return operation.a[0] === choice.a
+    })
+    if (operation == null) {
+      throw new Error('Operation should be defined')
+    }
 
     it('should return a choice whose a is the first element of the a input of an operation, and the b is the first element of the b input of that operation', () => {
-      const choice = getChoice({ flow: importedFlow })
-      if (choice == null) {
-        throw new Error('Choice should be defined')
-      }
-      const operation = importedOperations.find(operation => {
-        return operation.a[0] === choice.a
-      })
-      expect(operation).toBeDefined()
-      if (operation == null) {
-        throw new Error('Operation should be defined')
-      }
       expect(operation.b[0]).toBe(choice.b)
+    })
+
+    it('should return a choice from the operation with the highest seed', () => {
+      const operationWithHighestSeed = importedOperations.reduce((max, operation) => {
+        return operation.seed > max.seed ? operation : max
+      }, importedOperations[0])
+      expect(operationWithHighestSeed.uuid).toBe(operation.uuid)
     })
   })
 })
