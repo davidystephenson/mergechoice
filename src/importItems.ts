@@ -80,19 +80,5 @@ export default function importItems (props: {
     }
   }
 
-  if (props.items.length >= 2) {
-    const operations = Object.values(updatedFlow.operations)
-    const operationWithBoth = operations.find(operation =>
-      operation.a.length > 0 && operation.b.length > 0
-    )
-
-    if (operationWithBoth != null) {
-      updatedFlow.choice = {
-        a: operationWithBoth.a[0],
-        b: operationWithBoth.b[0]
-      }
-    }
-  }
-
   return updatedFlow
 }

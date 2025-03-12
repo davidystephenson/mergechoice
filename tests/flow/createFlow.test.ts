@@ -1,11 +1,10 @@
 import { createFlow } from '../../src'
 
 describe('createFlow', () => {
-  it('should require a seed and return an object with a seed, no choice, 0 operation count, and empty history, items, and operations', () => {
+  it('should require a seed and return an object with a seed, 0 item and operation counts, and empty history, items, and operations', () => {
     const flow = createFlow({ seed: 'abc' })
     expect(typeof flow).toBe('object')
     expect(flow.seed).toBe('abc')
-    expect(flow.choice).toBeUndefined()
     const historyArrayed = Array.isArray(flow.history)
     expect(historyArrayed).toBe(true)
     expect(flow.history.length).toBe(0)

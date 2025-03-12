@@ -1,4 +1,4 @@
-import { chooseOption, createFlow, importItems } from '../../src'
+import { chooseOption, createFlow, getChoice, importItems } from '../../src'
 
 describe('chooseOption', () => {
   const flow = createFlow({ seed: 'test' })
@@ -7,26 +7,21 @@ describe('chooseOption', () => {
     { name: 'The Matrix Reloaded', uuid: 2, seed: 30 },
     { name: 'The Matrix Revolutions', uuid: '3', seed: 40 }
   ]
-  const itemIds = items.map((item) => item.uuid)
 
   const importedFlow = importItems({ flow, items })
 
   it('should take a flow and an option and return a new flow', () => {
-    if (importedFlow.choice == null) {
+    const choice = getChoice({ flow: importedFlow })
+    if (choice == null) {
       throw new Error('Choice should be defined')
     }
-    const aItemed = itemIds.includes(importedFlow.choice.a)
-    expect(aItemed).toBe(true)
-    const bItemed = itemIds.includes(importedFlow.choice.b)
-    expect(bItemed).toBe(true)
-
-    const chosenFlow = chooseOption({ flow: importedFlow, option: importedFlow.choice.a })
+    const chosenFlow = chooseOption({ flow: importedFlow, option: choice.a })
     expect(chosenFlow).toBeDefined()
   })
 
   it('should throw an error if the flow has no choice', () => {
     const flowWithoutChoice = createFlow({ seed: 'test' })
-    expect(() => chooseOption({ flow: flowWithoutChoice, option: 'a' }))
+    expect(() => chooseOption({ flow: flowWithoutChoice, option: '1' }))
       .toThrow('Flow has no choice')
   })
 

@@ -33,7 +33,6 @@ export const episodeSchema = z.object({
 export type Episode = z.infer<typeof episodeSchema>
 
 export const flowSchema = z.object({
-  choice: choiceSchema.optional(),
   itemCount: z.number(),
   history: z.array(episodeSchema),
   items: z.record(uuidSchema, itemSchema),

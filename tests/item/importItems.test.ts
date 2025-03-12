@@ -17,7 +17,7 @@ describe('importItems', () => {
   const fiveItems = [item1, item2, item3, item4, item5]
 
   const oneItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: oneItem })
-  const twoitemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: twoItems })
+  const twoItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: twoItems })
   const threeItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: threeItems })
   const fourItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fourItems })
   const fiveItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fiveItems })
@@ -26,7 +26,7 @@ describe('importItems', () => {
   const differentFiveItemFlow = importItems({ flow: createFlow({ seed: 'different' }), items: fiveItems })
 
   const oneItemOperations = Object.values(oneItemFlow.operations)
-  const twoItemOperations = Object.values(twoitemFlow.operations)
+  const twoItemOperations = Object.values(twoItemFlow.operations)
   const threeItemOperations = Object.values(threeItemFlow.operations)
   const fourItemOperations = Object.values(fourItemFlow.operations)
   const fiveItemOperations = Object.values(fiveItemFlow.operations)
@@ -43,7 +43,7 @@ describe('importItems', () => {
 
   it('increases the item count by the number of items imported', () => {
     expect(oneItemFlow.itemCount).toBe(1)
-    expect(twoitemFlow.itemCount).toBe(2)
+    expect(twoItemFlow.itemCount).toBe(2)
     expect(threeItemFlow.itemCount).toBe(3)
     expect(fourItemFlow.itemCount).toBe(4)
     expect(fiveItemFlow.itemCount).toBe(5)
@@ -211,40 +211,14 @@ describe('importItems', () => {
 
     describe('if at least two items are imported', () => {
       it('should include an operation with only two of the new items in the inputs', () => {
-        const operation = getImportInputsOperation({ flow: twoitemFlow, itemIds })
+        const operation = getImportInputsOperation({ flow: twoItemFlow, itemIds })
         expect(operation).toBeDefined()
-      })
-
-      it('should present two different items in the choice', () => {
-        if (twoitemFlow.choice == null) {
-          throw new Error('Choice should be defined')
-        }
-        expect(twoitemFlow.choice).toBeDefined()
-        expect(typeof twoitemFlow.choice).toBe('object')
-        expect(twoitemFlow.choice).toHaveProperty('a')
-        expect(twoitemFlow.choice).toHaveProperty('b')
-        expect(twoitemFlow.choice.a).not.toEqual(twoitemFlow.choice.b)
-      })
-
-      it('should present items from the a and b input of the same operation', () => {
-        const some = twoItemOperations.some((operation) => {
-          if (twoitemFlow.choice == null) {
-            return false
-          }
-          const inA = operation.a.includes(twoitemFlow.choice.a)
-          if (!inA) {
-            return false
-          }
-          const inB = operation.b.includes(twoitemFlow.choice.b)
-          return inB
-        })
-        expect(some).toBe(true)
       })
     })
 
     describe('if an even number of items are imported', () => {
       it('should not include an operation no inputs and a new item in the output', () => {
-        const some = fourItemOperations.some((operation) => {
+        const some = twoItemOperations.some((operation) => {
           const newOutput = itemIds.includes(operation.output[0])
           return newOutput
         })
@@ -267,26 +241,6 @@ describe('importItems', () => {
           return newOutput
         })
         expect(some).toBe(true)
-      })
-    })
-
-    describe('if the flow had no items before', () => {
-      describe('if only one item is imported', () => {
-        it('should not include a choice', () => {
-          expect(twoitemFlow.choice).toBeUndefined()
-        })
-      })
-
-      describe('if at least two items are imported', () => {
-        it('should include a choice where a is the first element of the a input of an operation, and the b is the first element of the b input of that operation', () => {
-          if (fiveItemFlow.choice == null) {
-            throw new Error('Choice should be defined')
-          }
-          const operation = fiveItemOperations.find((operation) => {
-            return operation
-          })
-          expect(operation).toBeDefined()
-        })
       })
     })
   })
