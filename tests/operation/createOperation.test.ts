@@ -63,6 +63,7 @@ describe('createOperation', () => {
     })
     expect(operation.uuid).toBeDefined()
     expect(operation.a).toEqual(['1'])
+    expect(operation.ab).toBe(true)
     expect(operation.b).toEqual([2])
     expect(operation.output).toEqual([])
   })

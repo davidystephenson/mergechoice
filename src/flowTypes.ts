@@ -18,8 +18,10 @@ export type Choice = z.infer<typeof choiceSchema>
 
 export const operationSchema = z.object({
   a: z.array(uuidSchema),
+  ab: z.boolean(),
   b: z.array(uuidSchema),
   output: z.array(uuidSchema),
+  seed: z.number(),
   uuid: uuidSchema
 })
 export type Operation = z.infer<typeof operationSchema>

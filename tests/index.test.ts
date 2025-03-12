@@ -72,12 +72,15 @@ describe('index', () => {
 
   const operation: Operation = {
     a: [123, '456'],
+    ab: true,
     b: ['789', 101],
     output: ['102', 103],
+    seed: 99,
     uuid: '111'
   }
   it('should export the Operation type', () => {
     expect(operation.a).toEqual([123, '456'])
+    expect(operation.ab).toBe(true)
     expect(operation.b).toEqual(['789', 101])
     expect(operation.output).toEqual(['102', 103])
   })

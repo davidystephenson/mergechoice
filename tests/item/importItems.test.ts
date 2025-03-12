@@ -17,7 +17,6 @@ describe('importItems', () => {
   const fiveItems = [item1, item2, item3, item4, item5]
 
   const oneItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: oneItem })
-  console.log('oneItemFlow', oneItemFlow)
   const twoitemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: twoItems })
   const threeItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: threeItems })
   const fourItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fourItems })
@@ -208,12 +207,6 @@ describe('importItems', () => {
         })
         expect(operation).toBeDefined()
       })
-
-      describe('if the flow had no items before', () => {
-        it('should not include a choice', () => {
-          expect(oneItemFlow.choice).toBeUndefined()
-        })
-      })
     })
 
     describe('if at least two items are imported', () => {
@@ -274,6 +267,26 @@ describe('importItems', () => {
           return newOutput
         })
         expect(some).toBe(true)
+      })
+    })
+
+    describe('if the flow had no items before', () => {
+      describe('if only one item is imported', () => {
+        it('should not include a choice', () => {
+          expect(twoitemFlow.choice).toBeUndefined()
+        })
+      })
+
+      describe('if at least two items are imported', () => {
+        it('should include a choice where a is the first element of the a input of an operation, and the b is the first element of the b input of that operation', () => {
+          if (fiveItemFlow.choice == null) {
+            throw new Error('Choice should be defined')
+          }
+          const operation = fiveItemOperations.find((operation) => {
+            return operation
+          })
+          expect(operation).toBeDefined()
+        })
       })
     })
   })
