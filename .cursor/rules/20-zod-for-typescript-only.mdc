@@ -5,7 +5,7 @@ globs: **/*
 # Only define schemas for values that TypeScript can support
 
 - Only use Zod schemas for types that TypeScript recognizes.
-- NEVER use `.min`, `.max`, `.email`, `.transform`, and `.refine`.
+- NEVER use `.min`, `.max`, `.email`, `.transform`, `.refine`, `.default`.
 - The purpose of using Zod is to make TypeScript safe.
 - If you need to validate a non-TypeScript aspect of a value somewhere outside of Zod types files, don't modify any Zod schemas.
 - Instead:

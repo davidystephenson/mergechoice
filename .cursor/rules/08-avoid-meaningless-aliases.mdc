@@ -2,6 +2,36 @@
 description: Avoid aliasing object properties and other static relationships if there is logical difference
 globs: **/*
 ---
+- Avoid unnecessary aliases:
+
+```ts
+// BAD - Unnecessary alias
+const operationCount = props.flow.operationCount
+const operationSeed = `${seedString}-op-${operationCount}`
+
+// GOOD - No aliasing
+const operationSeed = `${seedString}-op-${props.flow.operationCount}`
+```
+
+- Avoid aliasing type conversions that are already protected by TypeScript:
+
+```ts
+// BAD - Unnecessary type conversion considering TypeScript
+export default function createRand (props: {
+  seed: string
+}): Operation {
+  const seedString = String(props.seed)
+  return new Rand(seedString)
+}
+
+// GOOD - Avoid unnecessary conversion alias
+export default function createRand (props: {
+  seed: string
+}): Operation {
+  return new Rand(props.seed)
+}
+```
+
 - Avoid creating alias variables for accessing object properties:
 
 ```ts

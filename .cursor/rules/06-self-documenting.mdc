@@ -1,0 +1,18 @@
+---
+description: Never leave comments, let code document intself
+globs: **/*
+---
+- Write clear, expressive, self-documenting code
+- Never leave inline comments, JSDoc snippets, or unnecessary annotations:
+- Here is an example of a BAD inline comment:
+
+```ts
+// Add the numbers together
+const sum = 1 + 2
+```
+
+- Here is a GOOD example without the inline comment:
+
+```ts
+const sum = 1 + 2
+```
