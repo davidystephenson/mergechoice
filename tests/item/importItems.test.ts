@@ -44,6 +44,33 @@ describe('importItems', () => {
       verifyItemInOperations({ flow: flowWithThreeItems, item: item3 })
     })
 
+    it('should index operations by uuid', () => {
+      expect(flowWithThreeItems.operations).toBeDefined()
+      if (flowWithThreeItems.operations == null) {
+        throw new Error('Operations should be defined')
+      }
+      const operations = Object.values(flowWithThreeItems.operations)
+      const every = operations.every((operation) => {
+        return flowWithThreeItems.operations[operation.uuid] === operation
+      })
+      expect(every).toBe(true)
+    })
+
+    it('should give operations unique UUIDs distinct from item UUIDs', () => {
+      expect(flowWithThreeItems.operations).toBeDefined()
+      if (flowWithThreeItems.operations == null) {
+        throw new Error('Operations should be defined')
+      }
+      const operations = Object.values(flowWithThreeItems.operations)
+      const operationIds = operations.map((operation) => operation.uuid)
+      const itemIds = threeItems.map((item) => item.uuid)
+      const everyOperationIdIsNotItemId = operationIds.every((id) => !itemIds.includes(id))
+      expect(everyOperationIdIsNotItemId).toBe(true)
+      // Expect the operation ids to be unique
+      const uniqueOperationIds = new Set(operationIds)
+      expect(uniqueOperationIds.size).toBe(operationIds.length)
+    })
+
     it('should add an import episode to the history', () => {
       expect(flowWithThreeItems.history).toBeDefined()
       if (flowWithThreeItems.history == null) {
@@ -109,6 +136,23 @@ describe('importItems', () => {
         expect(flowWithThreeItems.choice.a).not.toEqual(flowWithThreeItems.choice.b)
       })
 
+      it('should present items from the a and b input of the same operation', () => {
+        expect(flowWithThreeItems.choice).toBeDefined()
+        if (flowWithThreeItems.choice == null) {
+          throw new Error('Choice should be defined')
+        }
+        const operations = Object.values(flowWithThreeItems.operations)
+        const some = operations.some((operation) => {
+          const inA = operation.a.includes(flowWithThreeItems.choice.a)
+          if (!inA) {
+            return false
+          }
+          const inB = operation.b.includes(flowWithThreeItems.choice.b)
+          return inB
+        })
+        expect(some).toBe(true)
+      })
+
       it('should include an operation with only one of the new items in the output', () => {
         expect(flowWithThreeItems.operations).toBeDefined()
         if (flowWithThreeItems.operations == null) {
@@ -128,10 +172,6 @@ describe('importItems', () => {
     })
 
     describe('if there are less than three items', () => {
-      it('should not include a choice', () => {
-        expect(flowWithTwoItems.choice).toBeUndefined()
-      })
-
       it('should not include an operation with a new item in the output', () => {
         expect(flowWithTwoItems.operations).toBeDefined()
         if (flowWithTwoItems.operations == null) {
@@ -143,6 +183,12 @@ describe('importItems', () => {
           return newOutput
         })
         expect(some).toBe(false)
+      })
+
+      describe('if the flow had no items before', () => {
+        it('should not include a choice', () => {
+          expect(flowWithTwoItems.choice).toBeUndefined()
+        })
       })
     })
   })

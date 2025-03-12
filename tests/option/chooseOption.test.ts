@@ -24,7 +24,14 @@ describe('chooseOption', () => {
     expect(chosenFlow).toBeDefined()
   })
 
+  it('should throw an error if the flow has no choice', () => {
+    const flowWithoutChoice = createFlow({ seed: 'test' })
+    expect(() => chooseOption({ flow: flowWithoutChoice, option: 'a' }))
+      .toThrow('Flow has no choice')
+  })
+
   it('should throw an error if the option is not the a UUID or b UUID', () => {
-    expect(() => chooseOption({ flow: importedFlow, option: 'A-DIFFERENT-UUID' })).toThrow('Option is not the a UUID or b UUID')
+    expect(() => chooseOption({ flow: importedFlow, option: 'A-DIFFERENT-UUID' }))
+      .toThrow('Option is not the a UUID or b UUID')
   })
 })
