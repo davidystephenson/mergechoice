@@ -9,16 +9,29 @@ export default function getChoice (props: {
 
   const operations = Object.values(props.flow.operations)
 
-  const operationWithInputs = operations.find(operation =>
+  const operationsWithInputs = operations.filter(operation =>
     operation.a.length > 0 && operation.b.length > 0
   )
 
-  if (operationWithInputs == null) {
+  if (operationsWithInputs.length === 0) {
     return undefined
   }
 
+  const longestInputLength = operationsWithInputs.reduce((maxLength, operation) => {
+    const inputLength = operation.a.length + operation.b.length
+    return inputLength > maxLength ? inputLength : maxLength
+  }, 0)
+
+  const operationsWithLongestInput = operationsWithInputs.filter(operation =>
+    operation.a.length + operation.b.length === longestInputLength
+  )
+
+  const selectedOperation = operationsWithLongestInput.reduce((highest, operation) =>
+    operation.uuid > highest.uuid ? operation : highest
+  , operationsWithLongestInput[0])
+
   return {
-    a: operationWithInputs.a[0],
-    b: operationWithInputs.b[0]
+    a: selectedOperation.a[0],
+    b: selectedOperation.b[0]
   }
 }
