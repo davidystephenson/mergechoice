@@ -11,17 +11,18 @@ export const itemSchema = z.object({
 export type Item = z.infer<typeof itemSchema>
 
 export const choiceSchema = z.object({
-  a: uidSchema,
-  b: uidSchema
+  aItemId: uidSchema,
+  bItemId: uidSchema,
+  operationId: uidSchema
 })
 export type Choice = z.infer<typeof choiceSchema>
 
 export const operationSchema = z.object({
-  a: z.array(uidSchema),
+  aInput: z.array(uidSchema),
   ab: z.boolean(),
   ascend: z.boolean(),
   better: uidSchema.optional(),
-  b: z.array(uidSchema),
+  bInput: z.array(uidSchema),
   output: z.array(uidSchema),
   uid: uidSchema,
   worse: uidSchema.optional()

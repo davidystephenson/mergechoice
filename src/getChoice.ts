@@ -10,7 +10,7 @@ export default function getChoice (props: {
   const operations = Object.values(props.flow.operations)
 
   const operationsWithInputs = operations.filter(operation =>
-    operation.a.length > 0 && operation.b.length > 0
+    operation.aInput.length > 0 && operation.bInput.length > 0
   )
 
   if (operationsWithInputs.length === 0) {
@@ -18,12 +18,12 @@ export default function getChoice (props: {
   }
 
   const longestInputLength = operationsWithInputs.reduce((maxLength, operation) => {
-    const inputLength = operation.a.length + operation.b.length
+    const inputLength = operation.aInput.length + operation.bInput.length
     return inputLength > maxLength ? inputLength : maxLength
   }, 0)
 
   const operationsWithLongestInput = operationsWithInputs.filter(operation =>
-    operation.a.length + operation.b.length === longestInputLength
+    operation.aInput.length + operation.bInput.length === longestInputLength
   )
 
   const selectedOperation = operationsWithLongestInput.reduce((highest, operation) =>
@@ -31,7 +31,8 @@ export default function getChoice (props: {
   , operationsWithLongestInput[0])
 
   return {
-    a: selectedOperation.a[0],
-    b: selectedOperation.b[0]
+    aItemId: selectedOperation.aInput[0],
+    bItemId: selectedOperation.bInput[0],
+    operationId: selectedOperation.uid
   }
 }

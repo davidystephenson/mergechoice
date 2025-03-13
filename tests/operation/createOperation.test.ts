@@ -62,9 +62,9 @@ describe('createOperation', () => {
       b: [2]
     })
     expect(operation.uid).toBeDefined()
-    expect(operation.a).toEqual(['1'])
+    expect(operation.aInput).toEqual(['1'])
     expect(operation.ab).toBe(true)
-    expect(operation.b).toEqual([2])
+    expect(operation.bInput).toEqual([2])
     expect(operation.output).toEqual([])
   })
 
@@ -74,8 +74,18 @@ describe('createOperation', () => {
       output: ['1']
     })
     expect(operation.uid).toBeDefined()
-    expect(operation.a).toEqual([])
-    expect(operation.b).toEqual([])
+    expect(operation.aInput).toEqual([])
+    expect(operation.bInput).toEqual([])
     expect(operation.output).toEqual(['1'])
+  })
+
+  it('should create an operation with ab true and ascend true', () => {
+    const operation = createOperation({
+      flow,
+      a: ['1'],
+      b: [2]
+    })
+    expect(operation.ab).toBe(true)
+    expect(operation.ascend).toBe(true)
   })
 })

@@ -10,8 +10,22 @@ export default function chooseOption (props: {
     throw new Error('Flow has no choice')
   }
 
-  if (props.option !== choice.a && props.option !== choice.b) {
+  if (props.option !== choice.aItemId && props.option !== choice.bItemId) {
     throw new Error('Option is not in the choice')
+  }
+
+  const operation = props.flow.operations[choice.operationId]
+
+  // Update the operation to move both items to the output array
+  // with the selected option first
+  if (String(props.option) === choice.aItemId) {
+    operation.output = [choice.aItemId, choice.bItemId]
+    operation.aInput = []
+    operation.bInput = []
+  } else {
+    operation.output = [choice.bItemId, choice.aItemId]
+    operation.aInput = []
+    operation.bInput = []
   }
 
   return props.flow

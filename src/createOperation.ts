@@ -18,10 +18,10 @@ export default function createOperation (props: {
 
   const operation: Operation = {
     uid,
-    a,
+    aInput: a,
     ab: true,
     ascend: true,
-    b,
+    bInput: b,
     output
   }
 

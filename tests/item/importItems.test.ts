@@ -81,11 +81,11 @@ describe('importItems', () => {
     it('should return the same inputs with the same flow UID', () => {
       const same = fiveItemOperations.every((operation, index) => {
         const sameOperation = duplicateFiveItemOperations[index]
-        const sameA = sameOperation.a[0] === operation.a[0]
+        const sameA = sameOperation.aInput[0] === operation.aInput[0]
         if (!sameA) {
           return false
         }
-        const sameB = sameOperation.b[0] === operation.b[0]
+        const sameB = sameOperation.bInput[0] === operation.bInput[0]
         return sameB
       })
       expect(same).toBe(true)
@@ -117,11 +117,11 @@ describe('importItems', () => {
     it('should have different inputs with a different flow UID', () => {
       const different = fiveItemOperations.some((operation, index) => {
         const differentOperation = differentFiveItemOperations[index]
-        const differentA = differentOperation.a[0] !== operation.a[0]
+        const differentA = differentOperation.aInput[0] !== operation.aInput[0]
         if (!differentA) {
           return false
         }
-        const differentB = differentOperation.b[0] !== operation.b[0]
+        const differentB = differentOperation.bInput[0] !== operation.bInput[0]
         return differentB
       })
       expect(different).toBe(true)
@@ -155,10 +155,10 @@ describe('importItems', () => {
     it('should include each item only once in the operations', () => {
       const everyItemIsOnlyInOneOperation = threeItems.every((item) => {
         const itemOperations = threeItemOperations.filter((operation) => {
-          if (operation.a.includes(item.uid)) {
+          if (operation.aInput.includes(item.uid)) {
             return true
           }
-          if (operation.b.includes(item.uid)) {
+          if (operation.bInput.includes(item.uid)) {
             return true
           }
           if (operation.output.includes(item.uid)) {
@@ -176,10 +176,10 @@ describe('importItems', () => {
         if (operation.output.length > 0) {
           return false
         }
-        return operation.a.length > 0 || operation.b.length > 0
+        return operation.aInput.length > 0 || operation.bInput.length > 0
       })
       const outputOperations = fiveItemOperations.filter((operation) => {
-        if (operation.a.length > 0 || operation.b.length > 0) {
+        if (operation.aInput.length > 0 || operation.bInput.length > 0) {
           return false
         }
         return operation.output.length > 0
