@@ -1,8 +1,8 @@
-import { Flow, Operation, Uuid } from '../../src'
+import { Flow, Operation, Uid } from '../../src'
 
 export default function getImportInputsOperation (props: {
   flow: Flow
-  itemIds: Uuid[]
+  itemIds: Uid[]
 }): Operation | undefined {
   const operations = Object.values(props.flow.operations)
   const operation = operations.find((operation) => {

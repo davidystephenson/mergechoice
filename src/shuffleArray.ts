@@ -1,11 +1,12 @@
 import Rand from 'rand-seed'
+import { Uid } from './flowTypes'
 
 export default function shuffleArray <Element> (props: {
   count: number
   items: Element[]
-  seed: string
+  uid: Uid
 }): Element[] {
-  const seedString = `${props.seed}-${props.count}`
+  const seedString = `${props.uid}-${props.count}`
 
   const rand = new Rand(seedString)
 

@@ -1,27 +1,30 @@
 import { z } from 'zod'
 
-export const uuidSchema = z.string().or(z.number())
-export type Uuid = z.infer<typeof uuidSchema>
+export const uidSchema = z.string().or(z.number())
+export type Uid = z.infer<typeof uidSchema>
 
 export const itemSchema = z.object({
   name: z.string(),
   seed: z.number(),
-  uuid: uuidSchema
+  uid: uidSchema
 })
 export type Item = z.infer<typeof itemSchema>
 
 export const choiceSchema = z.object({
-  a: uuidSchema,
-  b: uuidSchema
+  a: uidSchema,
+  b: uidSchema
 })
 export type Choice = z.infer<typeof choiceSchema>
 
 export const operationSchema = z.object({
-  a: z.array(uuidSchema),
+  a: z.array(uidSchema),
   ab: z.boolean(),
-  b: z.array(uuidSchema),
-  output: z.array(uuidSchema),
-  uuid: uuidSchema
+  ascend: z.boolean(),
+  better: uidSchema.optional(),
+  b: z.array(uidSchema),
+  output: z.array(uidSchema),
+  uid: uidSchema,
+  worse: uidSchema.optional()
 })
 export type Operation = z.infer<typeof operationSchema>
 
@@ -34,9 +37,9 @@ export type Episode = z.infer<typeof episodeSchema>
 export const flowSchema = z.object({
   itemCount: z.number(),
   history: z.array(episodeSchema),
-  items: z.record(uuidSchema, itemSchema),
+  items: z.record(uidSchema, itemSchema),
   operationCount: z.number(),
-  operations: z.record(uuidSchema, operationSchema),
-  seed: z.string()
+  operations: z.record(uidSchema, operationSchema),
+  uid: uidSchema
 })
 export type Flow = z.infer<typeof flowSchema>

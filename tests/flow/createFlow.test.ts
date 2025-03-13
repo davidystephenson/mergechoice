@@ -1,10 +1,10 @@
 import { createFlow } from '../../src'
 
 describe('createFlow', () => {
-  it('should require a seed and return an object with a seed, 0 item and operation counts, and empty history, items, and operations', () => {
-    const flow = createFlow({ seed: 'abc' })
+  it('should require a uid and return an object with a uid, 0 item and operation counts, and empty history, items, and operations', () => {
+    const flow = createFlow({ uid: 'abc' })
     expect(typeof flow).toBe('object')
-    expect(flow.seed).toBe('abc')
+    expect(flow.uid).toBe('abc')
     const historyArrayed = Array.isArray(flow.history)
     expect(historyArrayed).toBe(true)
     expect(flow.history.length).toBe(0)
@@ -19,13 +19,8 @@ describe('createFlow', () => {
     expect(flow.operationCount).toBe(0)
   })
 
-  it('should throw an error if seed is not supplied', () => {
+  it('should throw an error if no uid is supplied', () => {
     // @ts-expect-error
-    expect(() => createFlow({ seed: null })).toThrow('Seed is required')
-  })
-
-  it('should throw an error if seed is not a string', () => {
-    // @ts-expect-error
-    expect(() => createFlow({ seed: 123 })).toThrow('Seed must be a string')
+    expect(() => createFlow({ uid: null })).toThrow('UID is required')
   })
 })

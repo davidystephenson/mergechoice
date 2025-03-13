@@ -1,9 +1,9 @@
-import { Flow, Uuid } from './flowTypes'
+import { Flow, Uid } from './flowTypes'
 import getChoice from './getChoice'
 
 export default function chooseOption (props: {
   flow: Flow
-  option: Uuid
+  option: Uid
 }): Flow {
   const choice = getChoice({ flow: props.flow })
   if (choice == null) {
@@ -11,7 +11,7 @@ export default function chooseOption (props: {
   }
 
   if (props.option !== choice.a && props.option !== choice.b) {
-    throw new Error('Option is not the a UUID or b UUID')
+    throw new Error('Option is not in the choice')
   }
 
   return props.flow

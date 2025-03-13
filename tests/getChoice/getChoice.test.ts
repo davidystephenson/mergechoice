@@ -1,8 +1,8 @@
 import { createFlow, getChoice, importItems } from '../../src'
 
 describe('getChoice', () => {
-  const threeItemFlow = createFlow({ seed: 'test' })
-  const fiveItemFlow = createFlow({ seed: 'test' })
+  const threeItemFlow = createFlow({ uid: 'test' })
+  const fiveItemFlow = createFlow({ uid: 'test' })
   describe('if the flow has no items', () => {
     it('should return undefined', () => {
       const threeItemChoice = getChoice({ flow: threeItemFlow })
@@ -12,11 +12,11 @@ describe('getChoice', () => {
     })
   })
 
-  const item1 = { name: 'item1', uuid: '1', seed: 0 }
-  const item2 = { name: 'item2', uuid: 2, seed: 0 }
-  const item3 = { name: 'item3', uuid: 3, seed: 0 }
-  const item4 = { name: 'item4', uuid: 4, seed: 0 }
-  const item5 = { name: 'item5', uuid: 5, seed: 0 }
+  const item1 = { name: 'item1', uid: '1', seed: 0 }
+  const item2 = { name: 'item2', uid: '2', seed: 0 }
+  const item3 = { name: 'item3', uid: '3', seed: 0 }
+  const item4 = { name: 'item4', uid: '4', seed: 0 }
+  const item5 = { name: 'item5', uid: '5', seed: 0 }
   const threeItems = [item1, item2, item3]
   const fiveItems = [item1, item2, item3, item4, item5]
   const threeItemImported = importItems({ flow: threeItemFlow, items: threeItems })
@@ -40,10 +40,10 @@ describe('getChoice', () => {
       throw new Error('Choice should be defined')
     }
 
-    it('should return a choice whose a and b are a new item UUIDs', () => {
-      const someA = threeItems.some(item => item.uuid === threeItemChoice.a)
+    it('should return a choice whose a and b are a new item UIDs', () => {
+      const someA = threeItems.some(item => item.uid === threeItemChoice.a)
       expect(someA).toBe(true)
-      const someB = threeItems.some(item => item.uuid === threeItemChoice.b)
+      const someB = threeItems.some(item => item.uid === threeItemChoice.b)
       expect(someB).toBe(true)
     })
 
@@ -67,7 +67,7 @@ describe('getChoice', () => {
       throw new Error('Operation should be defined')
     }
 
-    describe('if there are five new items length operation', () => {
+    describe('if there are five new items', () => {
       const longestOperation = threeItemOperations.reduce((max, operation) => {
         return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
       }, threeItemOperations[0])
@@ -80,12 +80,12 @@ describe('getChoice', () => {
         expect(longestOperations.length).toBe(1)
       })
 
-      it('should return a choice from with the highest seed', () => {
-        expect(longestOperation.uuid).toBe(threeItemOperation.uuid)
+      it('should return a choice from the operation with the longest input', () => {
+        expect(longestOperation.uid).toBe(threeItemOperation.uid)
       })
     })
 
-    describe('if there is a tie for the longest total input length', () => {
+    describe('if there are five new items', () => {
       const longestOperation = fiveItemOperations.reduce((max, operation) => {
         return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
       }, fiveItemOperations[0])
@@ -98,12 +98,12 @@ describe('getChoice', () => {
         expect(longestOperations.length).toBeGreaterThan(1)
       })
 
-      it('should return a choice from the operation with the highest uuid among the longest input operations', () => {
-        const operationWithHighestUuid = longestOperations.reduce((max, operation) => {
-          return operation.uuid > max.uuid ? operation : max
+      it('should return a choice from the operation with the highest uid among the longest input operations', () => {
+        const operationWithHighestUid = longestOperations.reduce((max, operation) => {
+          return operation.uid > max.uid ? operation : max
         }, longestOperations[0])
 
-        expect(operationWithHighestUuid.uuid).toBe(fiveItemOperation.uuid)
+        expect(operationWithHighestUid.uid).toBe(fiveItemOperation.uid)
       })
     })
   })

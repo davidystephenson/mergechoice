@@ -3,27 +3,27 @@ import getImportInputsOperation from './getImportInputsOperation'
 import verifyItemInOperations from './verifyItemInOperations'
 
 describe('importItems', () => {
-  const item1 = { name: 'The Matrix', uuid: '1', seed: 90 }
-  const item2 = { name: 'The Matrix Reloaded', uuid: 2, seed: 30 }
-  const item3 = { name: 'The Matrix Revolutions', uuid: '3', seed: 40 }
-  const item4 = { name: 'The Matrix Resurrections', uuid: '4', seed: 0 }
-  const item5 = { name: 'The Animatrix', uuid: '5', seed: 80 }
+  const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
+  const item2 = { name: 'The Matrix Reloaded', uid: 2, seed: 30 }
+  const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
+  const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
+  const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
 
-  const itemIds = [item1.uuid, item2.uuid, item3.uuid, item4.uuid, item5.uuid]
+  const itemIds = [item1.uid, item2.uid, item3.uid, item4.uid, item5.uid]
   const oneItem = [item1]
   const twoItems = [item1, item2]
   const threeItems = [item1, item2, item3]
   const fourItems = [item1, item2, item3, item4]
   const fiveItems = [item1, item2, item3, item4, item5]
 
-  const oneItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: oneItem })
-  const twoItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: twoItems })
-  const threeItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: threeItems })
-  const fourItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fourItems })
-  const fiveItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fiveItems })
+  const oneItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: oneItem })
+  const twoItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: twoItems })
+  const threeItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: threeItems })
+  const fourItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: fourItems })
+  const fiveItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: fiveItems })
 
-  const duplicateFiveItemFlow = importItems({ flow: createFlow({ seed: 'test' }), items: fiveItems })
-  const differentFiveItemFlow = importItems({ flow: createFlow({ seed: 'different' }), items: fiveItems })
+  const duplicateFiveItemFlow = importItems({ flow: createFlow({ uid: 'test' }), items: fiveItems })
+  const differentFiveItemFlow = importItems({ flow: createFlow({ uid: 'different' }), items: fiveItems })
 
   const oneItemOperations = Object.values(oneItemFlow.operations)
   const twoItemOperations = Object.values(twoItemFlow.operations)
@@ -34,11 +34,19 @@ describe('importItems', () => {
   const differentFiveItemOperations = Object.values(differentFiveItemFlow.operations)
 
   it('should throw an error if the items are empty', () => {
-    expect(() => importItems({ flow: createFlow({ seed: 'test' }), items: [] })).toThrow()
+    expect(() => importItems({ flow: createFlow({ uid: 'test' }), items: [] })).toThrow()
   })
 
-  it('throws an error if the item UUIDs are not unique', () => {
-    expect(() => importItems({ flow: createFlow({ seed: 'test' }), items: [item1, item1] })).toThrow()
+  it('throws an error if the new items have duplicate UIDs', () => {
+    expect(() => importItems({ flow: createFlow({ uid: 'test' }), items: [item1, item1] })).toThrow()
+  })
+
+  it('should throw an error if the items UIDs are not unique', () => {
+    expect(() => {
+      const flow = createFlow({ uid: 'test' })
+      const importedFlow = importItems({ flow, items: threeItems })
+      importItems({ flow: importedFlow, items: oneItem })
+    }).toThrow()
   })
 
   it('increases the item count by the number of items imported', () => {
@@ -50,10 +58,10 @@ describe('importItems', () => {
   })
 
   describe('should return a flow with the items', () => {
-    it('should include the items indexed by uuid', () => {
-      expect(threeItemFlow.items[item1.uuid]).toEqual(item1)
-      expect(threeItemFlow.items[item2.uuid]).toEqual(item2)
-      expect(threeItemFlow.items[item3.uuid]).toEqual(item3)
+    it('should include the items indexed by uid', () => {
+      expect(threeItemFlow.items[item1.uid]).toEqual(item1)
+      expect(threeItemFlow.items[item2.uid]).toEqual(item2)
+      expect(threeItemFlow.items[item3.uid]).toEqual(item3)
     })
 
     it('should include the items in operations', () => {
@@ -62,15 +70,15 @@ describe('importItems', () => {
       verifyItemInOperations({ flow: threeItemFlow, item: item3 })
     })
 
-    it('should return the same operation UUIDs with the same seed', () => {
+    it('should return the same operation UIDs with the same flow UID', () => {
       const same = fiveItemOperations.every((operation, index) => {
         const sameOperation = duplicateFiveItemOperations[index]
-        return sameOperation.uuid === operation.uuid
+        return sameOperation.uid === operation.uid
       })
       expect(same).toBe(true)
     })
 
-    it('should return the same inputs with the same seed', () => {
+    it('should return the same inputs with the same flow UID', () => {
       const same = fiveItemOperations.every((operation, index) => {
         const sameOperation = duplicateFiveItemOperations[index]
         const sameA = sameOperation.a[0] === operation.a[0]
@@ -83,7 +91,7 @@ describe('importItems', () => {
       expect(same).toBe(true)
     })
 
-    it('should return the same outputs with the same seed', () => {
+    it('should return the same outputs with the same flow UID', () => {
       const same = fiveItemOperations.every((operation, index) => {
         const sameOperation = duplicateFiveItemOperations[index]
         const sameOutput = sameOperation.output[0] === operation.output[0]
@@ -92,21 +100,21 @@ describe('importItems', () => {
       expect(same).toBe(true)
     })
 
-    it('should return the same number of operations with a different seed', () => {
+    it('should return the same number of operations with a different flow UID', () => {
       expect(fiveItemOperations.length).toBe(duplicateFiveItemOperations.length)
     })
 
-    it('should return different operation UUIDs with a different seed', () => {
+    it('should return different operation UIDs with a different flow UID', () => {
       const differentIds = fiveItemOperations.every((operation) => {
         const differentIds = differentFiveItemOperations.every((duplicate) => {
-          return operation.uuid !== duplicate.uuid
+          return operation.uid !== duplicate.uid
         })
         return differentIds
       })
       expect(differentIds).toBe(true)
     })
 
-    it('should have different inputs with a different seed', () => {
+    it('should have different inputs with a different flow UID', () => {
       const different = fiveItemOperations.some((operation, index) => {
         const differentOperation = differentFiveItemOperations[index]
         const differentA = differentOperation.a[0] !== operation.a[0]
@@ -119,7 +127,7 @@ describe('importItems', () => {
       expect(different).toBe(true)
     })
 
-    it('should different outputs with a different seed', () => {
+    it('should different outputs with a different flow UID', () => {
       const different = fiveItemOperations.some((operation, index) => {
         const differentOperation = differentFiveItemOperations[index]
         const differentOutput = differentOperation.output[0] !== operation.output[0]
@@ -128,16 +136,16 @@ describe('importItems', () => {
       expect(different).toBe(true)
     })
 
-    it('should index operations by uuid', () => {
+    it('should index operations by uid', () => {
       const every = threeItemOperations.every((operation) => {
-        return threeItemFlow.operations[operation.uuid] === operation
+        return threeItemFlow.operations[operation.uid] === operation
       })
       expect(every).toBe(true)
     })
 
-    it('should give operations unique UUIDs distinct from item UUIDs', () => {
-      const operationIds = fourItemOperations.map((operation) => operation.uuid)
-      const itemIds = threeItems.map((item) => item.uuid)
+    it('should give operations unique UIDs distinct from item UIDs', () => {
+      const operationIds = fourItemOperations.map((operation) => operation.uid)
+      const itemIds = threeItems.map((item) => item.uid)
       const everyOperationIdIsNotItemId = operationIds.every((id) => !itemIds.includes(id))
       expect(everyOperationIdIsNotItemId).toBe(true)
       const uniqueOperationIds = new Set(operationIds)
@@ -147,13 +155,13 @@ describe('importItems', () => {
     it('should include each item only once in the operations', () => {
       const everyItemIsOnlyInOneOperation = threeItems.every((item) => {
         const itemOperations = threeItemOperations.filter((operation) => {
-          if (operation.a.includes(item.uuid)) {
+          if (operation.a.includes(item.uid)) {
             return true
           }
-          if (operation.b.includes(item.uuid)) {
+          if (operation.b.includes(item.uid)) {
             return true
           }
-          if (operation.output.includes(item.uuid)) {
+          if (operation.output.includes(item.uid)) {
             return true
           }
           return false
@@ -186,14 +194,13 @@ describe('importItems', () => {
       expect(latestEpisode.type).toBe('import')
       expect(latestEpisode.items).toBeDefined()
       expect(latestEpisode.items.length).toBe(3)
-      expect(latestEpisode.items[0].uuid).toBe(item1.uuid)
-      expect(latestEpisode.items[1].uuid).toBe(item2.uuid)
-      expect(latestEpisode.items[2].uuid).toBe(item3.uuid)
+      expect(latestEpisode.items[0].uid).toBe(item1.uid)
+      expect(latestEpisode.items[1].uid).toBe(item2.uid)
+      expect(latestEpisode.items[2].uid).toBe(item3.uid)
     })
 
     describe('if only one item is imported', () => {
       it('should not include an operation with two new items in the inputs', () => {
-        console.log('oneItemFlow before', oneItemFlow)
         const operation = getImportInputsOperation({ flow: oneItemFlow, itemIds })
         expect(operation).toBeUndefined()
       })
@@ -203,7 +210,7 @@ describe('importItems', () => {
           if (operation.output.length !== 1) {
             return false
           }
-          return operation.output[0] === item1.uuid
+          return operation.output[0] === item1.uid
         })
         expect(operation).toBeDefined()
       })

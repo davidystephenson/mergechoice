@@ -6,15 +6,15 @@ export default function verifyItemInOperations (props: {
 }): void {
   const values = Object.values(props.flow.operations)
   const some = values.some((operation) => {
-    const inA = operation.a.includes(props.item.uuid)
+    const inA = operation.a.includes(props.item.uid)
     if (inA) {
       return true
     }
-    const inB = operation.b.includes(props.item.uuid)
+    const inB = operation.b.includes(props.item.uid)
     if (inB) {
       return true
     }
-    const inOutput = operation.output.includes(props.item.uuid)
+    const inOutput = operation.output.includes(props.item.uid)
     if (inOutput) {
       return true
     }

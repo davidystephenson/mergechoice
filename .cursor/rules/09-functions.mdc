@@ -80,7 +80,7 @@ function add (props: {
 
 ```ts
 // BAD - Optional necessary props
-export default function createFlow (props?: { seed: Uuid }): Flow {
+export default function createFlow (props?: { seed: Uid }): Flow {
   if (props?.seed == null) {
     throw new Error('Seed is required')
   }
@@ -88,7 +88,7 @@ export default function createFlow (props?: { seed: Uuid }): Flow {
 }
 
 // GOOD - Require necessary props
-export default function createFlow (props: { seed: Uuid }): Flow {
+export default function createFlow (props: { seed: Uid }): Flow {
   if (props.seed == null) {
     throw new Error('Seed is required')
   }

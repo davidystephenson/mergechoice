@@ -27,7 +27,7 @@ export default function getChoice (props: {
   )
 
   const selectedOperation = operationsWithLongestInput.reduce((highest, operation) =>
-    operation.uuid > highest.uuid ? operation : highest
+    operation.uid > highest.uid ? operation : highest
   , operationsWithLongestInput[0])
 
   return {

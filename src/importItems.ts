@@ -1,4 +1,4 @@
-import { Flow, Item, Uuid } from './flowTypes'
+import { Flow, Item, Uid } from './flowTypes'
 import shuffleArray from './shuffleArray'
 import createOperation from './createOperation'
 
@@ -10,15 +10,15 @@ export default function importItems (props: {
     throw new Error('Items cannot be empty')
   }
 
-  const uuids = props.items.map(item => item.uuid)
-  const uniqueUuids = new Set(uuids)
-  if (uniqueUuids.size !== props.items.length) {
-    throw new Error('Item UUIDs must be unique')
+  const uids = props.items.map(item => item.uid)
+  const uniqueUids = new Set(uids)
+  if (uniqueUids.size !== props.items.length) {
+    throw new Error('Item UIDs must be unique')
   }
 
-  const itemsRecord: Record<Uuid, Item> = { ...props.flow.items }
+  const itemsRecord: Record<Uid, Item> = { ...props.flow.items }
   for (const item of props.items) {
-    itemsRecord[item.uuid] = item
+    itemsRecord[item.uid] = item
   }
 
   const importEpisode = {
@@ -40,12 +40,12 @@ export default function importItems (props: {
   if (props.items.length === 1) {
     createOperation({
       flow: updatedFlow,
-      output: [props.items[0].uuid]
+      output: [props.items[0].uid]
     })
   } else {
     const shuffledItems = shuffleArray({
       items: props.items,
-      seed: props.flow.seed,
+      uid: props.flow.uid,
       count: updatedFlow.itemCount
     })
     // For multiple items, pair them up into operations
@@ -63,8 +63,8 @@ export default function importItems (props: {
     pairs.forEach(pair => {
       createOperation({
         flow: updatedFlow,
-        a: [pair[0].uuid],
-        b: [pair[1].uuid]
+        a: [pair[0].uid],
+        b: [pair[1].uid]
       })
     })
 
@@ -75,7 +75,7 @@ export default function importItems (props: {
       const lastItem = shuffledItems[lastIndex]
       createOperation({
         flow: updatedFlow,
-        output: [lastItem.uuid]
+        output: [lastItem.uid]
       })
     }
   }

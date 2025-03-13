@@ -43,7 +43,7 @@ throw new Error('Invalid type')
 
 ```ts
 // BAD - `=== undefined`
-export default function createFlow (props: { seed: Uuid }): Flow {
+export default function createFlow (props: { seed: Uid }): Flow {
   if (props.seed === undefined) {
     throw new Error('Seed is required')
   }
@@ -51,7 +51,7 @@ export default function createFlow (props: { seed: Uuid }): Flow {
 }
 
 // BAD - `=== null`
-export default function createFlow (props: { seed: Uuid }): Flow {
+export default function createFlow (props: { seed: Uid }): Flow {
   if (props.seed === null) {
     throw new Error('Seed is required')
   }
@@ -59,7 +59,7 @@ export default function createFlow (props: { seed: Uuid }): Flow {
 }
 
 // GOOD - `== null`
-export default function createFlow (props: { seed: Uuid }): Flow {
+export default function createFlow (props: { seed: Uid }): Flow {
   if (props.seed == null) {
     throw new Error('Seed is required')
   }

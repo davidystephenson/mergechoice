@@ -1,11 +1,11 @@
 import { Flow } from './flowTypes'
 
-export default function createFlow (props: { seed: string }): Flow {
-  if (props.seed == null) {
-    throw new Error('Seed is required')
+export default function createFlow (props: { uid: string }): Flow {
+  if (props.uid == null) {
+    throw new Error('UID is required')
   }
-  if (typeof props.seed !== 'string') {
-    throw new Error('Seed must be a string')
+  if (typeof props.uid !== 'string') {
+    throw new Error('UID must be a string')
   }
   return {
     history: [],
@@ -13,6 +13,6 @@ export default function createFlow (props: { seed: string }): Flow {
     items: {},
     operationCount: 0,
     operations: {},
-    seed: props.seed
+    uid: props.uid
   }
 }

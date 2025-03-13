@@ -1,30 +1,31 @@
-import createUuid from './createUuid'
-import { Flow, Operation, Uuid } from './flowTypes'
+import createUid from './createUid'
+import { Flow, Operation, Uid } from './flowTypes'
 
 export default function createOperation (props: {
   flow: Flow
-  a?: Uuid[]
-  b?: Uuid[]
-  output?: Uuid[]
+  a?: Uid[]
+  b?: Uid[]
+  output?: Uid[]
 }): Operation {
   const currentCount = props.flow.operationCount ?? 0
   props.flow.operationCount = currentCount + 1
 
-  const uuid = createUuid({ seed: props.flow.seed, count: currentCount })
+  const uid = createUid({ uid: props.flow.uid, count: currentCount })
 
   const a = props.a ?? []
   const b = props.b ?? []
   const output = props.output ?? []
 
   const operation: Operation = {
-    uuid,
+    uid,
     a,
     ab: true,
+    ascend: true,
     b,
     output
   }
 
-  props.flow.operations[uuid] = operation
+  props.flow.operations[uid] = operation
 
   return operation
 }

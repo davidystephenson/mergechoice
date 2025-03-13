@@ -1,10 +1,11 @@
 import Rand from 'rand-seed'
+import { Uid } from './flowTypes'
 
-export default function createUuid (props: {
-  seed: string
+export default function createUid (props: {
+  uid: Uid
   count: number
 }): string {
-  const seedString = `${props.seed}-${props.count}`
+  const seedString = `${props.uid}-${props.count}`
 
   const rand = new Rand(seedString)
 
