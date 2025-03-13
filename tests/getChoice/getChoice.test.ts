@@ -72,12 +72,12 @@ describe('getChoice', () => {
         return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
       }, threeItemOperations[0])
 
-      const longestCount = threeItemOperations.filter(operation => {
+      const longestOperations = threeItemOperations.filter(operation => {
         return operation.a.length + operation.b.length === longestOperation.a.length + longestOperation.b.length
-      }).length
+      })
 
       it('should have a single longest input', () => {
-        expect(longestCount).toBe(1)
+        expect(longestOperations.length).toBe(1)
       })
 
       it('should return a choice from with the highest seed', () => {
@@ -90,18 +90,19 @@ describe('getChoice', () => {
         return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
       }, fiveItemOperations[0])
 
-      const longestCount = fiveItemOperations.filter(operation => {
+      const longestOperations = fiveItemOperations.filter(operation => {
         return operation.a.length + operation.b.length === longestOperation.a.length + longestOperation.b.length
-      }).length
-
-      it('should have a tie for longest input', () => {
-        expect(longestCount).toBeGreaterThan(1)
       })
 
-      it('should return a choice from the operation with the highest uuid ', () => {
-        const operationWithHighestUuid = fiveItemOperations.reduce((max, operation) => {
+      it('should have a tie for longest input', () => {
+        expect(longestOperations.length).toBeGreaterThan(1)
+      })
+
+      it('should return a choice from the operation with the highest uuid among the longest input operations', () => {
+        const operationWithHighestUuid = longestOperations.reduce((max, operation) => {
           return operation.uuid > max.uuid ? operation : max
-        }, fiveItemOperations[0])
+        }, longestOperations[0])
+
         expect(operationWithHighestUuid.uuid).toBe(fiveItemOperation.uuid)
       })
     })
