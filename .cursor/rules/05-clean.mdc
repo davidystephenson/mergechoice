@@ -13,6 +13,19 @@ globs: **/*
 - Omit semicolons unless syntactically necessary.
 - Always use `async`/`await` for handling asynchronous logic.
 - Never use `.then` syntax for handing promises.
+- Never use string addition, use template literals instead:
+
+```ts
+const first = 'abc'
+cosnt last = 'xyz'
+
+// BAD - String addition
+const letters = first + last
+
+// GOOD - Template literal
+const letters = `${first}${last}`
+```
+
 - Never use `switch`/`case` blocks, use `if` instead to keep code flexible:
 
 ```ts

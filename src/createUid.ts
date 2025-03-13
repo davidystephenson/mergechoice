@@ -6,36 +6,25 @@ export default function createUid (props: {
   count: number
 }): string {
   const seedString = `${props.uid}-${props.count}`
-
   const rand = new Rand(seedString)
 
-  const bytes = []
-  for (let i = 0; i < 16; i++) {
-    const randomValue = rand.next()
-    const byteValue = Math.floor(randomValue * 256)
-    bytes.push(byteValue)
-  }
+  const hexDigits = Array.from({ length: 32 }, () => {
+    const randomValue = Math.floor(rand.next() * 16)
+    return randomValue.toString(16)
+  })
 
-  const version4Mask = 0x40
-  const variantMask = 0x80
+  const uuidSection1 = hexDigits.slice(0, 8).join('')
+  const uuidSection2 = hexDigits.slice(8, 12).join('')
 
-  const sixthByteBase = bytes[6] & 0x0f
-  bytes[6] = sixthByteBase | version4Mask
+  const versionSection = `4${hexDigits.slice(13, 16).join('')}`
 
-  const eighthByteBase = bytes[8] & 0x3f
-  bytes[8] = eighthByteBase | variantMask
+  const variantBase = 8
+  const variantRandomOffset = Math.floor(rand.next() * 4)
+  const variantNumber = variantBase + variantRandomOffset
+  const variantValue = variantNumber.toString(16)
+  const variantSection = `${variantValue}${hexDigits.slice(17, 20).join('')}`
 
-  const hexBytes = []
-  for (const byte of bytes) {
-    const hexByte = byte.toString(16).padStart(2, '0')
-    hexBytes.push(hexByte)
-  }
+  const uuidSection5 = hexDigits.slice(20, 32).join('')
 
-  const part1 = hexBytes.slice(0, 4).join('')
-  const part2 = hexBytes.slice(4, 6).join('')
-  const part3 = hexBytes.slice(6, 8).join('')
-  const part4 = hexBytes.slice(8, 10).join('')
-  const part5 = hexBytes.slice(10, 16).join('')
-
-  return `${part1}-${part2}-${part3}-${part4}-${part5}`
+  return `${uuidSection1}-${uuidSection2}-${versionSection}-${variantSection}-${uuidSection5}`
 }

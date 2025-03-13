@@ -16,6 +16,13 @@ export default function importItems (props: {
     throw new Error('Item UIDs must be unique')
   }
 
+  // Check if any of the new items have UIDs that already exist in the flow
+  for (const item of props.items) {
+    if (props.flow.items[item.uid] != null) {
+      throw new Error('Item UIDs must be unique across the entire flow')
+    }
+  }
+
   const itemsRecord: Record<Uid, Item> = { ...props.flow.items }
   for (const item of props.items) {
     itemsRecord[item.uid] = item
