@@ -75,7 +75,6 @@ describe('index', () => {
     ab: true,
     b: ['789', 101],
     output: ['102', 103],
-    seed: 99,
     uuid: '111'
   }
   it('should export the Operation type', () => {

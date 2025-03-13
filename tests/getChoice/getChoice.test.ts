@@ -12,43 +12,95 @@ describe('getChoice', () => {
   const item1 = { name: 'item1', uuid: '1', seed: 0 }
   const item2 = { name: 'item2', uuid: 2, seed: 0 }
   const item3 = { name: 'item3', uuid: 3, seed: 0 }
-  const items = [item1, item2, item3]
-  const importedFlow = importItems({ flow, items })
-  const importedOperations = Object.values(importedFlow.operations)
+  const item4 = { name: 'item4', uuid: 4, seed: 0 }
+  const item5 = { name: 'item5', uuid: 5, seed: 0 }
+  const threeItems = [item1, item2, item3]
+  const fiveItems = [item1, item2, item3, item4, item5]
+  const threeItemFlow = importItems({ flow, items: threeItems })
+  const threeItemOperations = Object.values(threeItemFlow.operations)
+  const fiveItemFlow = importItems({ flow: threeItemFlow, items: fiveItems })
+  const fiveItemOperations = Object.values(fiveItemFlow.operations)
 
   describe('if an empty flow imports at least two new items', () => {
+    const threeItemChoice = getChoice({ flow: threeItemFlow })
+    const fiveItemChoice = getChoice({ flow: fiveItemFlow })
+
     it('should return a choice', () => {
-      const choice = getChoice({ flow: importedFlow })
-      expect(choice).toBeDefined()
+      expect(threeItemChoice).toBeDefined()
+      expect(fiveItemChoice).toBeDefined()
     })
 
-    const choice = getChoice({ flow: importedFlow })
-    if (choice == null) {
+    if (threeItemChoice == null) {
+      throw new Error('Choice should be defined')
+    }
+    if (fiveItemChoice == null) {
       throw new Error('Choice should be defined')
     }
 
     it('should return a choice whose a and b are a new item UUIDs', () => {
-      const someA = items.some(item => item.uuid === choice.a)
+      const someA = threeItems.some(item => item.uuid === threeItemChoice.a)
       expect(someA).toBe(true)
-      const someB = items.some(item => item.uuid === choice.b)
+      const someB = threeItems.some(item => item.uuid === threeItemChoice.b)
       expect(someB).toBe(true)
     })
-    const operation = importedOperations.find(operation => {
-      return operation.a[0] === choice.a
+
+    const threeItemOperation = threeItemOperations.find(operation => {
+      return operation.a[0] === threeItemChoice.a
     })
-    if (operation == null) {
+    it('should return a choice whose a is is the first element of an a input', () => {
+      expect(threeItemOperation).toBeDefined()
+    })
+    if (threeItemOperation == null) {
       throw new Error('Operation should be defined')
     }
 
-    it('should return a choice whose a is the first element of the a input of an operation, and the b is the first element of the b input of that operation', () => {
-      expect(operation.b[0]).toBe(choice.b)
+    const fiveItemOperation = fiveItemOperations.find(operation => {
+      return operation.b[0] === fiveItemChoice.b
+    })
+    it('should return a choice whose b is is the first element of an b input', () => {
+      expect(fiveItemOperation).toBeDefined()
+    })
+    if (fiveItemOperation == null) {
+      throw new Error('Operation should be defined')
+    }
+
+    describe('if there is a single highest input length operation', () => {
+      const longestOperation = threeItemOperations.reduce((max, operation) => {
+        return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
+      }, threeItemOperations[0])
+
+      const longestCount = threeItemOperations.filter(operation => {
+        return operation.a.length + operation.b.length === longestOperation.a.length + longestOperation.b.length
+      }).length
+
+      if (longestCount > 1) {
+        throw new Error('There should be only one operation with the longest input length')
+      }
+
+      it('should return a choice from with the highest seed', () => {
+        expect(longestOperation.uuid).toBe(threeItemOperation.uuid)
+      })
     })
 
-    it('should return a choice from the operation with the highest seed', () => {
-      const operationWithHighestSeed = importedOperations.reduce((max, operation) => {
-        return operation.seed > max.seed ? operation : max
-      }, importedOperations[0])
-      expect(operationWithHighestSeed.uuid).toBe(operation.uuid)
+    describe('if there is a tie for the longest total input length', () => {
+      const longestOperation = fiveItemOperations.reduce((max, operation) => {
+        return operation.a.length + operation.b.length > max.a.length + max.b.length ? operation : max
+      }, fiveItemOperations[0])
+
+      const longestCount = fiveItemOperations.filter(operation => {
+        return operation.a.length + operation.b.length === longestOperation.a.length + longestOperation.b.length
+      }).length
+
+      if (longestCount === 1) {
+        throw new Error('There should be more than one operation with the longest input length')
+      }
+
+      it('should return a choice from the operation with the highest uuid ', () => {
+        const operationWithHighestUuid = fiveItemOperations.reduce((max, operation) => {
+          return operation.uuid > max.uuid ? operation : max
+        }, fiveItemOperations[0])
+        expect(operationWithHighestUuid.uuid).toBe(fiveItemOperation.uuid)
+      })
     })
   })
 })

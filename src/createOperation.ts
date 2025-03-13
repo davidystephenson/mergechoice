@@ -1,4 +1,3 @@
-import Rand from 'rand-seed'
 import createUuid from './createUuid'
 import { Flow, Operation, Uuid } from './flowTypes'
 
@@ -17,18 +16,12 @@ export default function createOperation (props: {
   const b = props.b ?? []
   const output = props.output ?? []
 
-  const seedString = `${props.flow.seed}-${props.flow.operationCount}`
-
-  const rand = new Rand(seedString)
-  const seed = rand.next()
-
   const operation: Operation = {
     uuid,
     a,
     ab: true,
     b,
-    output,
-    seed
+    output
   }
 
   props.flow.operations[uuid] = operation

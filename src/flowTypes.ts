@@ -21,7 +21,6 @@ export const operationSchema = z.object({
   ab: z.boolean(),
   b: z.array(uuidSchema),
   output: z.array(uuidSchema),
-  seed: z.number(),
   uuid: uuidSchema
 })
 export type Operation = z.infer<typeof operationSchema>
