@@ -5,6 +5,7 @@ export { default as createOperation } from './createOperation'
 export { default as createUid } from './createUid'
 export { default as shuffleArray } from './shuffleArray'
 export { default as getChoice } from './getChoice'
+export { default as addOperation } from './addOperation'
 export {
   Choice,
   choiceSchema,
