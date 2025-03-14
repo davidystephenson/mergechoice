@@ -7,10 +7,7 @@ export default function createOperation (props: {
   b?: Uid[]
   output?: Uid[]
 }): Operation {
-  const currentCount = props.flow.operationCount ?? 0
-  props.flow.operationCount = currentCount + 1
-
-  const uid = createUid({ uid: props.flow.uid, count: currentCount })
+  const uid = createUid({ uid: props.flow.uid, count: props.flow.operationCount })
 
   const a = props.a ?? []
   const b = props.b ?? []
@@ -24,8 +21,6 @@ export default function createOperation (props: {
     bInput: b,
     output
   }
-
-  props.flow.operations[uid] = operation
 
   return operation
 }
