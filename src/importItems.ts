@@ -1,6 +1,7 @@
 import { Flow, Item, Uid } from './flowTypes'
 import shuffleArray from './shuffleArray'
 import createOperation from './createOperation'
+import addOperation from './addOperation'
 
 export default function importItems (props: {
   flow: Flow
@@ -16,7 +17,6 @@ export default function importItems (props: {
     throw new Error('Item UIDs must be unique')
   }
 
-  // Check if any of the new items have UIDs that already exist in the flow
   for (const item of props.items) {
     if (props.flow.items[item.uid] != null) {
       throw new Error('Item UIDs must be unique across the entire flow')
@@ -37,7 +37,7 @@ export default function importItems (props: {
 
   const newItemCount = props.flow.itemCount + props.items.length
 
-  const updatedFlow: Flow = {
+  const baseFlow: Flow = {
     ...props.flow,
     items: itemsRecord,
     history,
@@ -45,47 +45,61 @@ export default function importItems (props: {
   }
 
   if (props.items.length === 1) {
-    createOperation({
-      flow: updatedFlow,
+    const operation = createOperation({
+      flow: baseFlow,
       output: [props.items[0].uid]
     })
-  } else {
-    const shuffledItems = shuffleArray({
-      items: props.items,
-      uid: props.flow.uid,
-      count: updatedFlow.itemCount
+
+    return addOperation({
+      flow: baseFlow,
+      operation
     })
-    // For multiple items, pair them up into operations
-    const pairs: Array<[Item, Item]> = []
-
-    // Create pairs of items
-    const pairCount = Math.floor(shuffledItems.length / 2)
-    for (let i = 0; i < pairCount; i++) {
-      const firstIndex = i * 2
-      const secondIndex = i * 2 + 1
-      pairs.push([shuffledItems[firstIndex], shuffledItems[secondIndex]])
-    }
-
-    // Create operations for each pair
-    pairs.forEach(pair => {
-      createOperation({
-        flow: updatedFlow,
-        a: [pair[0].uid],
-        b: [pair[1].uid]
-      })
-    })
-
-    // If there's an odd number of items, create an output operation for the last item
-    const isOdd = shuffledItems.length % 2 === 1
-    if (isOdd) {
-      const lastIndex = shuffledItems.length - 1
-      const lastItem = shuffledItems[lastIndex]
-      createOperation({
-        flow: updatedFlow,
-        output: [lastItem.uid]
-      })
-    }
   }
 
-  return updatedFlow
+  const shuffledItems = shuffleArray({
+    items: props.items,
+    uid: baseFlow.uid,
+    count: baseFlow.itemCount
+  })
+
+  const pairCount = Math.floor(shuffledItems.length / 2)
+  const pairs = Array.from({ length: pairCount }, (_, i) => {
+    const firstIndex = i * 2
+    const secondIndex = i * 2 + 1
+    const firstItem = shuffledItems[firstIndex]
+    const secondItem = shuffledItems[secondIndex]
+    return [firstItem, secondItem]
+  })
+
+  const flowWithPairs = pairs.reduce((currentFlow, pair) => {
+    const operation = createOperation({
+      flow: currentFlow,
+      a: [pair[0].uid],
+      b: [pair[1].uid]
+    })
+
+    return addOperation({
+      flow: currentFlow,
+      operation
+    })
+  }, baseFlow)
+
+  const hasRemainingItem = shuffledItems.length % 2 === 1
+
+  if (!hasRemainingItem) {
+    return flowWithPairs
+  }
+
+  const lastIndex = shuffledItems.length - 1
+  const remainingItem = shuffledItems[lastIndex]
+
+  const operation = createOperation({
+    flow: flowWithPairs,
+    output: [remainingItem.uid]
+  })
+
+  return addOperation({
+    flow: flowWithPairs,
+    operation
+  })
 }

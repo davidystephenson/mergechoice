@@ -5,14 +5,25 @@ globs: **/*
 - Always write functional and declarative programming patterns
 - Never use classes
 - Always write DRY (Don't Repeat Yourself) code
-- Prefer early returns to avoid nested conditions and improve readability
-- Prefer descriptive, explicit variable names over short, ambiguous ones to enhance code readability
-- Always define hardcoded values with named constants to improve code clarity and maintainability
 - Prefer lines under 100 characters long, except for template literals.
-- Prefer breaking down multi-step logic into single step lines with their own constant variable.
 - Omit semicolons unless syntactically necessary.
 - Always use `async`/`await` for handling asynchronous logic.
-- Never use `.then` syntax for handing promises.
+- Never use `.then` syntax for handing promises. 
+- Prefer `if` statements:
+
+```ts
+// BAD - Could use `if`/`else` without changing logic
+return single
+  ? importSingleItem({ flow: baseFlow, item: props.items[0] })
+  : importMultipleItems({ flow: baseFlow, items: props.items })
+
+// GOOD - Uses `if`
+if (single) {
+  return importSingleItem({ flow: baseFlow, item: props.items[0] })
+}
+return importMultipleItems({ flow: baseFlow, items: props.items })
+```
+
 - Never use string addition, use template literals instead:
 
 ```ts

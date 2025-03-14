@@ -133,3 +133,34 @@ await db.runTransaction(async (tx) => {
   })
 })
 ```
+
+- Give computed lookups their own constant
+
+```ts
+const firstIndex = i * 2
+const secondIndex = firstIndex + 1
+
+// BAD - Computed lookups without constants
+const lastItem = shuffledItems[shuffledItems.length - 1]
+return [props.items[firstIndex], props.items[secondIndex], lastItem]
+
+// GOOD - Computed lookups with constants
+const lastIndex = shuffledItems.length - 1
+const lastItem = shuffledItems[lastItem]
+const firstItem = props.items[firstIndex]
+const secondItem = props.items[secondIndex]
+return [firstItem, secondItem, lastItem]
+```
+
+- Write literal lookups inline:
+
+```ts
+
+// BAD - Literal lookups with constants
+const firstItem = props.items[0]
+const secondItem = props.items[1]
+return [firstItem, secondItem]
+
+// Good - Literal lookups without constants
+return [props.items[0], props.items[1]]
+```

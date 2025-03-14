@@ -16,17 +16,23 @@ export default function chooseOption (props: {
 
   const operation = props.flow.operations[choice.operationId]
 
-  // Update the operation to move both items to the output array
-  // with the selected option first
-  if (String(props.option) === choice.aItemId) {
-    operation.output = [choice.aItemId, choice.bItemId]
-    operation.aInput = []
-    operation.bInput = []
-  } else {
-    operation.output = [choice.bItemId, choice.aItemId]
-    operation.aInput = []
-    operation.bInput = []
+  const updatedFlow = {
+    ...props.flow,
+    operations: {
+      ...props.flow.operations
+    }
   }
 
-  return props.flow
+  const updatedOperation = {
+    ...operation,
+    aInput: [],
+    bInput: [],
+    output: props.option === choice.aItemId
+      ? [choice.aItemId, choice.bItemId]
+      : [choice.bItemId, choice.aItemId]
+  }
+
+  updatedFlow.operations[choice.operationId] = updatedOperation
+
+  return updatedFlow
 }

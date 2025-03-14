@@ -49,7 +49,6 @@ describe('getChoice', () => {
         throw new Error('Choice should be defined')
       }
       const operation = importedFlow.operations[choice.operationId]
-      console.log('operation', operation)
       expect(operation.aInput).toContain(choice.aItemId)
       expect(operation.bInput).toContain(choice.bItemId)
     })
