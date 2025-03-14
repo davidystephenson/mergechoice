@@ -12,7 +12,7 @@ globs: **/*
 - Prefer `if` statements:
 
 ```ts
-// BAD - Could use `if`/`else` without changing logic
+// BAD - Could use `if` without changing logic
 return single
   ? importSingleItem({ flow: baseFlow, item: props.items[0] })
   : importMultipleItems({ flow: baseFlow, items: props.items })

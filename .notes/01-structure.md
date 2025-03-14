@@ -17,11 +17,3 @@ Use the `rand-seed` package to generate UIDs predictably.
 
 The `tests/` directory contains the tests for the library.
 The tests should only import from `src/index.ts` and not from other files in `src/`.
-
-### `tests/feature/`
-
-The `tests/feature/` directory contains code related to a specific feature of the library.
-The tests should be named like `[name].test.ts`.
-
-
-
