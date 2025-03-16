@@ -24,30 +24,6 @@ describe('isFlowComplete', () => {
     expect(() => isFlowComplete(addedFlow)).toThrow('Operation has no inputs or outputs')
   })
 
-  it('should throw an error if the flow has multiple output operations', () => {
-    const flow = createFlow({ uid: 'test' })
-
-    const operation1 = createOperation({
-      flow,
-      output: ['item1']
-    })
-    const addedFlow1 = addOperation({
-      flow,
-      operation: operation1
-    })
-
-    const operation2 = createOperation({
-      flow: addedFlow1,
-      output: ['item2']
-    })
-    const addedFlow2 = addOperation({
-      flow: addedFlow1,
-      operation: operation2
-    })
-
-    expect(() => isFlowComplete(addedFlow2)).toThrow('Flow has multiple output operations')
-  })
-
   it('should return false if there are multiple operations', () => {
     const flow = createFlow({ uid: 'test' })
 

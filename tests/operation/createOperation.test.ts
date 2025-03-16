@@ -12,6 +12,14 @@ describe('createOperation', () => {
     expect(operation.ascend).toBe(true)
   })
 
+  it('should require an operation def', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => createOperation({ flow })).toThrow()
+    expect(() => createOperation({ flow, a: ['1'], b: [2] })).toThrow()
+    expect(() => createOperation({ flow, output: ['3'] })).toThrow()
+    expect(() => createOperation({ flow, a: ['1'], b: [2], output: ['3'] })).not.toThrow()
+  })
+
   it('should create an operation with specified inputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({

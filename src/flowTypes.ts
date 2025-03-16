@@ -29,6 +29,13 @@ export const operationSchema = z.object({
 })
 export type Operation = z.infer<typeof operationSchema>
 
+export const operationDefSchema = z.object({
+  a: z.array(uidSchema),
+  b: z.array(uidSchema),
+  output: z.array(uidSchema)
+})
+export type OperationDef = z.infer<typeof operationDefSchema>
+
 export const episodeSchema = z.object({
   type: z.literal('import'),
   items: z.array(itemSchema)

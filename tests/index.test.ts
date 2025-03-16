@@ -9,6 +9,8 @@ import {
   episodeSchema,
   Operation,
   operationSchema,
+  OperationDef,
+  operationDefSchema,
   Uid,
   uidSchema
 } from '../src/index'
@@ -98,6 +100,16 @@ describe('index', () => {
     expect(parsed).toEqual(operation)
     const parsedActive = operationSchema.parse(activeOperation)
     expect(parsedActive).toEqual(activeOperation)
+  })
+
+  it('should export the OperationDef type and schema', () => {
+    const operationDef: OperationDef = {
+      a: ['123', '456'],
+      b: ['789', 101],
+      output: ['102', 103]
+    }
+    const parsed = operationDefSchema.parse(operationDef)
+    expect(parsed).toEqual(operationDef)
   })
 
   it('should export the Uid type and schema', () => {

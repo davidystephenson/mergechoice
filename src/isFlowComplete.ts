@@ -8,6 +8,21 @@ export default function isFlowComplete (flow: Flow): boolean {
     return Object.keys(flow.items).length === 0
   }
 
+  // Check for operations with only one of the inputs
+  for (const operation of operations) {
+    if ((operation.aInput.length > 0 && operation.bInput.length === 0) ||
+        (operation.aInput.length === 0 && operation.bInput.length > 0)) {
+      throw new Error('Operation has only one of the inputs')
+    }
+  }
+
+  // Check for operations with no inputs or outputs
+  for (const operation of operations) {
+    if (operation.aInput.length === 0 && operation.bInput.length === 0 && operation.output.length === 0) {
+      throw new Error('Operation has no inputs or outputs')
+    }
+  }
+
   // An output operation has items in the output array but not in aInput or bInput
   const isOutputOperation = (operation: Operation): boolean => {
     return operation.output.length > 0 &&
