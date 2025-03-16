@@ -8,3 +8,4 @@
   - Just review @tests internally considering our TDD strategy and let me know if you have any questions, suggestions, or concerns.
 - If we are done reviewing the tests:
   - Update the code in @src to match @tests.
+  - npm run check

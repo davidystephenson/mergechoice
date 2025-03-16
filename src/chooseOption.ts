@@ -23,13 +23,16 @@ export default function chooseOption (props: {
     }
   }
 
+  const isOptionA = props.option === choice.aItemId
+  const output = isOptionA
+    ? [choice.aItemId, choice.bItemId]
+    : [choice.bItemId, choice.aItemId]
+
   const updatedOperation = {
     ...operation,
     aInput: [],
     bInput: [],
-    output: props.option === choice.aItemId
-      ? [choice.aItemId, choice.bItemId]
-      : [choice.bItemId, choice.aItemId]
+    output
   }
 
   updatedFlow.operations[choice.operationId] = updatedOperation

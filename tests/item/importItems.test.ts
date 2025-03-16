@@ -357,6 +357,30 @@ describe('importItems', () => {
       })
     })
 
+    describe('if only two items are imported', () => {
+      it('should create only one operation', () => {
+        const flow = createFlow({ uid: 'test' })
+        const items = [
+          { name: 'The Matrix', uid: '1', seed: 90 },
+          { name: 'The Matrix Reloaded', uid: 2, seed: 30 }
+        ]
+        const importedFlow = importItems({ flow, items })
+        const operations = Object.values(importedFlow.operations)
+        expect(operations.length).toBe(1)
+      })
+
+      it('should create an input operation with the two new items', () => {
+        const flow = createFlow({ uid: 'test' })
+        const items = [
+          { name: 'The Matrix', uid: '1', seed: 90 },
+          { name: 'The Matrix Reloaded', uid: 2, seed: 30 }
+        ]
+        const importedFlow = importItems({ flow, items })
+        const operation = getImportInputsOperation({ flow: importedFlow, items })
+        expect(operation).toBeDefined()
+      })
+    })
+
     describe('if an even number of items are imported', () => {
       it('should not include an operation no inputs and a new item in the output', () => {
         const flow = createFlow({ uid: 'test' })

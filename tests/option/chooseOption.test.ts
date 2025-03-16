@@ -1,4 +1,4 @@
-import { chooseOption, createFlow, getChoice, importItems } from '../../src'
+import { chooseOption, createFlow, getChoice, importItems, isFlowComplete } from '../../src'
 
 describe('chooseOption', () => {
   it('should take a flow and an option and return a new flow', () => {
@@ -53,6 +53,24 @@ describe('chooseOption', () => {
       const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
       const operation = chosenFlow.operations[choice.operationId]
       expect(operation.output).toEqual([choice.aItemId, choice.bItemId])
+    })
+
+    describe('if there is only one operation', () => {
+      it('should create a complete flow', () => {
+        const flow = createFlow({ uid: 'test' })
+        const items = [
+          { name: 'The Matrix', uid: '1', seed: 90 },
+          { name: 'The Matrix Reloaded', uid: 2, seed: 30 }
+        ]
+        const importedFlow = importItems({ flow, items })
+        const choice = getChoice({ flow: importedFlow })
+        if (choice == null) {
+          throw new Error('Choice should be defined')
+        }
+        const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
+        const complete = isFlowComplete(chosenFlow)
+        expect(complete).toBe(true)
+      })
     })
   })
 })
