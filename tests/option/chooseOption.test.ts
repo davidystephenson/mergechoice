@@ -1,4 +1,4 @@
-import { chooseOption, createFlow, getChoice, importItems, isFlowComplete } from '../../src'
+import { chooseOption, combineOperations, createFlow, getChoice, importItems, isFlowComplete } from '../../src'
 import verifySingleInputOperationOption from './verifySingleInputOperationOption'
 
 describe('chooseOption', () => {
@@ -39,7 +39,7 @@ describe('chooseOption', () => {
   })
 
   describe('if the operation has only one a and b', () => {
-    it('should move them both to the output with the selected option first', () => {
+    it('should move them both to the output with the selected option last', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
         { name: 'The Matrix', uid: '1', seed: 90 },
@@ -53,7 +53,63 @@ describe('chooseOption', () => {
       }
       const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
       const operation = chosenFlow.operations[choice.operationId]
-      expect(operation.output).toEqual([choice.aItemId, choice.bItemId])
+      expect(operation.output).toEqual([choice.bItemId, choice.aItemId])
+    })
+  })
+
+  describe('if the operation has only one a and two b', () => {
+    describe('if the operation is ascending', () => {
+      describe('if the operation better is one less than the length of b', () => {
+        it('should move the a and b to the output with the selected option last', () => {
+          const flow = createFlow({ uid: 'test' })
+          const items = [
+            { name: 'The Matrix', uid: '1', seed: 90 },
+            { name: 'The Matrix Reloaded', uid: 2, seed: 30 },
+            { name: 'The Matrix Revolutions', uid: '3', seed: 40 },
+            { name: 'The Matrix Resurrections', uid: '4', seed: 50 }
+          ]
+          const importedFlow = importItems({ flow, items })
+          const choice = getChoice({ flow: importedFlow })
+          if (choice == null) {
+            throw new Error('Choice should be defined')
+          }
+          const choiceOperation = importedFlow.operations[choice.operationId]
+          if (choiceOperation == null) {
+            throw new Error('Choice operation should be defined')
+          }
+          expect(choiceOperation.ascend).toBe(true)
+          expect(choiceOperation.better).toBe(items.length - 1)
+          const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
+          const operation = chosenFlow.operations[choice.operationId]
+          expect(operation.output).toEqual([choice.bItemId, choice.aItemId])
+        })
+      })
+      describe('if the operation better is more than one less than the length of b', () => {
+        it('should increment better by one', () => {
+          const flow = createFlow({ uid: 'test' })
+          const items = [
+            { name: 'The Matrix', uid: '1', seed: 90 },
+            { name: 'The Matrix Reloaded', uid: 2, seed: 30 },
+            { name: 'The Matrix Revolutions', uid: '3', seed: 40 },
+            { name: 'The Matrix Resurrections', uid: '4', seed: 50 },
+            { name: 'The Animatrix', uid: '5', seed: 60 }
+          ]
+          const importedFlow = importItems({ flow, items })
+          const choice = getChoice({ flow: importedFlow })
+          if (choice == null) {
+            throw new Error('Choice should be defined')
+          }
+          const choiceOperation = importedFlow.operations[choice.operationId]
+          if (choiceOperation == null) {
+            throw new Error('Choice operation should be defined')
+          }
+          expect(choiceOperation.ascend).toBe(true)
+          expect(choiceOperation.better).toBe(0)
+          const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
+          const chosenOperation = chosenFlow.operations[choice.operationId]
+          expect(chosenOperation.better).toBe(1)
+        })
+      })
     })
   })
 
@@ -93,7 +149,7 @@ describe('chooseOption', () => {
       verifySingleInputOperationOption({ items })
     })
 
-    it('should create an incomplete flow', () => {
+    it('should create an incomplete flow after combining operations', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
         { name: 'The Matrix', uid: '1', seed: 90 },
@@ -106,7 +162,8 @@ describe('chooseOption', () => {
         throw new Error('Choice should be defined')
       }
       const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
-      const complete = isFlowComplete(chosenFlow)
+      const combinedFlow = combineOperations({ flow: chosenFlow })
+      const complete = isFlowComplete(combinedFlow)
       expect(complete).toBe(false)
     })
   })

@@ -75,27 +75,22 @@ describe('index', () => {
       aInput: [123, '456'],
       ab: true,
       ascend: true,
+      better: 0,
       bInput: ['789', 101],
       output: ['102', 103],
-      uid: '111'
+      uid: '111',
+      worse: 1
     }
     const activeOperation: Operation = {
       aInput: [123, '456'],
       ab: true,
       ascend: true,
+      better: 0,
       bInput: ['789', 101],
-      better: 987,
       output: ['102', 103],
       uid: '111',
-      worse: '789'
+      worse: 1
     }
-    expect(operation.aInput).toEqual([123, '456'])
-    expect(operation.ab).toBe(true)
-    expect(operation.ascend).toBe(true)
-    expect(operation.bInput).toEqual(['789', 101])
-    expect(operation.output).toEqual(['102', 103])
-    expect(activeOperation.better).toBe(987)
-    expect(activeOperation.worse).toBe('789')
     const parsed = operationSchema.parse(operation)
     expect(parsed).toEqual(operation)
     const parsedActive = operationSchema.parse(activeOperation)
@@ -104,8 +99,8 @@ describe('index', () => {
 
   it('should export the OperationDef type and schema', () => {
     const operationDef: OperationDef = {
-      a: ['123', '456'],
-      b: ['789', 101],
+      aInput: ['123', '456'],
+      bInput: ['789', 101],
       output: ['102', 103]
     }
     const parsed = operationDefSchema.parse(operationDef)

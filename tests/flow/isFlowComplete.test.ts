@@ -7,11 +7,13 @@ describe('isFlowComplete', () => {
     expect(complete).toBe(true)
   })
 
-  it('should throw an error if any operations have only one of the inputs', () => {
+  it('should throw an error if the operation has only one of the inputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
+      aInput: ['item1'],
+      bInput: [],
       flow,
-      a: ['item1']
+      output: []
     })
     const addedFlow = addOperation({ flow, operation })
     expect(() => isFlowComplete(addedFlow)).toThrow('Operation has only one of the inputs')
@@ -19,7 +21,7 @@ describe('isFlowComplete', () => {
 
   it('should throw an error if any operation has no inputs or outputs', () => {
     const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({ flow })
+    const operation = createOperation({ aInput: [], bInput: [], flow, output: [] })
     const addedFlow = addOperation({ flow, operation })
     expect(() => isFlowComplete(addedFlow)).toThrow('Operation has no inputs or outputs')
   })
@@ -28,9 +30,10 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation1 = createOperation({
+      aInput: ['item1'],
+      bInput: ['item2'],
       flow,
-      a: ['item1'],
-      b: ['item2']
+      output: []
     })
     const addedFlow1 = addOperation({
       flow,
@@ -38,6 +41,8 @@ describe('isFlowComplete', () => {
     })
 
     const operation2 = createOperation({
+      aInput: [],
+      bInput: [],
       flow: addedFlow1,
       output: ['item3']
     })
@@ -54,9 +59,10 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation = createOperation({
+      aInput: ['item1'],
+      bInput: ['item2'],
       flow,
-      a: ['item1'],
-      b: ['item2']
+      output: []
     })
     const addedFlow = addOperation({
       flow,
@@ -71,6 +77,8 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation = createOperation({
+      aInput: [],
+      bInput: [],
       flow,
       output: ['item1']
     })

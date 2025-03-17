@@ -46,6 +46,8 @@ export default function importItems (props: {
 
   if (props.items.length === 1) {
     const operation = createOperation({
+      aInput: [],
+      bInput: [],
       flow: baseFlow,
       output: [props.items[0].uid]
     })
@@ -73,9 +75,10 @@ export default function importItems (props: {
 
   const flowWithPairs = pairs.reduce((currentFlow, pair) => {
     const operation = createOperation({
+      aInput: [pair[0].uid],
+      bInput: [pair[1].uid],
       flow: currentFlow,
-      a: [pair[0].uid],
-      b: [pair[1].uid]
+      output: []
     })
 
     return addOperation({
@@ -94,6 +97,8 @@ export default function importItems (props: {
   const remainingItem = shuffledItems[lastIndex]
 
   const operation = createOperation({
+    aInput: [],
+    bInput: [],
     flow: flowWithPairs,
     output: [remainingItem.uid]
   })

@@ -1,4 +1,5 @@
-import { Flow, Operation } from './flowTypes'
+import { Flow } from './flowTypes'
+import isOutputOperation from './isOutputOperation'
 
 export default function isFlowComplete (flow: Flow): boolean {
   const operations = Object.values(flow.operations)
@@ -23,14 +24,7 @@ export default function isFlowComplete (flow: Flow): boolean {
     }
   }
 
-  // An output operation has items in the output array but not in aInput or bInput
-  const isOutputOperation = (operation: Operation): boolean => {
-    return operation.output.length > 0 &&
-           operation.aInput.length === 0 &&
-           operation.bInput.length === 0
-  }
-
-  const outputOperations = operations.filter(isOutputOperation)
+  const outputOperations = operations.filter(operation => isOutputOperation({ operation }))
 
   // If there are multiple output operations, throw an error
   if (outputOperations.length > 1) {

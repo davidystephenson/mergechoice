@@ -6,20 +6,20 @@ describe('combineOperations', () => {
     const flow = createFlow({ uid: 'test' })
     const flow1 = insertOperation({
       flow,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item3']
     })
     const flow2 = insertOperation({
       flow: flow1,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item4']
     })
     const flow3 = insertOperation({
       flow: flow2,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item5']
     })
     expect(() => combineOperations({ flow: flow3 })).toThrow()
@@ -29,14 +29,14 @@ describe('combineOperations', () => {
     const flow = createFlow({ uid: 'test' })
     const flow1 = insertOperation({
       flow,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item1']
     })
     const flow2 = insertOperation({
       flow: flow1,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item2']
     })
     const flow2Operations = Object.values(flow2.operations)
@@ -53,8 +53,8 @@ describe('combineOperations', () => {
     const flow = createFlow({ uid: 'test' })
     const flow1 = insertOperation({
       flow,
-      a: [],
-      b: [],
+      aInput: [],
+      bInput: [],
       output: ['item1']
     })
     const flow2 = combineOperations({ flow: flow1 })
@@ -65,8 +65,8 @@ describe('combineOperations', () => {
     const flow = createFlow({ uid: 'test' })
     const flow1 = insertOperation({
       flow,
-      a: ['item1'],
-      b: ['item2'],
+      aInput: ['item1'],
+      bInput: ['item2'],
       output: []
     })
     const flow2 = combineOperations({ flow: flow1 })

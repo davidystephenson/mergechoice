@@ -21,17 +21,17 @@ export const operationSchema = z.object({
   aInput: z.array(uidSchema),
   ab: z.boolean(),
   ascend: z.boolean(),
-  better: uidSchema.optional(),
+  better: z.number(),
   bInput: z.array(uidSchema),
   output: z.array(uidSchema),
   uid: uidSchema,
-  worse: uidSchema.optional()
+  worse: z.number()
 })
 export type Operation = z.infer<typeof operationSchema>
 
 export const operationDefSchema = z.object({
-  a: z.array(uidSchema),
-  b: z.array(uidSchema),
+  aInput: z.array(uidSchema),
+  bInput: z.array(uidSchema),
   output: z.array(uidSchema)
 })
 export type OperationDef = z.infer<typeof operationDefSchema>

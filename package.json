@@ -24,7 +24,7 @@
     "check": "npx tsc && npm run test && npm run deadcode && npm run lint",
     "deadcode": "npx knip --reporter ./my-reporter.js",
     "lint": "npx ts-standard --fix",
-    "test": "jest --coverage",
+    "test": "npx jest --json > jest-results.json && node parse-jest-failures.js",
     "test:watch": "jest --watch"
   },
   "dependencies": {

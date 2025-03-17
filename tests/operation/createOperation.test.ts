@@ -1,31 +1,45 @@
-import { createFlow, createOperation } from '../../src'
+import { createFlow, createOperation, OperationDef } from '../../src'
 
 describe('createOperation', () => {
-  it('should create an operation with ab true and ascend true', () => {
+  it('should create an operation with ab true, ascend true, better 0, and worse equal to the length of b minus 1', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
+      aInput: ['1'],
+      bInput: [2, 3, '4'],
       flow,
-      a: ['1'],
-      b: [2]
+      output: []
     })
     expect(operation.ab).toBe(true)
     expect(operation.ascend).toBe(true)
+    expect(operation.better).toBe(0)
+    expect(operation.worse).toBe(2)
   })
 
   it('should require an operation def', () => {
     const flow = createFlow({ uid: 'test' })
+    // @ts-expect-error
     expect(() => createOperation({ flow })).toThrow()
-    expect(() => createOperation({ flow, a: ['1'], b: [2] })).toThrow()
+    // @ts-expect-error
+    expect(() => createOperation({ flow, aInput: ['1'], bInput: [2], output: null })).toThrow()
+    // @ts-expect-error
     expect(() => createOperation({ flow, output: ['3'] })).toThrow()
-    expect(() => createOperation({ flow, a: ['1'], b: [2], output: ['3'] })).not.toThrow()
+    expect(() => {
+      const operationDef: OperationDef = {
+        aInput: ['1'],
+        bInput: [2],
+        output: []
+      }
+      createOperation({ flow, ...operationDef })
+    }).not.toThrow()
   })
 
   it('should create an operation with specified inputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
+      aInput: ['1'],
+      bInput: [2],
       flow,
-      a: ['1'],
-      b: [2]
+      output: []
     })
     expect(operation.uid).toBeDefined()
     expect(operation.aInput).toEqual(['1'])
@@ -37,6 +51,8 @@ describe('createOperation', () => {
   it('should create an operation with specified output', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
+      aInput: [],
+      bInput: [],
       flow,
       output: ['1']
     })
@@ -55,33 +71,38 @@ describe('createOperation', () => {
     const differentUidDifferentCount = createFlow({ uid: 'different' })
     differentUidDifferentCount.operationCount = 1
     const operation = createOperation({
+      aInput: ['1'],
+      bInput: ['2'],
       flow,
-      a: ['1'],
-      b: ['2']
+      output: []
     })
     expect(operation.uid).toBeDefined()
     const sameUidSameCountOperation = createOperation({
+      aInput: ['1'],
+      bInput: ['2'],
       flow: sameUidSameCount,
-      a: ['1'],
-      b: ['2']
+      output: []
     })
     expect(sameUidSameCountOperation.uid).toEqual(operation.uid)
     const differentUidSameCountOperation = createOperation({
+      aInput: ['1'],
+      bInput: ['2'],
       flow: differentUidSameCount,
-      a: ['1'],
-      b: ['2']
+      output: []
     })
     expect(differentUidSameCountOperation.uid).not.toEqual(operation.uid)
     const sameUidDifferentCountOperation = createOperation({
+      aInput: ['1'],
+      bInput: ['2'],
       flow: sameUidDifferentCount,
-      a: ['1'],
-      b: ['2']
+      output: []
     })
     expect(sameUidDifferentCountOperation.uid).not.toEqual(operation.uid)
     const differentUidDifferentCountOperation = createOperation({
+      aInput: ['1'],
+      bInput: ['2'],
       flow: differentUidDifferentCount,
-      a: ['1'],
-      b: ['2']
+      output: []
     })
     expect(differentUidDifferentCountOperation.uid).not.toEqual(operation.uid)
   })

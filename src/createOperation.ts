@@ -1,25 +1,24 @@
 import createUid from './createUid'
-import { Flow, Operation, Uid } from './flowTypes'
+import { Flow, Operation, OperationDef } from './flowTypes'
 
 export default function createOperation (props: {
   flow: Flow
-  a?: Uid[]
-  b?: Uid[]
-  output?: Uid[]
-}): Operation {
-  const uid = createUid({ uid: props.flow.uid, count: props.flow.operationCount })
+} & OperationDef): Operation {
+  if (props.aInput == null || props.bInput == null || props.output == null) {
+    throw new Error('Operation definition is required')
+  }
 
-  const a = props.a ?? []
-  const b = props.b ?? []
-  const output = props.output ?? []
+  const uid = createUid({ uid: props.flow.uid, count: props.flow.operationCount })
 
   const operation: Operation = {
     uid,
-    aInput: a,
+    aInput: props.aInput,
     ab: true,
     ascend: true,
-    bInput: b,
-    output
+    better: 0,
+    bInput: props.bInput,
+    output: props.output,
+    worse: props.bInput.length - 1
   }
 
   return operation

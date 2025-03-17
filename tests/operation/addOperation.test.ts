@@ -3,7 +3,7 @@ import { addOperation, createFlow, createOperation } from '../../src'
 describe('addOperation', () => {
   it('should return a new flow with the operation added and an incremented operation count', () => {
     const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({ flow, a: ['1'], b: ['2'] })
+    const operation = createOperation({ aInput: ['1'], bInput: ['2'], flow, output: [] })
     const addedFlow = addOperation({ flow, operation })
     expect(flow.operations[operation.uid]).toBeUndefined()
     expect(flow.operationCount).toBe(0)
@@ -20,7 +20,7 @@ describe('addOperation', () => {
   })
 
   it('should throw an error if the flow is not provided', () => {
-    const operation = createOperation({ flow: createFlow({ uid: 'test' }), a: ['1'], b: ['2'] })
+    const operation = createOperation({ aInput: ['1'], bInput: ['2'], flow: createFlow({ uid: 'test' }), output: [] })
     expect(() => {
       // @ts-expect-error
       addOperation({ operation })
@@ -29,7 +29,7 @@ describe('addOperation', () => {
 
   it('should throw an error if the operation UID is duplicate', () => {
     const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({ flow, a: ['1'], b: ['2'] })
+    const operation = createOperation({ aInput: ['1'], bInput: ['2'], flow, output: [] })
     const addedFlow = addOperation({ flow, operation })
     expect(() => addOperation({ flow: addedFlow, operation })).toThrow('Operation UID is not unique')
   })
