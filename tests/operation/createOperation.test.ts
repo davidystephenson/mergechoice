@@ -6,7 +6,7 @@ describe('createOperation', () => {
       const flow = createFlow({ uid: 'test' })
       const operation = createOperation({
         aInput: ['1'],
-        bInput: [2, 3, '4'],
+        bInput: ['2', '3', '4'],
         flow,
         output: []
       })
@@ -70,7 +70,7 @@ describe('createOperation', () => {
         aInput: [],
         bInput: [],
         flow,
-        output: ['1', 2]
+        output: ['1', '2']
       })
       expect(operation.ab).toBe(true)
       expect(operation.ascend).toBe(true)
@@ -84,13 +84,13 @@ describe('createOperation', () => {
     // @ts-expect-error
     expect(() => createOperation({ flow })).toThrow()
     // @ts-expect-error
-    expect(() => createOperation({ flow, aInput: ['1'], bInput: [2], output: null })).toThrow()
+    expect(() => createOperation({ flow, aInput: ['1'], bInput: ['2'], output: null })).toThrow()
     // @ts-expect-error
     expect(() => createOperation({ flow, output: ['3'] })).toThrow()
     expect(() => {
       const operationDef: OperationDef = {
         aInput: ['1'],
-        bInput: [2],
+        bInput: ['2'],
         output: []
       }
       createOperation({ flow, ...operationDef })
@@ -101,14 +101,14 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
       aInput: ['1'],
-      bInput: [2],
+      bInput: ['2'],
       flow,
       output: []
     })
     expect(operation.uid).toBeDefined()
     expect(operation.aInput).toEqual(['1'])
     expect(operation.ab).toBe(true)
-    expect(operation.bInput).toEqual([2])
+    expect(operation.bInput).toEqual(['2'])
     expect(operation.output).toEqual([])
   })
 

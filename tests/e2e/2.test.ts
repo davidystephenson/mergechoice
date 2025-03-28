@@ -66,7 +66,7 @@ describe('if two items are imported', () => {
       expect(ranking.length).toBe(2)
     })
 
-    it('should create rank the a item first with 1 point and rank 1', () => {
+    it('should rank the a item first with 1 point and rank 1', () => {
       const flow = createTwoFlow()
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
@@ -76,7 +76,7 @@ describe('if two items are imported', () => {
       expect(ranking[0].rank).toBe(1)
     })
 
-    it('should create rank the b item second with 0 points and rank 2', () => {
+    it('should rank the b item second with 0 points and rank 2', () => {
       const flow = createTwoFlow()
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
@@ -113,7 +113,7 @@ describe('if two items are imported', () => {
       expect(ranking.length).toBe(2)
     })
 
-    it('should create rank the b item first with 1 point and rank 1', () => {
+    it('should rank the b item first with 1 point and rank 1', () => {
       const flow = createTwoFlow()
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.bItemUid })
@@ -123,7 +123,7 @@ describe('if two items are imported', () => {
       expect(ranking[0].rank).toBe(1)
     })
 
-    it('should create rank the a item second with 0 points and rank 2', () => {
+    it('should rank the a item second with 0 points and rank 2', () => {
       const flow = createTwoFlow()
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.bItemUid })

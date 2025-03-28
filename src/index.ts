@@ -8,6 +8,8 @@ export { default as getChoice } from './getChoice'
 export { default as getRanking } from './getRanking'
 export { default as importItems } from './importItems'
 export { default as isFlowComplete } from './isFlowComplete'
+export { default as isInputOperation } from './isInputOperation'
+export { default as isMixedOperation } from './isMixedOperation'
 export { default as isOutputOperation } from './isOutputOperation'
 export { default as shuffleArray } from './shuffleArray'
 export {
@@ -24,7 +26,5 @@ export {
   Operation,
   operationSchema,
   OperationDef,
-  operationDefSchema,
-  Uid,
-  uidSchema
+  operationDefSchema
 } from './flowTypes'

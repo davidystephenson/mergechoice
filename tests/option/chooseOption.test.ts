@@ -1,4 +1,4 @@
-import { chooseOption, combineOperations, createFlow, isFlowComplete } from '../../src'
+import { chooseOption, createFlow, flowSchema, isInputOperation, isOutputOperation } from '../../src'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
 import createTwoFlow from '../flow/createTwoFlow'
@@ -8,7 +8,8 @@ describe('chooseOption', () => {
     const flow = createThreeFlow()
     const choice = getVerifiedChoice({ flow })
     const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-    expect(chosenFlow).toBeDefined()
+    const parsed = flowSchema.parse(chosenFlow)
+    expect(parsed).toEqual(chosenFlow)
   })
 
   it('should throw an error if the flow has no choice', () => {
@@ -24,13 +25,17 @@ describe('chooseOption', () => {
     }).toThrow('Option is not in the choice')
   })
 
-  describe('if the operation has only one a and b', () => {
+  describe('if there is only one operation with one a and b', () => {
     it('should move them both to the output with the selected option last', () => {
-      const flow = createThreeFlow()
+      const flow = createTwoFlow()
+      const operations = Object.values(flow.operations)
+      expect(operations.length).toBe(1)
+      expect(operations[0].aInput.length).toBe(1)
+      expect(operations[0].bInput.length).toBe(1)
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const operation = chosenFlow.operations[choice.operationUid]
-      expect(operation.output).toEqual([choice.bItemUid, choice.aItemUid])
+      const chosenOperation = chosenFlow.operations[choice.operationUid]
+      expect(chosenOperation.output).toEqual([choice.bItemUid, choice.aItemUid])
     })
   })
 
@@ -90,24 +95,34 @@ describe('chooseOption', () => {
   //   })
   // })
 
-  describe('if two items are imported to an empty flow', () => {
-    it('should create a complete flow', () => {
-      const flow = createTwoFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const complete = isFlowComplete({ flow: chosenFlow })
-      expect(complete).toBe(true)
-    })
-  })
-
-  describe('if three items are imported to an empty flow', () => {
-    it('should create an incomplete flow after combining operations', () => {
+  describe('if there is one input operation with one a and one b and one output operation', () => {
+    it('should combine the chosen operation with the output operation', () => {
       const flow = createThreeFlow()
+      const operations = Object.values(flow.operations)
+      const inputOperations = operations.filter(operation => {
+        return isInputOperation({ operation })
+      })
+      expect(inputOperations.length).toBe(1)
+      expect(inputOperations[0].aInput.length).toBe(1)
+      expect(inputOperations[0].bInput.length).toBe(1)
+      const outputOperations = operations.filter(operation => {
+        return isOutputOperation({ operation })
+      })
+      expect(outputOperations.length).toBe(1)
+      const inputEarlier = inputOperations[0].uid < outputOperations[0].uid
       const choice = getVerifiedChoice({ flow })
       const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const combinedFlow = combineOperations({ flow: chosenFlow })
-      const complete = isFlowComplete({ flow: combinedFlow })
-      expect(complete).toBe(false)
+      const chosenOperations = Object.values(chosenFlow.operations)
+      expect(chosenOperations.length).toBe(1)
+      const inputted = isInputOperation({ operation: chosenOperations[0] })
+      expect(inputted).toBe(true)
+      if (inputEarlier) {
+        expect(chosenOperations[0].aInput).toEqual([choice.bItemUid, choice.aItemUid])
+        expect(chosenOperations[0].bInput).toEqual(outputOperations[0].output)
+      } else {
+        expect(chosenOperations[0].aInput).toEqual(outputOperations[0].output)
+        expect(chosenOperations[0].bInput).toEqual([choice.bItemUid, choice.aItemUid])
+      }
     })
   })
 })

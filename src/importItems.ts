@@ -1,4 +1,4 @@
-import { Flow, Item, Uid } from './flowTypes'
+import { Flow, Item } from './flowTypes'
 import shuffleArray from './shuffleArray'
 import createOperation from './createOperation'
 import addOperation from './addOperation'
@@ -23,7 +23,7 @@ export default function importItems (props: {
     }
   }
 
-  const itemsRecord: Record<Uid, Item> = { ...props.flow.items }
+  const itemsRecord: Record<string, Item> = { ...props.flow.items }
   for (const item of props.items) {
     itemsRecord[item.uid] = item
   }

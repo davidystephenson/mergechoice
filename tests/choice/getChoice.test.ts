@@ -14,7 +14,7 @@ describe('getChoice', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
         { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: 2, seed: 0 }
+        { name: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
@@ -25,7 +25,7 @@ describe('getChoice', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
         { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: 2, seed: 0 }
+        { name: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
@@ -41,7 +41,7 @@ describe('getChoice', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
         { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: 2, seed: 0 }
+        { name: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
@@ -58,8 +58,8 @@ describe('getChoice', () => {
         const flow = createFlow({ uid: 'test' })
         const items = [
           { name: 'item1', uid: '1', seed: 0 },
-          { name: 'item2', uid: 2, seed: 0 },
-          { name: 'item3', uid: 3, seed: 0 }
+          { name: 'item2', uid: '2', seed: 0 },
+          { name: 'item3', uid: '3', seed: 0 }
         ]
         const importedFlow = importItems({ flow, items })
         const choice = getChoice({ flow: importedFlow })
@@ -85,10 +85,10 @@ describe('getChoice', () => {
         const flow = createFlow({ uid: 'test' })
         const items = [
           { name: 'item1', uid: '1', seed: 0 },
-          { name: 'item2', uid: 2, seed: 0 },
-          { name: 'item3', uid: 3, seed: 0 },
+          { name: 'item2', uid: '2', seed: 0 },
+          { name: 'item3', uid: '3', seed: 0 },
           { name: 'item4', uid: '4', seed: 0 },
-          { name: 'item5', uid: 5, seed: 0 }
+          { name: 'item5', uid: '5', seed: 0 }
         ]
         const importedFlow = importItems({ flow, items })
         const choice = getChoice({ flow: importedFlow })

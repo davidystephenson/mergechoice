@@ -1,9 +1,10 @@
-import { Flow, Uid } from './flowTypes'
+import { Flow } from './flowTypes'
 import getChoice from './getChoice'
+import combineOperations from './combineOperations'
 
 export default function chooseOption (props: {
   flow: Flow
-  option: Uid
+  option: string
 }): Flow {
   const choice = getChoice({ flow: props.flow })
   if (choice == null) {
@@ -37,5 +38,9 @@ export default function chooseOption (props: {
 
   updatedFlow.operations[choice.operationUid] = updatedOperation
 
-  return updatedFlow
+  const combinedFlow = combineOperations({
+    flow: updatedFlow
+  })
+
+  return combinedFlow
 }
