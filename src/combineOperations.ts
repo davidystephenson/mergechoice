@@ -7,7 +7,6 @@ export default function combineOperations (props: {
   flow: Flow
 }): Flow {
   const operations = Object.values(props.flow.operations)
-
   const outputOperations = operations.filter(operation => isOutputOperation({ operation }))
 
   if (outputOperations.length > 2) {
@@ -18,20 +17,19 @@ export default function combineOperations (props: {
     return props.flow
   }
 
-  // Sort operations by UID to ensure consistent ordering
-  const [earlier, later] = outputOperations.sort((a, b) => a.uid.localeCompare(b.uid))
+  outputOperations.sort((a, b) => a.uid.localeCompare(b.uid))
+  const earlierOperation = outputOperations[0]
+  const laterOperation = outputOperations[1]
 
-  // Create a new operation with the outputs of the two operations as inputs
   const newOperation = createOperation({
     flow: props.flow,
-    aInput: earlier.output,
-    bInput: later.output,
+    aInput: earlierOperation.output,
+    bInput: laterOperation.output,
     output: []
   })
 
-  // Remove the two output operations from the flow
   const operationsToKeep = Object.entries(props.flow.operations)
-    .filter(([uid]) => uid !== earlier.uid && uid !== later.uid)
+    .filter(([uid]) => uid !== earlierOperation.uid && uid !== laterOperation.uid)
     .reduce<Record<string, Operation>>((acc, [uid, operation]) => {
     acc[uid] = operation
     return acc
@@ -43,7 +41,6 @@ export default function combineOperations (props: {
     operationCount: props.flow.operationCount - 2
   }
 
-  // Add the new operation to the flow
   return addOperation({
     flow: flowWithoutOutputOperations,
     operation: newOperation
