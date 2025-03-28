@@ -1,18 +1,82 @@
 import { createFlow, createOperation, OperationDef } from '../../src'
 
 describe('createOperation', () => {
-  it('should create an operation with ab true, ascend true, better 0, and worse equal to the length of b minus 1', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      aInput: ['1'],
-      bInput: [2, 3, '4'],
-      flow,
-      output: []
+  describe('if it is an input operation', () => {
+    it('should create an operation with ab true, ascend true, better 0, and worse equal to the length of b minus 1', () => {
+      const flow = createFlow({ uid: 'test' })
+      const operation = createOperation({
+        aInput: ['1'],
+        bInput: [2, 3, '4'],
+        flow,
+        output: []
+      })
+      expect(operation.ab).toBe(true)
+      expect(operation.ascend).toBe(true)
+      expect(operation.better).toBe(0)
+      expect(operation.worse).toBe(2)
     })
-    expect(operation.ab).toBe(true)
-    expect(operation.ascend).toBe(true)
-    expect(operation.better).toBe(0)
-    expect(operation.worse).toBe(2)
+  })
+
+  it('should throw an error if the operation is empty', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => createOperation({
+      flow,
+      aInput: [],
+      bInput: [],
+      output: []
+    })).toThrow()
+  })
+
+  it('should throw an error if the operation has a duplicate UID', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => {
+      createOperation({
+        aInput: ['1'],
+        bInput: ['1'],
+        flow,
+        output: ['1']
+      })
+    }).toThrow()
+  })
+
+  it('should throw an error if the operation has an a input but no b input', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => {
+      createOperation({
+        aInput: ['1'],
+        bInput: [],
+        flow,
+        output: []
+      })
+    }).toThrow()
+  })
+
+  it('should throw an error if the operation has a b input but no a input', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => {
+      createOperation({
+        aInput: [],
+        bInput: ['1'],
+        flow,
+        output: []
+      })
+    }).toThrow()
+  })
+
+  describe('if it is an output operation', () => {
+    it('should create an operation with ab true, ascend true, better 0, and worse 0', () => {
+      const flow = createFlow({ uid: 'test' })
+      const operation = createOperation({
+        aInput: [],
+        bInput: [],
+        flow,
+        output: ['1', 2]
+      })
+      expect(operation.ab).toBe(true)
+      expect(operation.ascend).toBe(true)
+      expect(operation.better).toBe(0)
+      expect(operation.worse).toBe(0)
+    })
   })
 
   it('should require an operation def', () => {

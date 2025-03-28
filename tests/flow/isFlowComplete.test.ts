@@ -7,25 +7,6 @@ describe('isFlowComplete', () => {
     expect(complete).toBe(true)
   })
 
-  it('should throw an error if the operation has only one of the inputs', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      aInput: ['item1'],
-      bInput: [],
-      flow,
-      output: []
-    })
-    const addedFlow = addOperation({ flow, operation })
-    expect(() => isFlowComplete({ flow: addedFlow })).toThrow('Operation has only one of the inputs')
-  })
-
-  it('should throw an error if any operation has no inputs or outputs', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({ aInput: [], bInput: [], flow, output: [] })
-    const addedFlow = addOperation({ flow, operation })
-    expect(() => isFlowComplete({ flow: addedFlow })).toThrow('Operation has no inputs or outputs')
-  })
-
   it('should return false if there are multiple operations', () => {
     const flow = createFlow({ uid: 'test' })
 
