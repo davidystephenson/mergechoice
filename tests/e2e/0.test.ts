@@ -1,4 +1,4 @@
-import { createFlow, getChoice, isFlowComplete } from '../../src'
+import { createFlow, getChoice, getRanking, isFlowComplete } from '../../src'
 
 describe('if zero items are imported', () => {
   it('should have no items', () => {
@@ -23,5 +23,11 @@ describe('if zero items are imported', () => {
     const flow = createFlow({ uid: 'test' })
     const complete = isFlowComplete({ flow })
     expect(complete).toBe(true)
+  })
+
+  it('should create an empty ranking', () => {
+    const flow = createFlow({ uid: 'test' })
+    const ranking = getRanking({ flow })
+    expect(ranking.length).toBe(0)
   })
 })

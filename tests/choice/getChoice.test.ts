@@ -32,9 +32,9 @@ describe('getChoice', () => {
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const itemIds = [choice.aItemId, choice.bItemId]
-      expect(itemIds).toContain(choice.aItemId)
-      expect(itemIds).toContain(choice.bItemId)
+      const itemUids = [choice.aItemUid, choice.bItemUid]
+      expect(itemUids).toContain(choice.aItemUid)
+      expect(itemUids).toContain(choice.bItemUid)
     })
 
     it('should return the ID of an operation whose aInput contains the aItem and bInput contains the bItem', () => {
@@ -48,9 +48,9 @@ describe('getChoice', () => {
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const operation = importedFlow.operations[choice.operationId]
-      expect(operation.aInput).toContain(choice.aItemId)
-      expect(operation.bInput).toContain(choice.bItemId)
+      const operation = importedFlow.operations[choice.operationUid]
+      expect(operation.aInput).toContain(choice.aItemUid)
+      expect(operation.bInput).toContain(choice.bItemUid)
     })
 
     describe('if there are three new items', () => {
@@ -106,7 +106,7 @@ describe('getChoice', () => {
         const operationWithHighestUid = longestOperations.reduce((max, operation) => {
           return operation.uid > max.uid ? operation : max
         }, longestOperations[0])
-        expect(operationWithHighestUid.uid).toBe(choice.operationId)
+        expect(operationWithHighestUid.uid).toBe(choice.operationUid)
       })
     })
   })

@@ -11,9 +11,9 @@ export const itemSchema = z.object({
 export type Item = z.infer<typeof itemSchema>
 
 export const choiceSchema = z.object({
-  aItemId: uidSchema,
-  bItemId: uidSchema,
-  operationId: uidSchema
+  aItemUid: uidSchema,
+  bItemUid: uidSchema,
+  operationUid: uidSchema
 })
 export type Choice = z.infer<typeof choiceSchema>
 

@@ -10,11 +10,11 @@ export default function chooseOption (props: {
     throw new Error('Flow has no choice')
   }
 
-  if (props.option !== choice.aItemId && props.option !== choice.bItemId) {
+  if (props.option !== choice.aItemUid && props.option !== choice.bItemUid) {
     throw new Error('Option is not in the choice')
   }
 
-  const operation = props.flow.operations[choice.operationId]
+  const operation = props.flow.operations[choice.operationUid]
 
   const updatedFlow = {
     ...props.flow,
@@ -23,10 +23,10 @@ export default function chooseOption (props: {
     }
   }
 
-  const isOptionA = props.option === choice.aItemId
+  const isOptionA = props.option === choice.aItemUid
   const output = isOptionA
-    ? [choice.bItemId, choice.aItemId]
-    : [choice.aItemId, choice.bItemId]
+    ? [choice.bItemUid, choice.aItemUid]
+    : [choice.aItemUid, choice.bItemUid]
 
   const updatedOperation = {
     ...operation,
@@ -35,7 +35,7 @@ export default function chooseOption (props: {
     output
   }
 
-  updatedFlow.operations[choice.operationId] = updatedOperation
+  updatedFlow.operations[choice.operationUid] = updatedOperation
 
   return updatedFlow
 }

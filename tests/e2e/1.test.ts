@@ -1,4 +1,4 @@
-import { getChoice, isFlowComplete } from '../../src'
+import { getChoice, getRanking, isFlowComplete } from '../../src'
 import createOneFlow from '../flow/createOneFlow'
 import verifyOutputOperation from '../operation/verifyOutputOperation'
 
@@ -26,5 +26,14 @@ describe('if one item is imported', () => {
     const flow = createOneFlow()
     const complete = isFlowComplete({ flow })
     expect(complete).toBe(true)
+  })
+
+  it('should create a ranking with one item that has 0 points and rank 1', () => {
+    const flow = createOneFlow()
+    const ranking = getRanking({ flow })
+    expect(ranking.length).toBe(1)
+    const item = ranking[0]
+    expect(item.points).toBe(0)
+    expect(item.rank).toBe(1)
   })
 })

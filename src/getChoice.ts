@@ -31,8 +31,8 @@ export default function getChoice (props: {
   , operationsWithLongestInput[0])
 
   return {
-    aItemId: selectedOperation.aInput[0],
-    bItemId: selectedOperation.bInput[0],
-    operationId: selectedOperation.uid
+    aItemUid: selectedOperation.aInput[0],
+    bItemUid: selectedOperation.bInput[0],
+    operationUid: selectedOperation.uid
   }
 }

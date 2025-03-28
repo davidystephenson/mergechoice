@@ -7,7 +7,7 @@ describe('chooseOption', () => {
   it('should take a flow and an option and return a new flow', () => {
     const flow = createThreeFlow()
     const choice = getVerifiedChoice({ flow })
-    const chosenFlow = chooseOption({ flow, option: choice.aItemId })
+    const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
     expect(chosenFlow).toBeDefined()
   })
 
@@ -28,9 +28,9 @@ describe('chooseOption', () => {
     it('should move them both to the output with the selected option last', () => {
       const flow = createThreeFlow()
       const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemId })
-      const operation = chosenFlow.operations[choice.operationId]
-      expect(operation.output).toEqual([choice.bItemId, choice.aItemId])
+      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
+      const operation = chosenFlow.operations[choice.operationUid]
+      expect(operation.output).toEqual([choice.bItemUid, choice.aItemUid])
     })
   })
 
@@ -94,7 +94,7 @@ describe('chooseOption', () => {
     it('should create a complete flow', () => {
       const flow = createTwoFlow()
       const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemId })
+      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
       const complete = isFlowComplete({ flow: chosenFlow })
       expect(complete).toBe(true)
     })
@@ -104,7 +104,7 @@ describe('chooseOption', () => {
     it('should create an incomplete flow after combining operations', () => {
       const flow = createThreeFlow()
       const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemId })
+      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
       const combinedFlow = combineOperations({ flow: chosenFlow })
       const complete = isFlowComplete({ flow: combinedFlow })
       expect(complete).toBe(false)

@@ -20,13 +20,13 @@ import {
 describe('index', () => {
   it('should export the Choice type and schema', () => {
     const choice: Choice = {
-      aItemId: '123',
-      bItemId: 456,
-      operationId: '111'
+      aItemUid: '123',
+      bItemUid: 456,
+      operationUid: '111'
     }
-    expect(choice.aItemId).toBe('123')
-    expect(choice.bItemId).toBe(456)
-    expect(choice.operationId).toBe('111')
+    expect(choice.aItemUid).toBe('123')
+    expect(choice.bItemUid).toBe(456)
+    expect(choice.operationUid).toBe('111')
     const parsed = choiceSchema.parse(choice)
     expect(parsed).toEqual(choice)
   })
