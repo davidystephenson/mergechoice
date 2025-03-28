@@ -1,12 +1,14 @@
 import { Flow } from './flowTypes'
 import isOutputOperation from './isOutputOperation'
 
-export default function isFlowComplete (flow: Flow): boolean {
-  const operations = Object.values(flow.operations)
+export default function isFlowComplete (props: {
+  flow: Flow
+}): boolean {
+  const operations = Object.values(props.flow.operations)
 
   // A flow with no operations is considered complete only if it has no items
   if (operations.length === 0) {
-    return Object.keys(flow.items).length === 0
+    return Object.keys(props.flow.items).length === 0
   }
 
   // Check for operations with only one of the inputs

@@ -12,7 +12,9 @@ import {
   OperationDef,
   operationDefSchema,
   Uid,
-  uidSchema
+  uidSchema,
+  RankingItem,
+  rankingItemSchema
 } from '../src/index'
 
 describe('index', () => {
@@ -68,6 +70,15 @@ describe('index', () => {
     expect(parsed).toEqual(item)
     const numberParsed = itemSchema.parse(numberItem)
     expect(numberParsed).toEqual(numberItem)
+  })
+
+  it('should export the RankingItem type and schema', () => {
+    const rankingItem: RankingItem = { name: 'Test Item A', uid: '123', seed: 42, points: 0, rank: 2 }
+    const numberRankingItem: RankingItem = { name: 'Test Item 1', uid: 666, seed: 42, points: 1, rank: 1 }
+    const parsed = rankingItemSchema.parse(rankingItem)
+    expect(parsed).toEqual(rankingItem)
+    const numberParsed = rankingItemSchema.parse(numberRankingItem)
+    expect(numberParsed).toEqual(numberRankingItem)
   })
 
   it('should export the Operation type and schema', () => {

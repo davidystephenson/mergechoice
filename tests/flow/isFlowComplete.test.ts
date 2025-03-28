@@ -3,7 +3,7 @@ import { createFlow, isFlowComplete, addOperation, createOperation } from '../..
 describe('isFlowComplete', () => {
   it('should consider flows with no items complete ', () => {
     const flow = createFlow({ uid: 'test' })
-    const complete = isFlowComplete(flow)
+    const complete = isFlowComplete({ flow })
     expect(complete).toBe(true)
   })
 
@@ -16,14 +16,14 @@ describe('isFlowComplete', () => {
       output: []
     })
     const addedFlow = addOperation({ flow, operation })
-    expect(() => isFlowComplete(addedFlow)).toThrow('Operation has only one of the inputs')
+    expect(() => isFlowComplete({ flow: addedFlow })).toThrow('Operation has only one of the inputs')
   })
 
   it('should throw an error if any operation has no inputs or outputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({ aInput: [], bInput: [], flow, output: [] })
     const addedFlow = addOperation({ flow, operation })
-    expect(() => isFlowComplete(addedFlow)).toThrow('Operation has no inputs or outputs')
+    expect(() => isFlowComplete({ flow: addedFlow })).toThrow('Operation has no inputs or outputs')
   })
 
   it('should return false if there are multiple operations', () => {
@@ -51,7 +51,7 @@ describe('isFlowComplete', () => {
       operation: operation2
     })
 
-    const complete = isFlowComplete(addedFlow2)
+    const complete = isFlowComplete({ flow: addedFlow2 })
     expect(complete).toBe(false)
   })
 
@@ -69,7 +69,7 @@ describe('isFlowComplete', () => {
       operation
     })
 
-    const complete = isFlowComplete(addedFlow)
+    const complete = isFlowComplete({ flow: addedFlow })
     expect(complete).toBe(false)
   })
 
@@ -87,7 +87,7 @@ describe('isFlowComplete', () => {
       operation
     })
 
-    const complete = isFlowComplete(addedFlow)
+    const complete = isFlowComplete({ flow: addedFlow })
     expect(complete).toBe(true)
   })
 })

@@ -51,3 +51,10 @@ export const flowSchema = z.object({
   uid: uidSchema
 })
 export type Flow = z.infer<typeof flowSchema>
+
+const rankingItemSpecificSchema = z.object({
+  points: z.number(),
+  rank: z.number()
+})
+export const rankingItemSchema = itemSchema.and(rankingItemSpecificSchema)
+export type RankingItem = z.infer<typeof rankingItemSchema>

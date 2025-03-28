@@ -25,8 +25,8 @@ export default function chooseOption (props: {
 
   const isOptionA = props.option === choice.aItemId
   const output = isOptionA
-    ? [choice.aItemId, choice.bItemId]
-    : [choice.bItemId, choice.aItemId]
+    ? [choice.bItemId, choice.aItemId]
+    : [choice.aItemId, choice.bItemId]
 
   const updatedOperation = {
     ...operation,
