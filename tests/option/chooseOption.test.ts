@@ -2,6 +2,7 @@ import { chooseOption, createFlow, flowSchema, isInputOperation, isOutputOperati
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
 import createTwoFlow from '../flow/createTwoFlow'
+import insertOperation from '../operation/insertOperation'
 
 describe('chooseOption', () => {
   it('should take a flow and an option and return a new flow', () => {
@@ -39,61 +40,54 @@ describe('chooseOption', () => {
     })
   })
 
-  // describe('if the operation has only one a and two b', () => {
-  //   describe('if the operation is ascending', () => {
-  //     describe('if the operation better is one less than the length of b', () => {
-  //       it('should move the a and b to the output with the selected option last', () => {
-  //         const flow = createFlow({ uid: 'test' })
-  //         const items = [
-  //           { name: 'The Matrix', uid: '1', seed: 90 },
-  //           { name: 'The Matrix Reloaded', uid: 2, seed: 30 },
-  //           { name: 'The Matrix Revolutions', uid: '3', seed: 40 },
-  //           { name: 'The Matrix Resurrections', uid: '4', seed: 50 }
-  //         ]
-  //         const importedFlow = importItems({ flow, items })
-  //         const choice = getChoice({ flow: importedFlow })
-  //         if (choice == null) {
-  //           throw new Error('Choice should be defined')
-  //         }
-  //         const choiceOperation = importedFlow.operations[choice.operationId]
-  //         if (choiceOperation == null) {
-  //           throw new Error('Choice operation should be defined')
-  //         }
-  //         expect(choiceOperation.ascend).toBe(true)
-  //         expect(choiceOperation.better).toBe(items.length - 1)
-  //         const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
-  //         const operation = chosenFlow.operations[choice.operationId]
-  //         expect(operation.output).toEqual([choice.bItemId, choice.aItemId])
-  //       })
-  //     })
-  //     describe('if the operation better is more than one less than the length of b', () => {
-  //       it('should increment better by one', () => {
-  //         const flow = createFlow({ uid: 'test' })
-  //         const items = [
-  //           { name: 'The Matrix', uid: '1', seed: 90 },
-  //           { name: 'The Matrix Reloaded', uid: 2, seed: 30 },
-  //           { name: 'The Matrix Revolutions', uid: '3', seed: 40 },
-  //           { name: 'The Matrix Resurrections', uid: '4', seed: 50 },
-  //           { name: 'The Animatrix', uid: '5', seed: 60 }
-  //         ]
-  //         const importedFlow = importItems({ flow, items })
-  //         const choice = getChoice({ flow: importedFlow })
-  //         if (choice == null) {
-  //           throw new Error('Choice should be defined')
-  //         }
-  //         const choiceOperation = importedFlow.operations[choice.operationId]
-  //         if (choiceOperation == null) {
-  //           throw new Error('Choice operation should be defined')
-  //         }
-  //         expect(choiceOperation.ascend).toBe(true)
-  //         expect(choiceOperation.better).toBe(0)
-  //         const chosenFlow = chooseOption({ flow: importedFlow, option: choice.aItemId })
-  //         const chosenOperation = chosenFlow.operations[choice.operationId]
-  //         expect(chosenOperation.better).toBe(1)
-  //       })
-  //     })
-  //   })
-  // })
+  describe('if there is only one operation with two a and one b', () => {
+    describe('if a is chosen', () => {
+      it('should move all the inputs to the end of they output with the b first', () => {
+        const flow = createFlow({ uid: 'test' })
+        flow.items = {
+          a: { name: 'a', uid: 'a', seed: 0 },
+          b: { name: 'b', uid: 'b', seed: 0 },
+          c: { name: 'c', uid: 'c', seed: 0 }
+        }
+        const insertedFlow = insertOperation({
+          aInput: ['a', 'b'],
+          bInput: ['c'],
+          flow,
+          output: ['d']
+        })
+
+        const choice = getVerifiedChoice({ flow: insertedFlow })
+        const chosenFlow = chooseOption({ flow: insertedFlow, option: choice.aItemUid })
+        const chosenOperation = chosenFlow.operations[choice.operationUid]
+        console.log('chosenOperation', chosenOperation)
+        expect(chosenOperation.aInput).toEqual([])
+        expect(chosenOperation.bInput).toEqual([])
+        expect(chosenOperation.output).toEqual(['d', 'c', 'a', 'b'])
+      })
+    })
+    describe('if b is chosen', () => {
+      it('should move the first a to the end of the output', () => {
+        const flow = createFlow({ uid: 'test' })
+        flow.items = {
+          a: { name: 'a', uid: 'a', seed: 0 },
+          b: { name: 'b', uid: 'b', seed: 0 },
+          c: { name: 'c', uid: 'c', seed: 0 }
+        }
+        const insertedFlow = insertOperation({
+          aInput: ['a', 'b'],
+          bInput: ['c'],
+          flow,
+          output: ['d']
+        })
+        const choice = getVerifiedChoice({ flow: insertedFlow })
+        const chosenFlow = chooseOption({ flow: insertedFlow, option: choice.bItemUid })
+        const chosenOperation = chosenFlow.operations[choice.operationUid]
+        expect(chosenOperation.aInput).toEqual(['b'])
+        expect(chosenOperation.bInput).toEqual(['c'])
+        expect(chosenOperation.output).toEqual(['d', 'a'])
+      })
+    })
+  })
 
   describe('if there is one input operation with one a and one b and one output operation', () => {
     it('should combine the chosen operation with the output operation', () => {

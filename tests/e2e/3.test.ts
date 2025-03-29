@@ -1,9 +1,11 @@
-import { chooseOption, getChoice, getRanking, isFlowComplete, isInputOperation, isOutputOperation } from '../../src'
+import { chooseOption, getChoice, getRanking, isFlowComplete, isOutputOperation } from '../../src'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
+import getVerifiedSingleInputOperation from '../operation/getVerifiedSingleInputOperation'
+import getVerifiedSingleOutputOperation from '../operation/getVerifiedSingleOutputOperation'
 import verifyInputOperation from '../operation/verifyInputOperation'
 
-describe('if three items are imported', () => {
+describe('if three items are imported with the seed "test"', () => {
   it('should have three items', () => {
     const flow = createThreeFlow()
     const items = Object.values(flow.items)
@@ -18,13 +20,9 @@ describe('if three items are imported', () => {
 
   it('should have one input operation with one a and one b', () => {
     const flow = createThreeFlow()
-    const operations = Object.values(flow.operations)
-    const inputOperations = operations.filter(operation => {
-      return isInputOperation({ operation })
-    })
-    expect(inputOperations.length).toBe(1)
-    expect(inputOperations[0].aInput.length).toBe(1)
-    expect(inputOperations[0].bInput.length).toBe(1)
+    const operation = getVerifiedSingleInputOperation({ flow })
+    expect(operation.aInput.length).toBe(1)
+    expect(operation.bInput.length).toBe(1)
   })
 
   it('should have one output operation with one output', () => {
@@ -37,16 +35,31 @@ describe('if three items are imported', () => {
     expect(outputOperations[0].output.length).toBe(1)
   })
 
-  it('should have a choice', () => {
+  it('should give the input operation the earlier uid', () => {
     const flow = createThreeFlow()
-    const choice = getChoice({ flow })
-    expect(choice).toBeDefined()
+    const inputOperation = getVerifiedSingleInputOperation({ flow })
+    const outputOperation = getVerifiedSingleOutputOperation({ flow })
+    const earlier = inputOperation.uid < outputOperation.uid
+    expect(earlier).toBe(true)
   })
-
   it('should not be complete', () => {
     const flow = createThreeFlow()
     const complete = isFlowComplete({ flow })
     expect(complete).toBe(false)
+  })
+
+  it('should have a choice', () => {
+    const flow = createThreeFlow()
+    const choice = getChoice({ flow })
+    expect(choice).toBeDefined()
+    console.log('choice', choice)
+  })
+
+  it('should have item 3 as a and item 2 as b', () => {
+    const flow = createThreeFlow()
+    const choice = getVerifiedChoice({ flow })
+    expect(choice.aItemUid).toBe('3')
+    expect(choice.bItemUid).toBe('2')
   })
 
   it('should create a ranking with three items that have 0 points and rank 1', () => {
@@ -67,6 +80,24 @@ describe('if three items are imported', () => {
       const operations = Object.values(chosenFlow.operations)
       expect(operations.length).toBe(1)
       verifyInputOperation({ operation: operations[0] })
+    })
+
+    it("should put the input operation's UIDs into the aInput with a second", () => {
+      const flow = createThreeFlow()
+      const originalOperation = getVerifiedSingleInputOperation({ flow })
+      const choice = getVerifiedChoice({ flow })
+      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
+      const chosenOperation = getVerifiedSingleInputOperation({ flow: chosenFlow })
+      expect(chosenOperation.aInput).toEqual([originalOperation.bInput[0], originalOperation.aInput[0]])
+    })
+
+    it("should put the output operation's UID into the bInput", () => {
+      const flow = createThreeFlow()
+      const originalOperation = getVerifiedSingleOutputOperation({ flow })
+      const choice = getVerifiedChoice({ flow })
+      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
+      const chosenOperation = getVerifiedSingleInputOperation({ flow: chosenFlow })
+      expect(chosenOperation.bInput).toEqual(originalOperation.output)
     })
 
     it('should not be complete', () => {

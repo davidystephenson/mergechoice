@@ -1,4 +1,6 @@
 import { createFlow, getChoice, importItems } from '../../src'
+import insertOperation from '../operation/insertOperation'
+import getVerifiedChoice from './getVerifiedChoice'
 
 describe('getChoice', () => {
   describe('if the flow has no items', () => {
@@ -108,6 +110,26 @@ describe('getChoice', () => {
         }, longestOperations[0])
         expect(operationWithHighestUid.uid).toBe(choice.operationUid)
       })
+    })
+  })
+
+  describe('if there is one operation with two a and one b', () => {
+    it('should return a choice between the first a and the b', () => {
+      const flow = createFlow({ uid: 'test' })
+      flow.items = {
+        a: { name: 'a', uid: 'a', seed: 0 },
+        b: { name: 'b', uid: 'b', seed: 0 },
+        c: { name: 'c', uid: 'c', seed: 0 }
+      }
+      const insertedFlow = insertOperation({
+        aInput: ['a', 'b'],
+        bInput: ['c'],
+        flow,
+        output: []
+      })
+      const choice = getVerifiedChoice({ flow: insertedFlow })
+      expect(choice.aItemUid).toBe('a')
+      expect(choice.bItemUid).toBe('c')
     })
   })
 })
