@@ -1,4 +1,4 @@
-import { chooseOption, createFlow, flowSchema, isInputOperation, isOutputOperation } from '../../src'
+import { chooseOption, createFlow, flowSchema, getRanking, isInputOperation, isOutputOperation } from '../../src'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
 import createTwoFlow from '../flow/createTwoFlow'
@@ -47,7 +47,8 @@ describe('chooseOption', () => {
         flow.items = {
           a: { name: 'a', uid: 'a', seed: 0 },
           b: { name: 'b', uid: 'b', seed: 0 },
-          c: { name: 'c', uid: 'c', seed: 0 }
+          c: { name: 'c', uid: 'c', seed: 0 },
+          d: { name: 'd', uid: 'd', seed: 0 }
         }
         const insertedFlow = insertOperation({
           aInput: ['a', 'b'],
@@ -59,7 +60,6 @@ describe('chooseOption', () => {
         const choice = getVerifiedChoice({ flow: insertedFlow })
         const chosenFlow = chooseOption({ flow: insertedFlow, option: choice.aItemUid })
         const chosenOperation = chosenFlow.operations[choice.operationUid]
-        console.log('chosenOperation', chosenOperation)
         expect(chosenOperation.aInput).toEqual([])
         expect(chosenOperation.bInput).toEqual([])
         expect(chosenOperation.output).toEqual(['d', 'c', 'a', 'b'])
@@ -71,7 +71,8 @@ describe('chooseOption', () => {
         flow.items = {
           a: { name: 'a', uid: 'a', seed: 0 },
           b: { name: 'b', uid: 'b', seed: 0 },
-          c: { name: 'c', uid: 'c', seed: 0 }
+          c: { name: 'c', uid: 'c', seed: 0 },
+          d: { name: 'd', uid: 'd', seed: 0 }
         }
         const insertedFlow = insertOperation({
           aInput: ['a', 'b'],
@@ -117,6 +118,40 @@ describe('chooseOption', () => {
         expect(chosenOperations[0].aInput).toEqual(outputOperations[0].output)
         expect(chosenOperations[0].bInput).toEqual([choice.bItemUid, choice.aItemUid])
       }
+    })
+  })
+
+  describe('there are two input operations with one a and one b', () => {
+    it('should move both options to the output with the chosen option last', () => {
+      const flow = createFlow({ uid: 'test' })
+      flow.items = {
+        a: { name: 'a', uid: 'a', seed: 0 },
+        b: { name: 'b', uid: 'b', seed: 0 },
+        c: { name: 'c', uid: 'c', seed: 0 },
+        d: { name: 'd', uid: 'd', seed: 0 }
+      }
+      const insertedFlow1 = insertOperation({
+        aInput: ['a'],
+        bInput: ['b'],
+        flow,
+        output: []
+      })
+      const insertedFlow2 = insertOperation({
+        aInput: ['c'],
+        bInput: ['d'],
+        flow: insertedFlow1,
+        output: []
+      })
+      const choice = getVerifiedChoice({ flow: insertedFlow2 })
+      const chosenFlow = chooseOption({
+        flow: insertedFlow2, option: choice.aItemUid
+      })
+      const chosenOperation = chosenFlow.operations[choice.operationUid]
+      expect(chosenOperation.aInput).toEqual([])
+      expect(chosenOperation.bInput).toEqual([])
+      expect(chosenOperation.output).toEqual([choice.bItemUid, choice.aItemUid])
+      const ranking = getRanking({ flow: chosenFlow })
+      console.log('ranking', ranking)
     })
   })
 })

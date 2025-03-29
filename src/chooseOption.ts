@@ -25,18 +25,45 @@ export default function chooseOption (props: {
   }
 
   const isOptionA = props.option === choice.aItemUid
-  const output = isOptionA
-    ? [choice.bItemUid, choice.aItemUid]
-    : [choice.aItemUid, choice.bItemUid]
 
-  const updatedOperation = {
-    ...operation,
-    aInput: [],
-    bInput: [],
-    output
+  // Case 1: Operation with one a and one b
+  if (operation.aInput.length === 1 && operation.bInput.length === 1) {
+    const output = isOptionA
+      ? [choice.bItemUid, choice.aItemUid]
+      : [choice.aItemUid, choice.bItemUid]
+
+    const updatedOperation = {
+      ...operation,
+      aInput: [],
+      bInput: [],
+      output: [...operation.output, ...output]
+    }
+
+    updatedFlow.operations[choice.operationUid] = updatedOperation
+  // Case 2: Operation with multiple a inputs and one b input, and a is chosen
+  } else if (operation.aInput.length > 1 && isOptionA) {
+    const updatedOperation = {
+      ...operation,
+      aInput: [],
+      bInput: [],
+      output: [...operation.output, ...operation.bInput, ...operation.aInput]
+    }
+
+    updatedFlow.operations[choice.operationUid] = updatedOperation
+  // Case 3: Operation with multiple a inputs and one b input, and b is chosen
+  } else if (operation.aInput.length > 1 && !isOptionA) {
+    // Find the other a item that wasn't involved in the choice
+    const otherAItems = operation.aInput.filter(item => item !== choice.aItemUid)
+
+    const updatedOperation = {
+      ...operation,
+      aInput: otherAItems,
+      bInput: [choice.bItemUid],
+      output: [...operation.output, choice.aItemUid]
+    }
+
+    updatedFlow.operations[choice.operationUid] = updatedOperation
   }
-
-  updatedFlow.operations[choice.operationUid] = updatedOperation
 
   const combinedFlow = combineOperations({
     flow: updatedFlow

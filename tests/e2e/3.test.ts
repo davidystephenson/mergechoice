@@ -1,195 +1,159 @@
-import { chooseOption, getChoice, getRanking, isFlowComplete, isOutputOperation } from '../../src'
-import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
-import getVerifiedSingleInputOperation from '../operation/getVerifiedSingleInputOperation'
-import getVerifiedSingleOutputOperation from '../operation/getVerifiedSingleOutputOperation'
-import verifyInputOperation from '../operation/verifyInputOperation'
+import verifyFlowStep from '../flow/verifyFlowStep'
 
-describe('if three items are imported with the seed "test"', () => {
-  it('should have three items', () => {
-    const flow = createThreeFlow()
-    const items = Object.values(flow.items)
-    expect(items.length).toBe(3)
-  })
-
-  it('should have two operations', () => {
-    const flow = createThreeFlow()
-    const operations = Object.values(flow.operations)
-    expect(operations.length).toBe(2)
-  })
-
-  it('should have one input operation with one a and one b', () => {
-    const flow = createThreeFlow()
-    const operation = getVerifiedSingleInputOperation({ flow })
-    expect(operation.aInput.length).toBe(1)
-    expect(operation.bInput.length).toBe(1)
-  })
-
-  it('should have one output operation with one output', () => {
-    const flow = createThreeFlow()
-    const operations = Object.values(flow.operations)
-    const outputOperations = operations.filter(operation => {
-      return isOutputOperation({ operation })
-    })
-    expect(outputOperations.length).toBe(1)
-    expect(outputOperations[0].output.length).toBe(1)
-  })
-
-  it('should give the input operation the earlier uid', () => {
-    const flow = createThreeFlow()
-    const inputOperation = getVerifiedSingleInputOperation({ flow })
-    const outputOperation = getVerifiedSingleOutputOperation({ flow })
-    const earlier = inputOperation.uid < outputOperation.uid
-    expect(earlier).toBe(true)
-  })
-  it('should not be complete', () => {
-    const flow = createThreeFlow()
-    const complete = isFlowComplete({ flow })
-    expect(complete).toBe(false)
-  })
-
-  it('should have a choice', () => {
-    const flow = createThreeFlow()
-    const choice = getChoice({ flow })
-    expect(choice).toBeDefined()
-    console.log('choice', choice)
-  })
-
-  it('should have item 3 as a and item 2 as b', () => {
-    const flow = createThreeFlow()
-    const choice = getVerifiedChoice({ flow })
-    expect(choice.aItemUid).toBe('3')
-    expect(choice.bItemUid).toBe('2')
-  })
-
-  it('should create a ranking with three items that have 0 points and rank 1', () => {
-    const flow = createThreeFlow()
-    const ranking = getRanking({ flow })
-    expect(ranking.length).toBe(3)
-    ranking.forEach(item => {
-      expect(item.points).toBe(0)
-      expect(item.rank).toBe(1)
-    })
+describe('if the first three Matrix movies are imported with the seed "test"', () => {
+  verifyFlowStep({
+    choice: {
+      a: 'revolutions',
+      b: 'reloaded'
+    },
+    ranking: [
+      { uid: 'original', rank: 1, points: 0 },
+      { uid: 'reloaded', rank: 1, points: 0 },
+      { uid: 'revolutions', rank: 1, points: 0 }
+    ],
+    createInitialFlow: createThreeFlow,
+    options: []
   })
 
   describe('if a is chosen', () => {
-    it('should have one input operation', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const operations = Object.values(chosenFlow.operations)
-      expect(operations.length).toBe(1)
-      verifyInputOperation({ operation: operations[0] })
+    verifyFlowStep({
+      choice: {
+        a: 'reloaded',
+        b: 'original'
+      },
+      ranking: [
+        { uid: 'revolutions', rank: 1, points: 1 },
+        { uid: 'original', rank: 2, points: 0 },
+        { uid: 'reloaded', rank: 2, points: 0 }
+      ],
+      createInitialFlow: createThreeFlow,
+      options: ['a']
     })
 
-    it("should put the input operation's UIDs into the aInput with a second", () => {
-      const flow = createThreeFlow()
-      const originalOperation = getVerifiedSingleInputOperation({ flow })
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const chosenOperation = getVerifiedSingleInputOperation({ flow: chosenFlow })
-      expect(chosenOperation.aInput).toEqual([originalOperation.bInput[0], originalOperation.aInput[0]])
+    describe('if a is chosen', () => {
+      verifyFlowStep({
+        choice: undefined,
+        ranking: [
+          { uid: 'revolutions', rank: 1, points: 2 },
+          { uid: 'reloaded', rank: 2, points: 1 },
+          { uid: 'original', rank: 3, points: 0 }
+        ],
+        createInitialFlow: createThreeFlow,
+        options: ['a', 'a']
+      })
     })
 
-    it("should put the output operation's UID into the bInput", () => {
-      const flow = createThreeFlow()
-      const originalOperation = getVerifiedSingleOutputOperation({ flow })
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const chosenOperation = getVerifiedSingleInputOperation({ flow: chosenFlow })
-      expect(chosenOperation.bInput).toEqual(originalOperation.output)
-    })
+    describe('if b is chosen', () => {
+      verifyFlowStep({
+        choice: {
+          a: 'revolutions',
+          b: 'original'
+        },
+        ranking: [
+          { uid: 'original', rank: 1, points: 1 },
+          { uid: 'revolutions', rank: 1, points: 1 },
+          { uid: 'reloaded', rank: 2, points: 0 }
+        ],
+        createInitialFlow: createThreeFlow,
+        options: ['a', 'b']
+      })
 
-    it('should not be complete', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const complete = isFlowComplete({ flow: chosenFlow })
-      expect(complete).toBe(false)
-    })
+      describe('if a is chosen', () => {
+        verifyFlowStep({
+          choice: undefined,
+          ranking: [
+            { uid: 'revolutions', rank: 1, points: 2 },
+            { uid: 'original', rank: 2, points: 1 },
+            { uid: 'reloaded', rank: 3, points: 0 }
+          ],
+          createInitialFlow: createThreeFlow,
+          options: ['a', 'b', 'a']
+        })
+      })
 
-    it('should rank the a item first with 1 point', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const ranking = getRanking({ flow: chosenFlow })
-      expect(ranking.length).toBe(3)
-      expect(ranking[0].uid).toBe(choice.aItemUid)
-      expect(ranking[0].points).toBe(1)
-      expect(ranking[0].rank).toBe(1)
-    })
-
-    it('should rank the other two items second with 0 points', () => {
-      const flow = createThreeFlow()
-      const operations = Object.values(flow.operations)
-      expect(operations.length).toBe(2)
-      const outputOperation = operations.find(operation => isOutputOperation({ operation }))
-      if (outputOperation == null) {
-        throw new Error('Output operation not found')
-      }
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.aItemUid })
-      const ranking = getRanking({ flow: chosenFlow })
-      const otherRankingItems = [ranking[1], ranking[2]]
-      const includesB = otherRankingItems.some(item => item.uid === choice.bItemUid)
-      expect(includesB).toBe(true)
-      const includesOutput = otherRankingItems.some(item => item.uid === outputOperation.output[0])
-      expect(includesOutput).toBe(true)
-      otherRankingItems.forEach(item => {
-        expect(item.rank).toBe(2)
-        expect(item.points).toBe(0)
+      describe('if b is chosen', () => {
+        verifyFlowStep({
+          choice: undefined,
+          ranking: [
+            { uid: 'original', rank: 1, points: 2 },
+            { uid: 'revolutions', rank: 2, points: 1 },
+            { uid: 'reloaded', rank: 3, points: 0 }
+          ],
+          createInitialFlow: createThreeFlow,
+          options: ['a', 'b', 'b']
+        })
       })
     })
   })
 
   describe('if b is chosen', () => {
-    it('should have one input operation', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.bItemUid })
-      const operations = Object.values(chosenFlow.operations)
-      expect(operations.length).toBe(1)
-      verifyInputOperation({ operation: operations[0] })
+    verifyFlowStep({
+      choice: {
+        a: 'revolutions',
+        b: 'original'
+      },
+      ranking: [
+        { uid: 'reloaded', rank: 1, points: 1 },
+        { uid: 'original', rank: 2, points: 0 },
+        { uid: 'revolutions', rank: 2, points: 0 }
+      ],
+      createInitialFlow: createThreeFlow,
+      options: ['b']
     })
 
-    it('should not be complete', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.bItemUid })
-      const complete = isFlowComplete({ flow: chosenFlow })
-      expect(complete).toBe(false)
+    describe('if a is chosen', () => {
+      verifyFlowStep({
+        choice: undefined,
+        ranking: [
+          { uid: 'reloaded', rank: 1, points: 2 },
+          { uid: 'revolutions', rank: 2, points: 1 },
+          { uid: 'original', rank: 3, points: 0 }
+        ],
+        createInitialFlow: createThreeFlow,
+        options: ['b', 'a']
+      })
     })
 
-    it('should rank the b item first with 1 point', () => {
-      const flow = createThreeFlow()
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.bItemUid })
-      const ranking = getRanking({ flow: chosenFlow })
-      expect(ranking.length).toBe(3)
-      expect(ranking[0].uid).toBe(choice.bItemUid)
-      expect(ranking[0].points).toBe(1)
-      expect(ranking[0].rank).toBe(1)
-    })
+    describe('if b is chosen', () => {
+      verifyFlowStep({
+        choice: {
+          a: 'reloaded',
+          b: 'original'
+        },
+        ranking: [
+          { uid: 'original', rank: 1, points: 1 },
+          { uid: 'reloaded', rank: 1, points: 1 },
+          { uid: 'revolutions', rank: 2, points: 0 }
+        ],
+        createInitialFlow: createThreeFlow,
+        options: ['b', 'b']
+      })
 
-    it('should rank the other two items second with 0 points', () => {
-      const flow = createThreeFlow()
-      const operations = Object.values(flow.operations)
-      expect(operations.length).toBe(2)
-      const outputOperation = operations.find(operation => isOutputOperation({ operation }))
-      if (outputOperation == null) {
-        throw new Error('Output operation not found')
-      }
-      const choice = getVerifiedChoice({ flow })
-      const chosenFlow = chooseOption({ flow, option: choice.bItemUid })
-      const ranking = getRanking({ flow: chosenFlow })
-      const otherRankingItems = [ranking[1], ranking[2]]
-      const includesA = otherRankingItems.some(item => item.uid === choice.aItemUid)
-      expect(includesA).toBe(true)
-      const includesOutput = otherRankingItems.some(item => item.uid === outputOperation.output[0])
-      expect(includesOutput).toBe(true)
-      otherRankingItems.forEach(item => {
-        expect(item.rank).toBe(2)
-        expect(item.points).toBe(0)
+      describe('if a is chosen', () => {
+        verifyFlowStep({
+          choice: undefined,
+          ranking: [
+            { uid: 'reloaded', rank: 1, points: 2 },
+            { uid: 'original', rank: 2, points: 1 },
+            { uid: 'revolutions', rank: 3, points: 0 }
+          ],
+          createInitialFlow: createThreeFlow,
+          options: ['b', 'b', 'a']
+        })
+      })
+
+      describe('if b is chosen', () => {
+        verifyFlowStep({
+          choice: undefined,
+          ranking: [
+            { uid: 'original', rank: 1, points: 2 },
+            { uid: 'reloaded', rank: 2, points: 1 },
+            { uid: 'revolutions', rank: 3, points: 0 }
+          ],
+          createInitialFlow: createThreeFlow,
+          options: ['b', 'b', 'b']
+        })
       })
     })
   })
