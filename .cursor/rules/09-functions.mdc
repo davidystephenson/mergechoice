@@ -27,12 +27,12 @@ function add (props: {
 ```ts
 // BAD - Unnecessary parameter argument:
 function print (props: {}): void {
-  console.log('hello world')
+  console.info('hello world')
 }
 
 // GOOD - Functions that do not take parameters should not receive arguments:
 function print (): void {
-  console.log('hello world')
+  console.info('hello world')
 }
 ```
 - Always define prop types inline, not with a named type:

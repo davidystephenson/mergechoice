@@ -12,9 +12,9 @@ const reporter = function (options) {
       console.error(message)
       for (const file of files) {
         if (typeof file === 'string') {
-          console.log(file)
+          console.info(file)
         } else {
-          console.log(file.filePath)
+          console.info(file.filePath)
         }
       }
     } else {
@@ -25,7 +25,7 @@ const reporter = function (options) {
       console.error(message)
       for (const [file, fileIssues] of recordEntries) {
         for (const issue of Object.values(fileIssues)) {
-          console.log(`${file}:${issue.line}: ${issue.symbol}`)
+          console.info(`${file}:${issue.line}: ${issue.symbol}`)
         }
       }
     }

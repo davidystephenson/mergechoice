@@ -1,6 +1,5 @@
 import createUid from './createUid'
 import { Flow, Operation, OperationDef } from './flowTypes'
-import isOutputOperation from './isOutputOperation'
 
 export default function createOperation (props: {
   flow: Flow
@@ -29,20 +28,6 @@ export default function createOperation (props: {
 
   const uid = createUid({ uid: props.flow.uid, count: props.flow.operationCount })
 
-  // Determine if this is an output operation
-  const outputOp = isOutputOperation({
-    operation: {
-      uid,
-      aInput: props.aInput,
-      bInput: props.bInput,
-      output: props.output,
-      ab: true,
-      ascend: true,
-      better: 0,
-      worse: 0
-    }
-  })
-
   const operation: Operation = {
     uid,
     aInput: props.aInput,
@@ -51,7 +36,7 @@ export default function createOperation (props: {
     better: 0,
     bInput: props.bInput,
     output: props.output,
-    worse: outputOp ? 0 : props.bInput.length - 1
+    worse: props.bInput.length - 1
   }
 
   return operation

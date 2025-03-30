@@ -97,13 +97,13 @@ export default function createFlow (props: { seed: Uid }): Flow {
 // BAD - Unnecessary destructuring
 const user = { id: 1, username: "zelda" }
 const { id, email } = user
-console.log(id)
-console.log(email)
+console.info(id)
+console.info(email)
 
 // GOOD - Avoid destructuring
 const user = { id: 1, username: "zelda" }
-console.log(user.id)
-console.log(user.email)
+console.info(user.id)
+console.info(user.email)
 ```
 
 - Never return objects literals from arrow functions with parentheses, alwayse use an explicit return statement:

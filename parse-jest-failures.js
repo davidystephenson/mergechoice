@@ -15,10 +15,10 @@ const failedTests = jestOutput.testResults
       }))
   )
 
-console.log('Failed Tests Summary:')
-console.log('====================')
+console.info('Failed Tests Summary:')
+console.info('====================')
 failedTests.forEach((test, index) => {
-  console.log(`${index + 1}. ${test.name}`)
-  console.log(`   File: ${test.path}`)
-  console.log('')
+  console.info(`${index + 1}. ${test.name}`)
+  console.info(`   File: ${test.path}`)
+  console.info('')
 })

@@ -64,7 +64,7 @@ describe('createOperation', () => {
   })
 
   describe('if it is an output operation', () => {
-    it('should create an operation with ab true, ascend true, better 0, and worse 0', () => {
+    it('should create an operation with ab true, ascend true, better 0, and worse -1', () => {
       const flow = createFlow({ uid: 'test' })
       const operation = createOperation({
         aInput: [],
@@ -75,7 +75,7 @@ describe('createOperation', () => {
       expect(operation.ab).toBe(true)
       expect(operation.ascend).toBe(true)
       expect(operation.better).toBe(0)
-      expect(operation.worse).toBe(0)
+      expect(operation.worse).toBe(-1)
     })
   })
 

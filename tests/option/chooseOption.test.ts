@@ -1,4 +1,4 @@
-import { chooseOption, createFlow, flowSchema, getRanking, isInputOperation, isOutputOperation } from '../../src'
+import { chooseOption, createFlow, flowSchema, isInputOperation, isOutputOperation } from '../../src'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 import createThreeFlow from '../flow/createThreeFlow'
 import createTwoFlow from '../flow/createTwoFlow'
@@ -150,8 +150,6 @@ describe('chooseOption', () => {
       expect(chosenOperation.aInput).toEqual([])
       expect(chosenOperation.bInput).toEqual([])
       expect(chosenOperation.output).toEqual([choice.bItemUid, choice.aItemUid])
-      const ranking = getRanking({ flow: chosenFlow })
-      console.log('ranking', ranking)
     })
   })
 })

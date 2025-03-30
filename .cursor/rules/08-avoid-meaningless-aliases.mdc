@@ -40,13 +40,13 @@ const token = request.auth
 if (token == null) {
   throw new Error('Unauthenticated')
 }
-console.log('valid request:', token)
+console.info('valid request:', token)
 
 // Good
 if (request.auth == null) {
   throw new Error('Unauthenticated')
 }
-console.log('valid request', request.auth)
+console.info('valid request', request.auth)
 ```
 
 - Validate the relevant property to support type narrowing
