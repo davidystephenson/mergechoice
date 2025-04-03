@@ -1,7 +1,7 @@
 import { createFlow, createOperation, getOperationDistance } from '../../src'
 
 describe('getOperationDistance', () => {
-  it('should throw an error if better is less than zero', () => {
+  it('should throw an error if worse is defined but not better', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
       flow,
@@ -9,19 +9,7 @@ describe('getOperationDistance', () => {
       bInput: [],
       output: ['a', 'b']
     })
-    operation.better = -1
-    expect(() => getOperationDistance({ operation })).toThrow()
-  })
-
-  it('should throw an error if worse is less than negative one', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      flow,
-      aInput: [],
-      bInput: [],
-      output: ['a', 'b']
-    })
-    operation.worse = -2
+    operation.worse = 0
     expect(() => getOperationDistance({ operation })).toThrow()
   })
 
@@ -37,56 +25,89 @@ describe('getOperationDistance', () => {
     expect(() => getOperationDistance({ operation })).toThrow()
   })
 
-  it('should subtract better from the sum', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      flow,
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
-      output: ['e']
+  describe('if better is defined', () => {
+    it('should throw an error if better is less than zero', () => {
+      const flow = createFlow({ uid: 'test' })
+      const operation = createOperation({
+        flow,
+        aInput: [],
+        bInput: [],
+        output: ['a', 'b']
+      })
+      operation.better = -1
+      expect(() => getOperationDistance({ operation })).toThrow()
     })
-    operation.better = 1
-    expect(operation.better).toBe(1)
-    expect(operation.worse).toBe(1)
-    const sum = operation.aInput.length + operation.bInput.length
-    expect(sum).toBe(4)
-    const distance = getOperationDistance({ operation })
-    expect(distance).toBe(3)
-  })
+    it('should subtract better plus 1 from the sum', () => {
+      const flow = createFlow({ uid: 'test' })
+      const operation = createOperation({
+        flow,
+        aInput: ['a', 'b'],
+        bInput: ['c', 'd'],
+        output: ['e']
+      })
+      operation.better = 1
+      const betterPlusOne = operation.better + 1
+      expect(betterPlusOne).toBe(2)
+      expect(operation.worse).toBe(undefined)
+      const sum = operation.aInput.length + operation.bInput.length
+      expect(sum).toBe(4)
+      const distance = getOperationDistance({ operation })
+      expect(distance).toBe(2)
+    })
 
-  it('should subtract the difference between worse and length of b minus one', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      flow,
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd', 'e', 'f', 'g', 'h'],
-      output: ['i']
-    })
-    operation.worse = 2
-    expect(operation.better).toBe(0)
-    expect(operation.worse).toBe(2)
-    const maximumWorse = operation.bInput.length - 1
-    expect(maximumWorse).toBe(5)
-    const difference = maximumWorse - operation.worse
-    expect(difference).toBe(3)
-    const sum = operation.aInput.length + operation.bInput.length
-    expect(sum).toBe(8)
-    const distance = getOperationDistance({ operation })
-    expect(distance).toBe(5)
-  })
+    describe('if worse is also defined', () => {
+      it('should throw an error if worse is less than better', () => {
+        const flow = createFlow({ uid: 'test' })
+        const operation = createOperation({
+          flow,
+          aInput: [],
+          bInput: [],
+          output: ['a', 'b']
+        })
+        operation.worse = 1
+        operation.better = 2
+        expect(() => getOperationDistance({ operation })).toThrow()
+      })
 
-  it('should subtract both', () => {
-    const flow = createFlow({ uid: 'test' })
-    const operation = createOperation({
-      flow,
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd', 'e', 'f', 'g', 'h'],
-      output: ['i']
+      it('should throw an error if worse and better are equal', () => {
+        const flow = createFlow({ uid: 'test' })
+        const operation = createOperation({
+          flow,
+          aInput: [],
+          bInput: [],
+          output: ['a', 'b']
+        })
+        operation.worse = 0
+        operation.better = 0
+        expect(() => getOperationDistance({ operation })).toThrow()
+      })
+
+      it('should also subtract the difference between worse minus 1 and length of b minus 1', () => {
+        const flow = createFlow({ uid: 'test' })
+        const operation = createOperation({
+          flow,
+          aInput: ['a', 'b'],
+          bInput: ['c', 'd', 'e', 'f', 'g', 'h'],
+          output: ['i']
+        })
+        operation.worse = 2
+        operation.better = 1
+        const betterPlusOne = operation.better + 1
+        expect(betterPlusOne).toBe(2)
+        const worseMinusOne = operation.worse - 1
+        expect(worseMinusOne).toBe(1)
+        const maximumWorse = operation.bInput.length - 1
+        expect(maximumWorse).toBe(5)
+        const worseReduction = maximumWorse - worseMinusOne
+        expect(worseReduction).toBe(4)
+        const sum = operation.aInput.length + operation.bInput.length
+        expect(sum).toBe(8)
+        const difference = sum - worseReduction - betterPlusOne
+        expect(difference).toBe(2)
+        const distance = getOperationDistance({ operation })
+        expect(distance).toBe(2)
+      })
     })
-    operation.worse = 2
-    operation.better = 1
-    const distance = getOperationDistance({ operation })
-    expect(distance).toBe(4)
   })
 
   it('should return zero for output operations', () => {
@@ -97,9 +118,8 @@ describe('getOperationDistance', () => {
       bInput: [],
       output: ['a', 'b']
     })
-    console.log('operation', operation)
-    expect(operation.better).toBe(0)
-    expect(operation.worse).toBe(-1)
+    expect(operation.better).toBe(undefined)
+    expect(operation.worse).toBe(undefined)
     const distance = getOperationDistance({ operation })
     expect(distance).toBe(0)
   })

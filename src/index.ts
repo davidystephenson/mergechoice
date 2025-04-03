@@ -7,6 +7,7 @@ export { default as combineOperations } from './combineOperations'
 export { default as getChoice } from './getChoice'
 export { default as getChoiceOperation } from './getChoiceOperation'
 export { default as getOperationDistance } from './getOperationDistance'
+export { default as getOptionIndex } from './getOptionIndex'
 export { default as getRanking } from './getRanking'
 export { default as importItems } from './importItems'
 export { default as isFlowComplete } from './isFlowComplete'
@@ -17,8 +18,6 @@ export { default as shuffleArray } from './shuffleArray'
 export {
   Choice,
   choiceSchema,
-  Episode,
-  episodeSchema,
   Flow,
   flowSchema,
   Item,

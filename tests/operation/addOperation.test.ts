@@ -6,9 +6,9 @@ describe('addOperation', () => {
     const operation = createOperation({ aInput: ['1'], bInput: ['2'], flow, output: [] })
     const addedFlow = addOperation({ flow, operation })
     expect(flow.operations[operation.uid]).toBeUndefined()
-    expect(flow.operationCount).toBe(0)
+    expect(flow.count).toBe(0)
     expect(addedFlow.operations[operation.uid]).toBe(operation)
-    expect(addedFlow.operationCount).toBe(1)
+    expect(addedFlow.count).toBe(1)
   })
 
   it('should throw an error if the operation is not provided', () => {

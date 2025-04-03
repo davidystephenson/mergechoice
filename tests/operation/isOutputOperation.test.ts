@@ -7,8 +7,6 @@ describe('isOutputOperation', () => {
       aInput: [],
       bInput: [],
       output: ['a', 'b'],
-      ab: true,
-      ascend: true,
       better: 0,
       worse: 0
     }
@@ -22,8 +20,6 @@ describe('isOutputOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: [],
-      ab: true,
-      ascend: true,
       better: 0,
       worse: 0
     }
@@ -37,8 +33,6 @@ describe('isOutputOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: ['c', 'd'],
-      ab: true,
-      ascend: true,
       better: 0,
       worse: 0
     }

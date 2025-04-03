@@ -10,10 +10,8 @@ describe('createOperation', () => {
         flow,
         output: []
       })
-      expect(operation.ab).toBe(true)
-      expect(operation.ascend).toBe(true)
-      expect(operation.better).toBe(0)
-      expect(operation.worse).toBe(2)
+      expect(operation.better).toBe(undefined)
+      expect(operation.worse).toBe(undefined)
     })
   })
 
@@ -63,20 +61,16 @@ describe('createOperation', () => {
     }).toThrow()
   })
 
-  describe('if it is an output operation', () => {
-    it('should create an operation with ab true, ascend true, better 0, and worse -1', () => {
-      const flow = createFlow({ uid: 'test' })
-      const operation = createOperation({
-        aInput: [],
-        bInput: [],
+  it('should throw an error if a is longer than b', () => {
+    const flow = createFlow({ uid: 'test' })
+    expect(() => {
+      createOperation({
+        aInput: ['1', '2'],
+        bInput: ['3'],
         flow,
-        output: ['1', '2']
+        output: []
       })
-      expect(operation.ab).toBe(true)
-      expect(operation.ascend).toBe(true)
-      expect(operation.better).toBe(0)
-      expect(operation.worse).toBe(-1)
-    })
+    }).toThrow()
   })
 
   it('should require an operation def', () => {
@@ -97,6 +91,18 @@ describe('createOperation', () => {
     }).not.toThrow()
   })
 
+  it('should create an operation with better and worse undefined', () => {
+    const flow = createFlow({ uid: 'test' })
+    const operation = createOperation({
+      aInput: ['1', '2'],
+      bInput: ['3', '4'],
+      flow,
+      output: []
+    })
+    expect(operation.better).toBe(undefined)
+    expect(operation.worse).toBe(undefined)
+  })
+
   it('should create an operation with specified inputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
@@ -107,7 +113,6 @@ describe('createOperation', () => {
     })
     expect(operation.uid).toBeDefined()
     expect(operation.aInput).toEqual(['1'])
-    expect(operation.ab).toBe(true)
     expect(operation.bInput).toEqual(['2'])
     expect(operation.output).toEqual([])
   })
@@ -131,9 +136,9 @@ describe('createOperation', () => {
     const sameUidSameCount = createFlow({ uid: 'test' })
     const differentUidSameCount = createFlow({ uid: 'different' })
     const sameUidDifferentCount = createFlow({ uid: 'test' })
-    sameUidDifferentCount.operationCount = 1
+    sameUidDifferentCount.count = 1
     const differentUidDifferentCount = createFlow({ uid: 'different' })
-    differentUidDifferentCount.operationCount = 1
+    differentUidDifferentCount.count = 1
     const operation = createOperation({
       aInput: ['1'],
       bInput: ['2'],

@@ -1,5 +1,4 @@
 import { Flow, Item } from './flowTypes'
-import shuffleArray from './shuffleArray'
 import createOperation from './createOperation'
 import addOperation from './addOperation'
 
@@ -28,20 +27,9 @@ export default function importItems (props: {
     itemsRecord[item.uid] = item
   }
 
-  const importEpisode = {
-    type: 'import' as const,
-    items: props.items
-  }
-
-  const history = [importEpisode, ...props.flow.history]
-
-  const newItemCount = props.flow.itemCount + props.items.length
-
   const baseFlow: Flow = {
     ...props.flow,
-    items: itemsRecord,
-    history,
-    itemCount: newItemCount
+    items: itemsRecord
   }
 
   if (props.items.length === 1) {
@@ -58,18 +46,13 @@ export default function importItems (props: {
     })
   }
 
-  const shuffledItems = shuffleArray({
-    items: props.items,
-    uid: baseFlow.uid,
-    count: baseFlow.itemCount
-  })
-
-  const pairCount = Math.floor(shuffledItems.length / 2)
+  const items = Object.values(baseFlow.items)
+  const pairCount = Math.floor(items.length / 2)
   const pairs = Array.from({ length: pairCount }, (_, i) => {
     const firstIndex = i * 2
     const secondIndex = i * 2 + 1
-    const firstItem = shuffledItems[firstIndex]
-    const secondItem = shuffledItems[secondIndex]
+    const firstItem = items[firstIndex]
+    const secondItem = items[secondIndex]
     return [firstItem, secondItem]
   })
 
@@ -87,14 +70,14 @@ export default function importItems (props: {
     })
   }, baseFlow)
 
-  const hasRemainingItem = shuffledItems.length % 2 === 1
+  const hasRemainingItem = items.length % 2 === 1
 
   if (!hasRemainingItem) {
     return flowWithPairs
   }
 
-  const lastIndex = shuffledItems.length - 1
-  const remainingItem = shuffledItems[lastIndex]
+  const lastIndex = items.length - 1
+  const remainingItem = items[lastIndex]
 
   const operation = createOperation({
     aInput: [],

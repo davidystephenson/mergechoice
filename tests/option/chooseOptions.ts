@@ -7,7 +7,7 @@ export default function chooseOptions (props: {
 }): Flow {
   const chosen = props.options.reduce((flow, option) => {
     const choice = getVerifiedChoice({ flow })
-    const itemUid = option === 'a' ? choice.aItemUid : choice.bItemUid
+    const itemUid = option === 'a' ? choice.aItem : choice.bItem
     const chosenFlow = chooseOption({
       flow, option: itemUid
     })

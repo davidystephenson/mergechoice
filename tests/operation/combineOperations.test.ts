@@ -97,5 +97,23 @@ describe('combineOperations', () => {
         expect(flow3Operations[0].bInput).toEqual(['item1', 'item2'])
       }
     })
+
+    it('should not change the count', () => {
+      const flow = createFlow({ uid: 'test' })
+      const flow1 = insertOperation({
+        aInput: [],
+        bInput: [],
+        flow,
+        output: ['item1', 'item2']
+      })
+      const flow2 = insertOperation({
+        aInput: [],
+        bInput: [],
+        flow: flow1,
+        output: ['item3']
+      })
+      const flow3 = combineOperations({ flow: flow2 })
+      expect(flow3.count).toBe(flow2.count)
+    })
   })
 })

@@ -4,39 +4,50 @@ import { Flow, Operation, OperationDef } from './flowTypes'
 export default function createOperation (props: {
   flow: Flow
 } & OperationDef): Operation {
-  if (props.aInput == null || props.bInput == null || props.output == null) {
+  if (
+    props.aInput == null ||
+    props.bInput == null ||
+    props.output == null
+  ) {
     throw new Error('Operation definition is required')
   }
 
-  // Check if the operation is empty (no input or output)
-  if (props.aInput.length === 0 && props.bInput.length === 0 && props.output.length === 0) {
+  const inputsEmpty = props.aInput.length === 0 && props.bInput.length === 0
+  const outputEmpty = props.output.length === 0
+  const empty = inputsEmpty && outputEmpty
+  if (empty) {
     throw new Error('Operation cannot be empty')
   }
 
-  // Check for one-sided input (a without b or b without a)
-  if ((props.aInput.length > 0 && props.bInput.length === 0) ||
-      (props.aInput.length === 0 && props.bInput.length > 0)) {
+  const aPresent = props.aInput.length > 0
+  const bPresent = props.bInput.length > 0
+  const oneSided = aPresent !== bPresent
+  if (oneSided) {
     throw new Error('Cannot have input on only one side')
   }
 
-  // Check for duplicate UIDs between inputs and outputs
+  if (props.aInput.length > props.bInput.length) {
+    throw new Error('A cannot be longer than B')
+  }
+
   const allUids = [...props.aInput, ...props.bInput, ...props.output]
   const uniqueUids = new Set(allUids)
-  if (allUids.length !== uniqueUids.size) {
+  const duplicate = allUids.length !== uniqueUids.size
+  if (duplicate) {
     throw new Error('Duplicate UIDs in operation')
   }
 
-  const uid = createUid({ uid: props.flow.uid, count: props.flow.operationCount })
+  const uid = createUid({
+    uid: props.flow.uid, count: props.flow.count
+  })
 
   const operation: Operation = {
     uid,
     aInput: props.aInput,
-    ab: true,
-    ascend: true,
-    better: 0,
+    better: undefined,
     bInput: props.bInput,
     output: props.output,
-    worse: props.bInput.length - 1
+    worse: undefined
   }
 
   return operation

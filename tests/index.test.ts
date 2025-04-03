@@ -5,8 +5,6 @@ import {
   flowSchema,
   Item,
   itemSchema,
-  Episode,
-  episodeSchema,
   Operation,
   operationSchema,
   OperationDef,
@@ -18,40 +16,24 @@ import {
 describe('index', () => {
   it('should export the Choice type and schema', () => {
     const choice: Choice = {
-      aItemUid: '123',
-      bItemUid: '456',
-      operationUid: '111'
+      aItem: '123',
+      bItem: '456',
+      operation: '111'
     }
-    expect(choice.aItemUid).toBe('123')
-    expect(choice.bItemUid).toBe('456')
-    expect(choice.operationUid).toBe('111')
+    expect(choice.aItem).toBe('123')
+    expect(choice.bItem).toBe('456')
+    expect(choice.operation).toBe('111')
     const parsed = choiceSchema.parse(choice)
     expect(parsed).toEqual(choice)
   })
 
-  it('should export the Episode type and schema', () => {
-    const episode: Episode = {
-      type: 'import',
-      items: [
-        { name: 'The Matrix', uid: '1', seed: 90 },
-        { name: 'The Matrix Reloaded', uid: '2', seed: 30 },
-        { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-      ]
-    }
-    expect(episode.type).toBe('import')
-    const parsed = episodeSchema.parse(episode)
-    expect(parsed).toEqual(episode)
-  })
-
   it('should export the Flow type and schema', () => {
     const flow1: Flow = {
-      uid: 'abc', itemCount: 0, items: {}, operations: {}, history: [], operationCount: 0
+      count: 0, items: {}, operations: {}, uid: 'abc'
     }
     const flow2: Flow = {
-      uid: '134', itemCount: 0, items: {}, operations: {}, history: [], operationCount: 0
+      count: 0, items: {}, operations: {}, uid: '134'
     }
-    expect(flow1.uid).toBe('abc')
-    expect(flow2.uid).toBe('134')
     const parsed1 = flowSchema.parse(flow1)
     expect(parsed1).toEqual(flow1)
     const parsed2 = flowSchema.parse(flow2)
@@ -59,11 +41,8 @@ describe('index', () => {
   })
 
   it('should export the Item type and schema', () => {
-    const item: Item = { name: 'Test Item', uid: '123', seed: 42 }
-    const numberItem: Item = { name: 'Test Item', uid: '666', seed: 42 }
-    expect(item.name).toBe('Test Item')
-    expect(item.uid).toBe('123')
-    expect(item.seed).toBe(42)
+    const item: Item = { name: 'The Matrix', uid: '123', seed: 42 }
+    const numberItem: Item = { name: 'The Matrix Reloaded', uid: '666', seed: 42 }
     const parsed = itemSchema.parse(item)
     expect(parsed).toEqual(item)
     const numberParsed = itemSchema.parse(numberItem)
@@ -71,8 +50,8 @@ describe('index', () => {
   })
 
   it('should export the RankingItem type and schema', () => {
-    const rankingItem: RankingItem = { name: 'Test Item A', uid: '123', seed: 42, points: 0, rank: 2 }
-    const numberRankingItem: RankingItem = { name: 'Test Item 1', uid: '666', seed: 42, points: 1, rank: 1 }
+    const rankingItem: RankingItem = { name: 'The Matrix', uid: '123', seed: 42, points: 0, rank: 2 }
+    const numberRankingItem: RankingItem = { name: 'The Matrix Reloaded', uid: '666', seed: 42, points: 1, rank: 1 }
     const parsed = rankingItemSchema.parse(rankingItem)
     expect(parsed).toEqual(rankingItem)
     const numberParsed = rankingItemSchema.parse(numberRankingItem)
@@ -80,30 +59,26 @@ describe('index', () => {
   })
 
   it('should export the Operation type and schema', () => {
-    const operation: Operation = {
+    const operation1: Operation = {
       aInput: ['123', '456'],
-      ab: true,
-      ascend: true,
       better: 0,
       bInput: ['789', '101'],
       output: ['102', '103'],
       uid: '111',
       worse: 1
     }
-    const activeOperation: Operation = {
-      aInput: ['123', '456'],
-      ab: true,
-      ascend: true,
-      better: 0,
-      bInput: ['789', '101'],
+    const parsed1 = operationSchema.parse(operation1)
+    expect(parsed1).toEqual(operation1)
+    const operation2: Operation = {
+      aInput: [],
+      better: undefined,
+      bInput: [],
       output: ['102', '103'],
       uid: '111',
-      worse: 1
+      worse: undefined
     }
-    const parsed = operationSchema.parse(operation)
-    expect(parsed).toEqual(operation)
-    const parsedActive = operationSchema.parse(activeOperation)
-    expect(parsedActive).toEqual(activeOperation)
+    const parsed2 = operationSchema.parse(operation2)
+    expect(parsed2).toEqual(operation2)
   })
 
   it('should export the OperationDef type and schema', () => {

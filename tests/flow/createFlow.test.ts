@@ -5,9 +5,6 @@ describe('createFlow', () => {
     const flow = createFlow({ uid: 'abc' })
     expect(typeof flow).toBe('object')
     expect(flow.uid).toBe('abc')
-    const historyArrayed = Array.isArray(flow.history)
-    expect(historyArrayed).toBe(true)
-    expect(flow.history.length).toBe(0)
     expect(flow.items).toBeDefined()
     expect(typeof flow.items).toBe('object')
     const itemKeys = Object.keys(flow.items)
@@ -16,7 +13,7 @@ describe('createFlow', () => {
     expect(typeof flow.operations).toBe('object')
     const operationKeys = Object.keys(flow.operations)
     expect(operationKeys.length).toBe(0)
-    expect(flow.operationCount).toBe(0)
+    expect(flow.count).toBe(0)
   })
 
   it('should throw an error if no uid is supplied', () => {

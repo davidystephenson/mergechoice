@@ -1,11 +1,12 @@
 ---
 description: Write clean, readable, transparent code
 globs: **/*
+alwaysApply: false
 ---
 - Always write functional and declarative programming patterns
 - Never use classes
 - Always write DRY (Don't Repeat Yourself) code
-- Prefer lines under 100 characters long, except for template literals.
+- Prefer lines under 70 characters long, except for template literals.
 - Omit semicolons unless syntactically necessary.
 - Always use `async`/`await` for handling asynchronous logic.
 - Never use `.then` syntax for handing promises. 

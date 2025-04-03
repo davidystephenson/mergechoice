@@ -37,8 +37,7 @@ export default function combineOperations (props: {
 
   const flowWithoutOutputOperations = {
     ...props.flow,
-    operations: operationsToKeep,
-    operationCount: props.flow.operationCount - 2
+    operations: operationsToKeep
   }
 
   return addOperation({

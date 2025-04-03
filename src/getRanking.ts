@@ -9,10 +9,11 @@ export default function getRanking (props: {
   }
 
   const operations = Object.values(props.flow.operations)
-  const items = Object.values(props.flow.items)
 
   const operationItemUids = operations.flatMap(operation => {
-    return [...operation.aInput, ...operation.bInput, ...operation.output]
+    return [
+      ...operation.aInput, ...operation.bInput, ...operation.output
+    ]
   })
 
   const uniqueOperationItemUids = new Set<string | number>()
@@ -32,6 +33,8 @@ export default function getRanking (props: {
     const joined = duplicateUids.join(', ')
     throw new Error(`Duplicate item UIDs: ${joined}`)
   }
+
+  const items = Object.values(props.flow.items)
 
   const missingOperationItemUids = Array.from(uniqueOperationItemUids).filter(uid => {
     return !items.some(item => item.uid === uid)

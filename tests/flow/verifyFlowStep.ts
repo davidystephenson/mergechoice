@@ -60,11 +60,11 @@ export default function verifyFlowStep (props: {
       }
       const flow = setupFlow()
       const choice = getVerifiedChoice({ flow })
-      const options = new Set([choice.aItemUid, choice.bItemUid])
+      const options = new Set([choice.aItem, choice.bItem])
       expect(options).toContain(props.choice.a)
       expect(options).toContain(props.choice.b)
-      expect(choice.aItemUid).toBe(props.choice.a)
-      expect(choice.bItemUid).toBe(props.choice.b)
+      expect(choice.aItem).toBe(props.choice.a)
+      expect(choice.bItem).toBe(props.choice.b)
     })
   }
 }

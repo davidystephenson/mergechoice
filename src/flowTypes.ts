@@ -8,21 +8,19 @@ export const itemSchema = z.object({
 export type Item = z.infer<typeof itemSchema>
 
 export const choiceSchema = z.object({
-  aItemUid: z.string(),
-  bItemUid: z.string(),
-  operationUid: z.string()
+  aItem: z.string(),
+  bItem: z.string(),
+  operation: z.string()
 })
 export type Choice = z.infer<typeof choiceSchema>
 
 export const operationSchema = z.object({
   aInput: z.array(z.string()),
-  ab: z.boolean(),
-  ascend: z.boolean(),
-  better: z.number(),
+  better: z.number().optional(),
   bInput: z.array(z.string()),
   output: z.array(z.string()),
   uid: z.string(),
-  worse: z.number()
+  worse: z.number().optional()
 })
 export type Operation = z.infer<typeof operationSchema>
 
@@ -33,17 +31,9 @@ export const operationDefSchema = z.object({
 })
 export type OperationDef = z.infer<typeof operationDefSchema>
 
-export const episodeSchema = z.object({
-  type: z.literal('import'),
-  items: z.array(itemSchema)
-})
-export type Episode = z.infer<typeof episodeSchema>
-
 export const flowSchema = z.object({
-  itemCount: z.number(),
-  history: z.array(episodeSchema),
+  count: z.number(),
   items: z.record(z.string(), itemSchema),
-  operationCount: z.number(),
   operations: z.record(z.string(), operationSchema),
   uid: z.string()
 })

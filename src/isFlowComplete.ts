@@ -6,12 +6,10 @@ export default function isFlowComplete (props: {
 }): boolean {
   const operations = Object.values(props.flow.operations)
 
-  // A flow with no operations is considered complete only if it has no items
   if (operations.length === 0) {
     return Object.keys(props.flow.items).length === 0
   }
 
-  // Check for operations with only one of the inputs
   for (const operation of operations) {
     if ((operation.aInput.length > 0 && operation.bInput.length === 0) ||
         (operation.aInput.length === 0 && operation.bInput.length > 0)) {
@@ -19,7 +17,6 @@ export default function isFlowComplete (props: {
     }
   }
 
-  // Check for operations with no inputs or outputs
   for (const operation of operations) {
     if (operation.aInput.length === 0 && operation.bInput.length === 0 && operation.output.length === 0) {
       throw new Error('Operation has no inputs or outputs')
@@ -28,21 +25,17 @@ export default function isFlowComplete (props: {
 
   const outputOperations = operations.filter(operation => isOutputOperation({ operation }))
 
-  // If there are multiple output operations, throw an error
   if (outputOperations.length > 1) {
     throw new Error('Flow has multiple output operations')
   }
 
-  // If there are multiple operations, the flow is not complete
   if (operations.length > 1) {
     return false
   }
 
-  // If there's only one operation and it's an output operation, the flow is complete
   if (operations.length === 1 && outputOperations.length === 1) {
     return true
   }
 
-  // If there are no output operations, the flow is not complete
   return false
 }

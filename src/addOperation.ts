@@ -21,11 +21,11 @@ export default function addOperation (props: {
     [props.operation.uid]: props.operation
   }
 
-  const operationCount = props.flow.operationCount + 1
+  const operationCount = props.flow.count + 1
 
   return {
     ...props.flow,
     operations,
-    operationCount
+    count: operationCount
   }
 }

@@ -6,10 +6,8 @@ export default function createFlow (props: { uid: string }): Flow {
   }
 
   return {
-    history: [],
-    itemCount: 0,
+    count: 0,
     items: {},
-    operationCount: 0,
     operations: {},
     uid: props.uid
   }
