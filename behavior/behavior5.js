@@ -47,45 +47,45 @@ export const operation4 = {
 // User chooses b
 
 export const operation5 = {
-  aInput: ['animatrix'],
+  aInput: ['resurrections', 'animatrix'],
   better: undefined,
   bInput: ['online', 'path', 'awakens'],
   output: ['original', 'reloaded', 'revolutions', 'enter'],
   worse: undefined
 }
 // index 0
-// a: animatrix
+// a: resurrections
 // b: online
-// User chooses a
+// User chooses b
 
 export const operation6 = {
-  aInput: ['animatrix'],
+  aInput: ['online', 'path', 'awakens'],
   better: 0,
-  bInput: ['online', 'path', 'awakens'],
-  output: ['original', 'reloaded', 'revolutions', 'resurrections'],
+  bInput: ['resurrections', 'animatrix'],
+  output: ['original', 'reloaded', 'revolutions', 'enter'],
   worse: undefined
 }
-// index 2
-// a: animatrix
-// b: awakens
-// User chooses a
+// index 0
+// a: online
+// b: animatrix
+// User chooses b
 
 export const operation7 = {
   aInput: ['animatrix'],
-  better: 0,
-  bInput: ['online', 'path', 'awakens'],
-  output: ['original', 'reloaded', 'revolutions', 'resurrections'],
-  worse: 2
+  better: undefined,
+  bInput: ['path', 'awakens'],
+  output: ['original', 'reloaded', 'revolutions', 'enter', 'resurrections', 'online'],
+  worse: undefined
 }
-// index 1
+// index 0
 // a: animatrix
 // b: path
-// User chooses a
+// User chooses b
 
 export const operation8 = {
-  aInput: [],
+  aInput: ['animatrix'],
   better: undefined,
-  bInput: [],
-  output: ['original', 'reloaded', 'revolutions', 'resurrections', 'online', 'path', 'animatrix', 'awakens'],
+  bInput: ['path', 'awakens'],
+  output: ['original', 'reloaded', 'revolutions', 'enter', 'resurrections', 'online', 'animatrix', 'path', 'awakens'],
   worse: undefined
 }

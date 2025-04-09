@@ -57,7 +57,7 @@ describe('getChoice', () => {
     expect(distance3).toBe(4)
     const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
     const choice = getVerifiedChoice({ flow: addedFlow3 })
-    expect(choice.operation).toBe(operation2.uid)
+    expect(choice.operationUid).toBe(operation2.uid)
   })
 
   describe('if there is a tie for the highest distance', () => {
@@ -110,7 +110,7 @@ describe('getChoice', () => {
       expect(distance3).toBe(7)
       const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
       const choice = getVerifiedChoice({ flow: addedFlow3 })
-      expect(choice.operation).toBe(operation2.uid)
+      expect(choice.operationUid).toBe(operation2.uid)
     })
   })
 
@@ -129,8 +129,8 @@ describe('getChoice', () => {
     expect(index).toBe(1)
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const choice1 = getVerifiedChoice({ flow: addedFlow1 })
-    expect(choice1.aItem).toBe('a')
-    expect(choice1.bItem).toBe('d')
+    expect(choice1.aItemUid).toBe('a')
+    expect(choice1.bItemUid).toBe('d')
   })
 
   describe('if there is one operation with two a and one b and better undefined', () => {
@@ -149,8 +149,8 @@ describe('getChoice', () => {
       })
       const addedFlow = addOperation({ flow, operation })
       const choice = getVerifiedChoice({ flow: addedFlow })
-      expect(choice.aItem).toBe('fellowship')
-      expect(choice.bItem).toBe('towers')
+      expect(choice.aItemUid).toBe('fellowship')
+      expect(choice.bItemUid).toBe('towers')
     })
   })
 
@@ -177,9 +177,9 @@ describe('getChoice', () => {
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const itemUids = [choice.aItem, choice.bItem]
-      expect(itemUids).toContain(choice.aItem)
-      expect(itemUids).toContain(choice.bItem)
+      const itemUids = [choice.aItemUid, choice.bItemUid]
+      expect(itemUids).toContain(choice.aItemUid)
+      expect(itemUids).toContain(choice.bItemUid)
     })
 
     it('should return the ID of an operation whose aInput contains the aItem and bInput contains the bItem', () => {
@@ -193,9 +193,9 @@ describe('getChoice', () => {
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const operation = importedFlow.operations[choice.operation]
-      expect(operation.aInput).toContain(choice.aItem)
-      expect(operation.bInput).toContain(choice.bItem)
+      const operation = importedFlow.operations[choice.operationUid]
+      expect(operation.aInput).toContain(choice.aItemUid)
+      expect(operation.bInput).toContain(choice.bItemUid)
     })
 
     describe('if there are three new items', () => {
@@ -227,7 +227,7 @@ describe('getChoice', () => {
           return distance === longestDistance
         })
         expect(longestOperations.length).toBe(1)
-        expect(choice.operation).toBe(longestOperations[0].uid)
+        expect(choice.operationUid).toBe(longestOperations[0].uid)
       })
     })
 
@@ -267,7 +267,7 @@ describe('getChoice', () => {
           }
           return earliestOperation
         }, longestOperations[0])
-        expect(operationWithEarliestUid.uid).toBe(choice.operation)
+        expect(operationWithEarliestUid.uid).toBe(choice.operationUid)
       })
     })
   })

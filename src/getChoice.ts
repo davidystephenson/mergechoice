@@ -26,8 +26,8 @@ export default function getChoice (props: {
   const bItem = selectedOperation.bInput[optionIndex]
 
   return {
-    aItem,
-    bItem,
-    operation: selectedOperation.uid
+    aItemUid: aItem,
+    bItemUid: bItem,
+    operationUid: selectedOperation.uid
   }
 }

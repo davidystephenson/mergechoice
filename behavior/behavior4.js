@@ -8,7 +8,7 @@ export const operation1 = {
 // index 0
 // a: reloaded
 // b: enter
-// User chooses a
+// User chooses A
 
 export const operation2 = {
   aInput: ['reloaded', 'revolutions', 'resurrections', 'animatrix'],
@@ -20,7 +20,7 @@ export const operation2 = {
 // index 3
 // a: 'reloaded'
 // b: 'awakens'
-// User chooses a
+// User chooses A
 
 export const operation3 = {
   aInput: [],

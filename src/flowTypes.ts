@@ -2,15 +2,15 @@ import { z } from 'zod'
 
 export const itemSchema = z.object({
   name: z.string(),
-  seed: z.number(),
+  seed: z.number().optional(),
   uid: z.string()
 })
 export type Item = z.infer<typeof itemSchema>
 
 export const choiceSchema = z.object({
-  aItem: z.string(),
-  bItem: z.string(),
-  operation: z.string()
+  aItemUid: z.string(),
+  bItemUid: z.string(),
+  operationUid: z.string()
 })
 export type Choice = z.infer<typeof choiceSchema>
 

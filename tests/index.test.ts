@@ -16,13 +16,13 @@ import {
 describe('index', () => {
   it('should export the Choice type and schema', () => {
     const choice: Choice = {
-      aItem: '123',
-      bItem: '456',
-      operation: '111'
+      aItemUid: '123',
+      bItemUid: '456',
+      operationUid: '111'
     }
-    expect(choice.aItem).toBe('123')
-    expect(choice.bItem).toBe('456')
-    expect(choice.operation).toBe('111')
+    expect(choice.aItemUid).toBe('123')
+    expect(choice.bItemUid).toBe('456')
+    expect(choice.operationUid).toBe('111')
     const parsed = choiceSchema.parse(choice)
     expect(parsed).toEqual(choice)
   })
@@ -42,20 +42,20 @@ describe('index', () => {
 
   it('should export the Item type and schema', () => {
     const item: Item = { name: 'The Matrix', uid: '123', seed: 42 }
-    const numberItem: Item = { name: 'The Matrix Reloaded', uid: '666', seed: 42 }
+    const seedlessItem: Item = { name: 'The Matrix Reloaded', uid: '666' }
     const parsed = itemSchema.parse(item)
     expect(parsed).toEqual(item)
-    const numberParsed = itemSchema.parse(numberItem)
-    expect(numberParsed).toEqual(numberItem)
+    const seedlessParsed = itemSchema.parse(seedlessItem)
+    expect(seedlessParsed).toEqual(seedlessItem)
   })
 
   it('should export the RankingItem type and schema', () => {
     const rankingItem: RankingItem = { name: 'The Matrix', uid: '123', seed: 42, points: 0, rank: 2 }
-    const numberRankingItem: RankingItem = { name: 'The Matrix Reloaded', uid: '666', seed: 42, points: 1, rank: 1 }
+    const seedlessRankingItem: RankingItem = { name: 'The Matrix Reloaded', uid: '666', points: 1, rank: 1 }
     const parsed = rankingItemSchema.parse(rankingItem)
     expect(parsed).toEqual(rankingItem)
-    const numberParsed = rankingItemSchema.parse(numberRankingItem)
-    expect(numberParsed).toEqual(numberRankingItem)
+    const seedlessParsed = rankingItemSchema.parse(seedlessRankingItem)
+    expect(seedlessParsed).toEqual(seedlessRankingItem)
   })
 
   it('should export the Operation type and schema', () => {

@@ -3,39 +3,35 @@ import { Flow, RankingItem } from './flowTypes'
 export default function getRanking (props: {
   flow: Flow
 }): RankingItem[] {
-  const hasNoOperations = Object.keys(props.flow.operations).length === 0
-  if (hasNoOperations) {
+  const empty = Object.keys(props.flow.operations).length === 0
+  if (empty) {
     return []
   }
 
   const operations = Object.values(props.flow.operations)
-
   const operationItemUids = operations.flatMap(operation => {
-    return [
-      ...operation.aInput, ...operation.bInput, ...operation.output
-    ]
+    return [...operation.aInput, ...operation.bInput, ...operation.output]
   })
 
   const uniqueOperationItemUids = new Set<string | number>()
   const duplicateUids: Array<string | number> = []
 
   operationItemUids.forEach(uid => {
-    const isDuplicate = uniqueOperationItemUids.has(uid)
-    if (isDuplicate) {
+    const duplicate = uniqueOperationItemUids.has(uid)
+    if (duplicate) {
       duplicateUids.push(uid)
     } else {
       uniqueOperationItemUids.add(uid)
     }
   })
 
-  const hasDuplicateUids = duplicateUids.length > 0
-  if (hasDuplicateUids) {
+  const hasDuplicates = duplicateUids.length > 0
+  if (hasDuplicates) {
     const joined = duplicateUids.join(', ')
     throw new Error(`Duplicate item UIDs: ${joined}`)
   }
 
   const items = Object.values(props.flow.items)
-
   const missingOperationItemUids = Array.from(uniqueOperationItemUids).filter(uid => {
     return !items.some(item => item.uid === uid)
   })
@@ -60,6 +56,9 @@ export default function getRanking (props: {
   const rankingItemsMap = new Map<string | number, RankingItem>()
 
   operations.forEach(operation => {
+    const outputLength = operation.output.length
+    const betterOffset = operation.better != null ? operation.better + 1 : 0
+
     operation.output.forEach((outputUid, index) => {
       const item = props.flow.items[outputUid]
       rankingItemsMap.set(outputUid, {
@@ -71,7 +70,7 @@ export default function getRanking (props: {
 
     operation.aInput.forEach((aInputUid, index) => {
       const item = props.flow.items[aInputUid]
-      const points = index + operation.output.length
+      const points = index + outputLength + betterOffset
       rankingItemsMap.set(aInputUid, {
         ...item,
         points,
@@ -81,7 +80,7 @@ export default function getRanking (props: {
 
     operation.bInput.forEach((bInputUid, index) => {
       const item = props.flow.items[bInputUid]
-      const points = index + operation.output.length
+      const points = index + outputLength
       rankingItemsMap.set(bInputUid, {
         ...item,
         points,
@@ -91,14 +90,13 @@ export default function getRanking (props: {
   })
 
   const rankingItems = Array.from(rankingItemsMap.values())
-
   const pointValues = rankingItems.map(item => item.points)
   const uniquePointValues = [...new Set(pointValues)]
   const descendingPointValues = uniquePointValues.sort((a, b) => b - a)
 
   rankingItems.forEach(item => {
-    const rankIndex = descendingPointValues.findIndex(points => points <= item.points)
-    item.rank = rankIndex + 1
+    const greaterPoints = descendingPointValues.filter(points => points > item.points)
+    item.rank = greaterPoints.length + 1
   })
 
   rankingItems.sort((a, b) => {

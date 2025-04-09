@@ -1,4 +1,4 @@
-import { createFlow, getChoice } from '../../src'
+import { createFlow } from '../../src'
 import addOperation from '../../src/addOperation'
 import createOperation from '../../src/createOperation'
 import createThreeFlow from '../flow/createThreeFlow'
@@ -46,7 +46,11 @@ describe('chooseOperationOption', () => {
           flow,
           output: ['jedi']
         })
-        const chosenFlow = chooseOperationOption({ flow, option: '' })
+        const addedFlow = addOperation({
+          flow,
+          operation
+        })
+        const chosenFlow = chooseOperationOption({ flow: addedFlow, option: '' })
         const chosenOperation = chosenFlow.operations[operation.uid]
         expect(chosenOperation.aInput).toEqual([])
         expect(chosenOperation.bInput).toEqual([])
@@ -65,8 +69,8 @@ describe('chooseOperationOption', () => {
             output: ['phantom']
           })
           const choice = getVerifiedChoice({ flow: insertedFlow })
-          const chosenFlow = chooseOperationOption({ flow: insertedFlow, option: choice.aItem })
-          const chosenOperation = chosenFlow.operations[choice.operation]
+          const chosenFlow = chooseOperationOption({ flow: insertedFlow, option: choice.aItemUid })
+          const chosenOperation = chosenFlow.operations[choice.operationUid]
           expect(chosenOperation.better).toEqual(0)
           expect(chosenOperation.aInput).toEqual(['hope'])
           expect(chosenOperation.bInput).toEqual(['empire', 'jedi'])
@@ -85,12 +89,16 @@ describe('chooseOperationOption', () => {
               output: ['phantom']
             })
             operation.better = 0
-            const chosenFlow = chooseOperationOption({ flow, option: 'A' })
+            const addedFlow = addOperation({
+              flow,
+              operation
+            })
+            const chosenFlow = chooseOperationOption({ flow: addedFlow, option: 'A' })
             const chosenOperation = chosenFlow.operations[operation.uid]
             expect(chosenOperation.better).toBeUndefined()
             expect(chosenOperation.aInput).toEqual([])
             expect(chosenOperation.bInput).toEqual([])
-            expect(chosenOperation.output).toEqual(['jedi', 'empire', 'hope', 'phantom'])
+            expect(chosenOperation.output).toEqual(['phantom', 'empire', 'jedi', 'hope'])
           })
         })
       })
