@@ -7,8 +7,7 @@ describe('isOutputOperation', () => {
       aInput: [],
       bInput: [],
       output: ['a', 'b'],
-      better: 0,
-      worse: 0
+      better: undefined
     }
     const result = isOutputOperation({ operation })
     expect(result).toBe(true)
@@ -20,8 +19,7 @@ describe('isOutputOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: [],
-      better: 0,
-      worse: 0
+      better: undefined
     }
     const result = isOutputOperation({ operation })
     expect(result).toBe(false)
@@ -33,8 +31,7 @@ describe('isOutputOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: ['c', 'd'],
-      better: 0,
-      worse: 0
+      better: undefined
     }
     const result = isOutputOperation({ operation })
     expect(result).toBe(false)

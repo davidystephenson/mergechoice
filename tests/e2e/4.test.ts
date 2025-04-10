@@ -30,7 +30,7 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
         { uid: 'revolutions', rank: 2, points: 0 }
       ],
       createInitialFlow: createFourFlow,
-      options: ['a']
+      options: ['A']
     })
 
     xdescribe('if a is chosen', () => {
@@ -46,7 +46,7 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
           { uid: 'revolutions', rank: 2, points: 0 }
         ],
         createInitialFlow: createFourFlow,
-        options: ['a', 'a']
+        options: ['A', 'A']
       })
 
       xdescribe('if a is chosen', () => {
@@ -62,7 +62,7 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
             { uid: 'reloaded', rank: 3, points: 0 }
           ],
           createInitialFlow: createFourFlow,
-          options: ['a', 'a', 'a']
+          options: ['A', 'A', 'A']
         })
       })
     })

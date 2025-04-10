@@ -33,15 +33,19 @@ export default function chooseOperationOption (props: {
       updatedOperation.aInput = []
       updatedOperation.bInput = []
     } else {
-      if (updatedOperation.better == null) {
-        updatedOperation.better = 0
-      } else if (updatedOperation.worse == null) {
-        updatedOperation.better = undefined
-        updatedOperation.output = [...operation.output, ...operation.bInput, ...operation.aInput]
-        updatedOperation.aInput = []
-        updatedOperation.bInput = []
-      }
+      const bElementsToMove = updatedOperation.better != null
+        ? operation.bInput.slice(0, updatedOperation.better)
+        : operation.bInput.slice(0, operation.bInput.indexOf(choice.bItemUid) + 1)
+      updatedOperation.output = [...operation.output, ...bElementsToMove, operation.aInput[0]]
+      updatedOperation.aInput = operation.aInput.slice(1)
+      updatedOperation.bInput = operation.bInput.slice(bElementsToMove.length)
     }
+  }
+
+  if (updatedOperation.aInput.length >= updatedOperation.bInput.length) {
+    const temp = updatedOperation.aInput
+    updatedOperation.aInput = updatedOperation.bInput
+    updatedOperation.bInput = temp
   }
 
   const updatedOperations = {

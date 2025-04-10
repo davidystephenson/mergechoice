@@ -55,9 +55,8 @@ export default function getRanking (props: {
 
   const rankingItemsMap = new Map<string | number, RankingItem>()
 
-  operations.forEach(operation => {
+  operations.forEach((operation) => {
     const outputLength = operation.output.length
-    const betterOffset = operation.better != null ? operation.better + 1 : 0
 
     operation.output.forEach((outputUid, index) => {
       const item = props.flow.items[outputUid]
@@ -70,7 +69,7 @@ export default function getRanking (props: {
 
     operation.aInput.forEach((aInputUid, index) => {
       const item = props.flow.items[aInputUid]
-      const points = index + outputLength + betterOffset
+      const points = index + outputLength
       rankingItemsMap.set(aInputUid, {
         ...item,
         points,
@@ -80,7 +79,9 @@ export default function getRanking (props: {
 
     operation.bInput.forEach((bInputUid, index) => {
       const item = props.flow.items[bInputUid]
-      const points = index + outputLength
+      const better = operation.better != null && operation.better <= index
+      const betterOffset = better ? 1 : 0
+      const points = index + outputLength + betterOffset
       rankingItemsMap.set(bInputUid, {
         ...item,
         points,

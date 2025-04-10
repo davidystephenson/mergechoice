@@ -46,8 +46,7 @@ export default function createOperation (props: {
     aInput: props.aInput,
     better: undefined,
     bInput: props.bInput,
-    output: props.output,
-    worse: undefined
+    output: props.output
   }
 
   return operation

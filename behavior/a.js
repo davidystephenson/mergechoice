@@ -53,16 +53,16 @@ User chooses A
 */
 
 export const operation3 = {
-  aInput: ['awakens'],
-  bInput: ['animatrix'],
+  aInput: ['animatrix'],
+  bInput: ['awakens'],
   better: undefined,
   output: ['comics', 'revisited', 'enter', 'online', 'original', 'reloaded', 'revolutions', 'path']
 }
 /*
 CHOICE
 index: 0
-a: awakens
-b: animatrix
+a: animatrix
+b: awakens
 
 RANKING
 1. animatrix: 8
@@ -90,13 +90,13 @@ complete
 
 RANKING
 1. animatrix: 9
-1. awakens: 9
-2. path: 8
-3. revolutions: 7
-4. reloaded: 6
-5. original: 5
-6. online: 4
-7. enter: 3
-8. revisited: 2
+1. awakens: 8
+2. path: 7
+3. revolutions: 6
+4. reloaded: 5
+5. original: 4
+6. online: 3
+7. enter: 2
+8. revisited: 1
 9. comics: 0
 */

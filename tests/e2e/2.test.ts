@@ -23,7 +23,7 @@ describe('if two items are imported', () => {
         { uid: 'original', rank: 2, points: 0 }
       ],
       createInitialFlow: createTwoFlow,
-      options: ['a']
+      options: ['A']
     })
   })
 
@@ -35,7 +35,7 @@ describe('if two items are imported', () => {
         { uid: 'reloaded', rank: 2, points: 0 }
       ],
       createInitialFlow: createTwoFlow,
-      options: ['b']
+      options: ['B']
     })
   })
 })

@@ -5,6 +5,10 @@ export default function verifyRankingItems (props: {
   ranking: RankingItem[]
   items: Array<Omit<RankingItem, 'name' | 'seed'>>
 }): void {
+  const label = `should rank ${props.items.length} items`
+  it(label, () => {
+    expect(props.ranking.length).toBe(props.items.length)
+  })
   props.items.forEach((item, index) => {
     verifyRankingItem({
       ranking: props.ranking,

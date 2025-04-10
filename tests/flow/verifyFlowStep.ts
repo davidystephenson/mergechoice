@@ -33,19 +33,9 @@ export default function verifyFlowStep (props: {
     })
   }
 
-  const rankingLabels = props.ranking.map((item) => {
-    const label = `${item.uid} rank ${item.rank} with ${item.points} points`
-    return label
-  })
-  const rankingJoined = rankingLabels.join(', ')
-  const rankingLabel = `should give ${rankingJoined}`
-
-  it(rankingLabel, () => {
-    const flow = setupFlow()
-    const ranking = getRanking({ flow })
-    console.log('ranking', ranking)
-    verifyRankingItems({ ranking, items: props.ranking })
-  })
+  const flow = setupFlow()
+  const ranking = getRanking({ flow })
+  verifyRankingItems({ ranking, items: props.ranking })
 
   if (props.choice == null) {
     it('should not create a choice', () => {
@@ -54,8 +44,7 @@ export default function verifyFlowStep (props: {
       expect(choice).toBeUndefined()
     })
   } else {
-    const choiceLabel = `should create a choice with ${props.choice.a} as a ${props.choice.b} as b`
-    it(choiceLabel, () => {
+    it(`should include ${props.choice.a} as an option`, () => {
       if (props.choice == null) {
         throw new Error('Choice is null')
       }
@@ -63,8 +52,30 @@ export default function verifyFlowStep (props: {
       const choice = getVerifiedChoice({ flow })
       const options = new Set([choice.aItemUid, choice.bItemUid])
       expect(options).toContain(props.choice.a)
+    })
+    it(`should include ${props.choice.b} as an option`, () => {
+      if (props.choice == null) {
+        throw new Error('Choice is null')
+      }
+      const flow = setupFlow()
+      const choice = getVerifiedChoice({ flow })
+      const options = new Set([choice.aItemUid, choice.bItemUid])
       expect(options).toContain(props.choice.b)
+    })
+    it(`should make ${props.choice.a} A`, () => {
+      if (props.choice == null) {
+        throw new Error('Choice is null')
+      }
+      const flow = setupFlow()
+      const choice = getVerifiedChoice({ flow })
       expect(choice.aItemUid).toBe(props.choice.a)
+    })
+    it(`should make ${props.choice.b} B`, () => {
+      if (props.choice == null) {
+        throw new Error('Choice is null')
+      }
+      const flow = setupFlow()
+      const choice = getVerifiedChoice({ flow })
       expect(choice.bItemUid).toBe(props.choice.b)
     })
   }

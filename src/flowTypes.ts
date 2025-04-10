@@ -19,8 +19,7 @@ export const operationSchema = z.object({
   better: z.number().optional(),
   bInput: z.array(z.string()),
   output: z.array(z.string()),
-  uid: z.string(),
-  worse: z.number().optional()
+  uid: z.string()
 })
 export type Operation = z.infer<typeof operationSchema>
 

@@ -129,34 +129,39 @@ describe('getRanking', () => {
   })
 
   describe('if better is defined', () => {
-    it('should add better + 1 to the aInput points', () => {
+    it('should add 1 to all B items starting with the better index', () => {
       const flow = createFlow({ uid: 'bond' })
       flow.items = {
         no: { name: 'no', seed: 0, uid: 'no' },
         russia: { name: 'russia', seed: 0, uid: 'russia' },
         goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
         thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-        twice: { name: 'twice', seed: 0, uid: 'twice' }
+        twice: { name: 'twice', seed: 0, uid: 'twice' },
+        casino1: { name: 'casino1', seed: 0, uid: 'casino1' },
+        service: { name: 'service', seed: 0, uid: 'service' },
+        diamonds: { name: 'diamonds', seed: 0, uid: 'diamonds' }
       }
       const operation = createOperation({
         aInput: ['no', 'russia'],
-        bInput: ['goldfinger', 'thunderball', 'twice'],
+        bInput: ['goldfinger', 'thunderball', 'twice', 'casino1', 'service', 'diamonds'],
         flow,
         output: []
       })
       operation.better = 2
       const addedFlow = addOperation({ flow, operation })
       const ranking = getRanking({ flow: addedFlow })
-      const no = getVerifiedRankingItem({ ranking, uid: 'no' })
-      expect(no.points).toBe(3)
-      const russia = getVerifiedRankingItem({ ranking, uid: 'russia' })
-      expect(russia.points).toBe(4)
-      const goldfinger = getVerifiedRankingItem({ ranking, uid: 'goldfinger' })
-      expect(goldfinger.points).toBe(0)
+      const diamonds = getVerifiedRankingItem({ ranking, uid: 'diamonds' })
+      expect(diamonds.points).toBe(6)
+      const service = getVerifiedRankingItem({ ranking, uid: 'service' })
+      expect(service.points).toBe(5)
+      const casino1 = getVerifiedRankingItem({ ranking, uid: 'casino1' })
+      expect(casino1.points).toBe(4)
+      const twice = getVerifiedRankingItem({ ranking, uid: 'twice' })
+      expect(twice.points).toBe(3)
       const thunderball = getVerifiedRankingItem({ ranking, uid: 'thunderball' })
       expect(thunderball.points).toBe(1)
-      const twice = getVerifiedRankingItem({ ranking, uid: 'twice' })
-      expect(twice.points).toBe(2)
+      const goldfinger = getVerifiedRankingItem({ ranking, uid: 'goldfinger' })
+      expect(goldfinger.points).toBe(0)
     })
   })
 
@@ -168,23 +173,26 @@ describe('getRanking', () => {
         russia: { name: 'russia', seed: 0, uid: 'russia' },
         goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
         thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-        twice: { name: 'twice', seed: 0, uid: 'twice' }
+        twice: { name: 'twice', seed: 0, uid: 'twice' },
+        casino1: { name: 'casino1', seed: 0, uid: 'casino1' }
       }
       const operation = createOperation({
         aInput: ['no'],
-        bInput: ['russia', 'goldfinger'],
+        bInput: ['russia', 'goldfinger', 'thunderball'],
         flow,
-        output: ['thunderball', 'twice']
+        output: ['twice', 'casino1']
       })
-      operation.better = 0
+      operation.better = 1
       const addedFlow = addOperation({ flow, operation })
       const ranking = getRanking({ flow: addedFlow })
       const no = getVerifiedRankingItem({ ranking, uid: 'no' })
-      expect(no.points).toBe(3)
+      expect(no.points).toBe(2)
       const russia = getVerifiedRankingItem({ ranking, uid: 'russia' })
       expect(russia.points).toBe(2)
       const goldfinger = getVerifiedRankingItem({ ranking, uid: 'goldfinger' })
-      expect(goldfinger.points).toBe(3)
+      expect(goldfinger.points).toBe(4)
+      const thunderball = getVerifiedRankingItem({ ranking, uid: 'thunderball' })
+      expect(thunderball.points).toBe(5)
     })
 
     it('should give output items points equal to the number of preceding output items', () => {
@@ -202,7 +210,6 @@ describe('getRanking', () => {
         flow,
         output: ['thunderball', 'twice']
       })
-      operation.better = 0
       const addedFlow = addOperation({ flow, operation })
       const ranking = getRanking({ flow: addedFlow })
       const thunderball = getVerifiedRankingItem({ ranking, uid: 'thunderball' })

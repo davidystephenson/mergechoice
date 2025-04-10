@@ -14,7 +14,9 @@ const config: Config = {
   collectCoverageFrom: [
     'src/**/*.{ts,tsx}',
     '!src/**/*.d.ts'
-  ]
+  ],
+  bail: true
+
 }
 
 export default config

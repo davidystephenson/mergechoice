@@ -1,20 +1,6 @@
 import { createFlow, createOperation, OperationDef } from '../../src'
 
 describe('createOperation', () => {
-  describe('if it is an input operation', () => {
-    it('should create an operation with ab true, ascend true, better 0, and worse equal to the length of b minus 1', () => {
-      const flow = createFlow({ uid: 'test' })
-      const operation = createOperation({
-        aInput: ['1'],
-        bInput: ['2', '3', '4'],
-        flow,
-        output: []
-      })
-      expect(operation.better).toBe(undefined)
-      expect(operation.worse).toBe(undefined)
-    })
-  })
-
   it('should throw an error if the operation is empty', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => createOperation({
@@ -91,16 +77,15 @@ describe('createOperation', () => {
     }).not.toThrow()
   })
 
-  it('should create an operation with better and worse undefined', () => {
+  it('should create an operation with better undefined', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
-      aInput: ['1', '2'],
-      bInput: ['3', '4'],
+      aInput: ['1'],
+      bInput: ['2', '3', '4'],
       flow,
       output: []
     })
     expect(operation.better).toBe(undefined)
-    expect(operation.worse).toBe(undefined)
   })
 
   it('should create an operation with specified inputs', () => {

@@ -7,8 +7,7 @@ describe('isMixedOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: ['c', 'd'],
-      better: undefined,
-      worse: undefined
+      better: undefined
     }
     const result = isMixedOperation({ operation })
     expect(result).toBe(true)
@@ -20,8 +19,7 @@ describe('isMixedOperation', () => {
       aInput: [],
       bInput: [],
       output: ['a', 'b'],
-      better: undefined,
-      worse: undefined
+      better: undefined
     }
     const result = isMixedOperation({ operation })
     expect(result).toBe(false)
@@ -33,8 +31,7 @@ describe('isMixedOperation', () => {
       aInput: ['a'],
       bInput: ['b'],
       output: [],
-      better: undefined,
-      worse: undefined
+      better: undefined
     }
     const result = isMixedOperation({ operation })
     expect(result).toBe(false)

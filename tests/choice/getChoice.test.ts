@@ -52,7 +52,6 @@ describe('getChoice', () => {
       output: []
     })
     operation3.better = 2
-    operation3.worse = 4
     const distance3 = getOperationDistance({ operation: operation3 })
     expect(distance3).toBe(4)
     const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
@@ -92,20 +91,13 @@ describe('getChoice', () => {
         output: []
       })
       operation3.better = 3
-      operation3.worse = 5
       operation3.uid = 'c'
       const sum3 = operation3.aInput.length + operation3.bInput.length
       expect(sum3).toBe(13)
       const betterPlusOne = operation3.better + 1
       expect(betterPlusOne).toBe(4)
-      const worseMinusOne = operation3.worse - 1
-      expect(worseMinusOne).toBe(4)
       const maximumWorse = operation3.bInput.length - 1
       expect(maximumWorse).toBe(6)
-      const worseReduction = maximumWorse - worseMinusOne
-      expect(worseReduction).toBe(2)
-      const difference = sum3 - worseReduction - betterPlusOne
-      expect(difference).toBe(7)
       const distance3 = getOperationDistance({ operation: operation3 })
       expect(distance3).toBe(7)
       const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
@@ -124,7 +116,6 @@ describe('getChoice', () => {
     })
     operation1.uid = 'a'
     operation1.better = 0
-    expect(operation1.worse).toBeUndefined()
     const index = getOptionIndex({ operation: operation1 })
     expect(index).toBe(1)
     const addedFlow1 = addOperation({ flow, operation: operation1 })

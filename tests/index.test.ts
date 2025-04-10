@@ -64,8 +64,7 @@ describe('index', () => {
       better: 0,
       bInput: ['789', '101'],
       output: ['102', '103'],
-      uid: '111',
-      worse: 1
+      uid: '111'
     }
     const parsed1 = operationSchema.parse(operation1)
     expect(parsed1).toEqual(operation1)
@@ -74,8 +73,7 @@ describe('index', () => {
       better: undefined,
       bInput: [],
       output: ['102', '103'],
-      uid: '111',
-      worse: undefined
+      uid: '111'
     }
     const parsed2 = operationSchema.parse(operation2)
     expect(parsed2).toEqual(operation2)
