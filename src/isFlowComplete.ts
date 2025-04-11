@@ -11,14 +11,14 @@ export default function isFlowComplete (props: {
   }
 
   for (const operation of operations) {
-    if ((operation.aInput.length > 0 && operation.bInput.length === 0) ||
-        (operation.aInput.length === 0 && operation.bInput.length > 0)) {
+    if ((operation.queue.length > 0 && operation.catalog.length === 0) ||
+        (operation.queue.length === 0 && operation.catalog.length > 0)) {
       throw new Error('Operation has only one of the inputs')
     }
   }
 
   for (const operation of operations) {
-    if (operation.aInput.length === 0 && operation.bInput.length === 0 && operation.output.length === 0) {
+    if (operation.queue.length === 0 && operation.catalog.length === 0 && operation.output.length === 0) {
       throw new Error('Operation has no inputs or outputs')
     }
   }

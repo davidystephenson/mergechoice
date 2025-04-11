@@ -6,19 +6,19 @@ describe('behavior4', () => {
   function createFourFlow (): Flow {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      original: { uid: 'original', name: 'original', seed: 0 },
-      reloaded: { uid: 'reloaded', name: 'reloaded', seed: 1 },
-      resurrections: { uid: 'resurrections', name: 'resurrections', seed: 2 },
-      revolutions: { uid: 'revolutions', name: 'revolutions', seed: 3 },
-      animatrix: { uid: 'animatrix', name: 'animatrix', seed: 4 },
-      enter: { uid: 'enter', name: 'enter', seed: 5 },
-      online: { uid: 'online', name: 'online', seed: 6 },
-      path: { uid: 'path', name: 'path', seed: 7 },
-      awakens: { uid: 'awakens', name: 'awakens', seed: 8 }
+      original: { uid: 'original', label: 'original', seed: 0 },
+      reloaded: { uid: 'reloaded', label: 'reloaded', seed: 1 },
+      resurrections: { uid: 'resurrections', label: 'resurrections', seed: 2 },
+      revolutions: { uid: 'revolutions', label: 'revolutions', seed: 3 },
+      animatrix: { uid: 'animatrix', label: 'animatrix', seed: 4 },
+      enter: { uid: 'enter', label: 'enter', seed: 5 },
+      online: { uid: 'online', label: 'online', seed: 6 },
+      path: { uid: 'path', label: 'path', seed: 7 },
+      awakens: { uid: 'awakens', label: 'awakens', seed: 8 }
     }
     const insertedFlow = insertOperation({
-      aInput: ['reloaded', 'revolutions', 'resurrections', 'animatrix'],
-      bInput: ['enter', 'online', 'path', 'awakens'],
+      queue: ['reloaded', 'revolutions', 'resurrections', 'animatrix'],
+      catalog: ['enter', 'online', 'path', 'awakens'],
       flow,
       output: ['original']
     })
@@ -27,11 +27,11 @@ describe('behavior4', () => {
   describe('operation1', () => {
     verifyFlowStep({
       choice: {
-        a: 'reloaded',
-        b: 'enter'
+        queue: 'reloaded',
+        catalog: 'enter'
       },
       createInitialFlow: createFourFlow,
-      options: [],
+      queues: [],
       ranking: [
         { uid: 'animatrix', rank: 1, points: 4 },
         { uid: 'awakens', rank: 1, points: 4 },
@@ -48,11 +48,11 @@ describe('behavior4', () => {
   describe('operation2', () => {
     verifyFlowStep({
       choice: {
-        a: 'reloaded',
-        b: 'awakens'
+        queue: 'reloaded',
+        catalog: 'awakens'
       },
       createInitialFlow: createFourFlow,
-      options: ['A'],
+      queues: ['A'],
       ranking: [
         { uid: 'animatrix', rank: 1, points: 5 },
         { uid: 'awakens', rank: 2, points: 4 },
@@ -70,7 +70,7 @@ describe('behavior4', () => {
     verifyFlowStep({
       choice: undefined,
       createInitialFlow: createFourFlow,
-      options: ['A', 'A'],
+      queues: ['A', 'A'],
       ranking: [
         { uid: 'animatrix', rank: 1, points: 8 },
         { uid: 'resurrections', rank: 2, points: 7 },

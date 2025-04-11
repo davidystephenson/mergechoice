@@ -9,12 +9,12 @@ export default function getOperationDistance (props: {
   }
 
   // Return 0 for output operations (no inputs)
-  if (props.operation.aInput.length === 0 && props.operation.bInput.length === 0) {
+  if (props.operation.queue.length === 0 && props.operation.catalog.length === 0) {
     return 0
   }
 
   // Calculate base distance
-  const sum = props.operation.aInput.length + props.operation.bInput.length
+  const sum = props.operation.queue.length + props.operation.catalog.length
 
   // Calculate distance with better reduction
   if (props.operation.better != null) {

@@ -10,7 +10,7 @@ export default function getRanking (props: {
 
   const operations = Object.values(props.flow.operations)
   const operationItemUids = operations.flatMap(operation => {
-    return [...operation.aInput, ...operation.bInput, ...operation.output]
+    return [...operation.queue, ...operation.catalog, ...operation.output]
   })
 
   const uniqueOperationItemUids = new Set<string | number>()
@@ -67,7 +67,7 @@ export default function getRanking (props: {
       })
     })
 
-    operation.aInput.forEach((aInputUid, index) => {
+    operation.queue.forEach((aInputUid, index) => {
       const item = props.flow.items[aInputUid]
       const points = index + outputLength
       rankingItemsMap.set(aInputUid, {
@@ -77,7 +77,7 @@ export default function getRanking (props: {
       })
     })
 
-    operation.bInput.forEach((bInputUid, index) => {
+    operation.catalog.forEach((bInputUid, index) => {
       const item = props.flow.items[bInputUid]
       const better = operation.better != null && operation.better <= index
       const betterOffset = better ? 1 : 0
@@ -104,7 +104,7 @@ export default function getRanking (props: {
     if (a.rank !== b.rank) {
       return a.rank - b.rank
     }
-    return a.name.localeCompare(b.name)
+    return a.label.localeCompare(b.label)
   })
 
   return rankingItems

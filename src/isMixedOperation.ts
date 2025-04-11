@@ -8,8 +8,8 @@ export default function isMixedOperation (props: {
     return false
   }
 
-  const hasAInputs = props.operation.aInput.length !== 0
-  const hasBInputs = props.operation.bInput.length !== 0
+  const hasAInputs = props.operation.queue.length !== 0
+  const hasBInputs = props.operation.catalog.length !== 0
   const hasInputs = hasAInputs || hasBInputs
   if (!hasInputs) {
     return false

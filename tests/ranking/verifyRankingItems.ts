@@ -1,9 +1,10 @@
 import { RankingItem } from '../../src'
+import { RankingTest } from './rankingTypes'
 import verifyRankingItem from './verifyRankingItem'
 
 export default function verifyRankingItems (props: {
   ranking: RankingItem[]
-  items: Array<Omit<RankingItem, 'name' | 'seed'>>
+  items: RankingTest[]
 }): void {
   const label = `should rank ${props.items.length} items`
   it(label, () => {

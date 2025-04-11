@@ -14,8 +14,8 @@ describe('getChoice', () => {
   it('should return undefined if the flow is complete', () => {
     const flow = createFlow({ uid: 'test' })
     const insertedFlow = insertOperation({
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       flow,
       output: ['a']
     })
@@ -28,8 +28,8 @@ describe('getChoice', () => {
   it('should select from the operation with the highest distance', () => {
     const flow = createFlow({ uid: 'test' })
     const operation1 = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e']
     })
@@ -37,8 +37,8 @@ describe('getChoice', () => {
     expect(distance1).toBe(4)
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const operation2 = createOperation({
-      aInput: ['f', 'g'],
-      bInput: ['h', 'i', 'j'],
+      queue: ['f', 'g'],
+      catalog: ['h', 'i', 'j'],
       flow: addedFlow1,
       output: []
     })
@@ -46,8 +46,8 @@ describe('getChoice', () => {
     expect(distance2).toBe(5)
     const addedFlow2 = addOperation({ flow: addedFlow1, operation: operation2 })
     const operation3 = createOperation({
-      aInput: ['n', 'o', 'p'],
-      bInput: ['r', 's', 't', 'u', 'v', 'w'],
+      queue: ['n', 'o', 'p'],
+      catalog: ['r', 's', 't', 'u', 'v', 'w'],
       flow: addedFlow2,
       output: []
     })
@@ -56,15 +56,15 @@ describe('getChoice', () => {
     expect(distance3).toBe(4)
     const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
     const choice = getVerifiedChoice({ flow: addedFlow3 })
-    expect(choice.operationUid).toBe(operation2.uid)
+    expect(choice.operation).toBe(operation2.uid)
   })
 
   describe('if there is a tie for the highest distance', () => {
     it('should select the operation with the earliest uid', () => {
       const flow = createFlow({ uid: 'test' })
       const operation1 = createOperation({
-        aInput: ['a', 'b'],
-        bInput: ['c', 'd'],
+        queue: ['a', 'b'],
+        catalog: ['c', 'd'],
         flow,
         output: ['e']
       })
@@ -73,44 +73,44 @@ describe('getChoice', () => {
       expect(distance1).toBe(4)
       const addedFlow1 = addOperation({ flow, operation: operation1 })
       const operation2 = createOperation({
-        aInput: ['f', 'g'],
-        bInput: ['h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'],
+        queue: ['f', 'g'],
+        catalog: ['h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p'],
         flow: addedFlow1,
         output: []
       })
       operation2.uid = 'b'
-      const sum2 = operation2.aInput.length + operation2.bInput.length
+      const sum2 = operation2.queue.length + operation2.catalog.length
       expect(sum2).toBe(11)
       const distance2 = getOperationDistance({ operation: operation2 })
       expect(distance2).toBe(11)
       const addedFlow2 = addOperation({ flow: addedFlow1, operation: operation2 })
       const operation3 = createOperation({
-        aInput: ['n', 'o', 'p', 'q', 'r', 's'],
-        bInput: ['t', 'u', 'v', 'w', 'x', 'y', 'z'],
+        queue: ['n', 'o', 'p', 'q', 'r', 's'],
+        catalog: ['t', 'u', 'v', 'w', 'x', 'y', 'z'],
         flow: addedFlow2,
         output: []
       })
       operation3.better = 3
       operation3.uid = 'c'
-      const sum3 = operation3.aInput.length + operation3.bInput.length
+      const sum3 = operation3.queue.length + operation3.catalog.length
       expect(sum3).toBe(13)
       const betterPlusOne = operation3.better + 1
       expect(betterPlusOne).toBe(4)
-      const maximumWorse = operation3.bInput.length - 1
+      const maximumWorse = operation3.catalog.length - 1
       expect(maximumWorse).toBe(6)
       const distance3 = getOperationDistance({ operation: operation3 })
       expect(distance3).toBe(7)
       const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
       const choice = getVerifiedChoice({ flow: addedFlow3 })
-      expect(choice.operationUid).toBe(operation2.uid)
+      expect(choice.operation).toBe(operation2.uid)
     })
   })
 
   it('should select the first a and the b at the option index', () => {
     const flow = createFlow({ uid: 'test' })
     const operation1 = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e']
     })
@@ -120,28 +120,28 @@ describe('getChoice', () => {
     expect(index).toBe(1)
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const choice1 = getVerifiedChoice({ flow: addedFlow1 })
-    expect(choice1.aItemUid).toBe('a')
-    expect(choice1.bItemUid).toBe('d')
+    expect(choice1.queue).toBe('a')
+    expect(choice1.catalog).toBe('d')
   })
 
   describe('if there is one operation with two a and one b and better undefined', () => {
     it('should return a choice between the first a and the b', () => {
       const flow = createFlow({ uid: 'test' })
       flow.items = {
-        fellowship: { name: 'fellowship', uid: 'fellowship', seed: 0 },
-        towers: { name: 'towers', uid: 'towers', seed: 0 },
-        return: { name: 'return', uid: 'return', seed: 0 }
+        fellowship: { label: 'fellowship', uid: 'fellowship', seed: 0 },
+        towers: { label: 'towers', uid: 'towers', seed: 0 },
+        return: { label: 'return', uid: 'return', seed: 0 }
       }
       const operation = createOperation({
-        aInput: ['fellowship'],
-        bInput: ['towers', 'return'],
+        queue: ['fellowship'],
+        catalog: ['towers', 'return'],
         flow,
         output: []
       })
       const addedFlow = addOperation({ flow, operation })
       const choice = getVerifiedChoice({ flow: addedFlow })
-      expect(choice.aItemUid).toBe('fellowship')
-      expect(choice.bItemUid).toBe('towers')
+      expect(choice.queue).toBe('fellowship')
+      expect(choice.catalog).toBe('towers')
     })
   })
 
@@ -149,8 +149,8 @@ describe('getChoice', () => {
     it('should return a choice', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
-        { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: '2', seed: 0 }
+        { label: 'item1', uid: '1', seed: 0 },
+        { label: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
@@ -160,42 +160,42 @@ describe('getChoice', () => {
     it('should return a choice whose a and b are new item UIDs', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
-        { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: '2', seed: 0 }
+        { label: 'item1', uid: '1', seed: 0 },
+        { label: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const itemUids = [choice.aItemUid, choice.bItemUid]
-      expect(itemUids).toContain(choice.aItemUid)
-      expect(itemUids).toContain(choice.bItemUid)
+      const itemUids = [choice.queue, choice.catalog]
+      expect(itemUids).toContain(choice.queue)
+      expect(itemUids).toContain(choice.catalog)
     })
 
     it('should return the ID of an operation whose aInput contains the aItem and bInput contains the bItem', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
-        { name: 'item1', uid: '1', seed: 0 },
-        { name: 'item2', uid: '2', seed: 0 }
+        { label: 'item1', uid: '1', seed: 0 },
+        { label: 'item2', uid: '2', seed: 0 }
       ]
       const importedFlow = importItems({ flow, items })
       const choice = getChoice({ flow: importedFlow })
       if (choice == null) {
         throw new Error('Choice should be defined')
       }
-      const operation = importedFlow.operations[choice.operationUid]
-      expect(operation.aInput).toContain(choice.aItemUid)
-      expect(operation.bInput).toContain(choice.bItemUid)
+      const operation = importedFlow.operations[choice.operation]
+      expect(operation.queue).toContain(choice.queue)
+      expect(operation.catalog).toContain(choice.catalog)
     })
 
     describe('if there are three new items', () => {
       it('should return the operation with the single longest distance', () => {
         const flow = createFlow({ uid: 'test' })
         const items = [
-          { name: 'item1', uid: '1', seed: 0 },
-          { name: 'item2', uid: '2', seed: 0 },
-          { name: 'item3', uid: '3', seed: 0 }
+          { label: 'item1', uid: '1', seed: 0 },
+          { label: 'item2', uid: '2', seed: 0 },
+          { label: 'item3', uid: '3', seed: 0 }
         ]
         const importedFlow = importItems({ flow, items })
         const choice = getChoice({ flow: importedFlow })
@@ -218,7 +218,7 @@ describe('getChoice', () => {
           return distance === longestDistance
         })
         expect(longestOperations.length).toBe(1)
-        expect(choice.operationUid).toBe(longestOperations[0].uid)
+        expect(choice.operation).toBe(longestOperations[0].uid)
       })
     })
 
@@ -226,11 +226,11 @@ describe('getChoice', () => {
       it('should return a choice from the operation with the earliest uid among the tied operations', () => {
         const flow = createFlow({ uid: 'test' })
         const items = [
-          { name: 'item1', uid: '1', seed: 0 },
-          { name: 'item2', uid: '2', seed: 0 },
-          { name: 'item3', uid: '3', seed: 0 },
-          { name: 'item4', uid: '4', seed: 0 },
-          { name: 'item5', uid: '5', seed: 0 }
+          { label: 'item1', uid: '1', seed: 0 },
+          { label: 'item2', uid: '2', seed: 0 },
+          { label: 'item3', uid: '3', seed: 0 },
+          { label: 'item4', uid: '4', seed: 0 },
+          { label: 'item5', uid: '5', seed: 0 }
         ]
         const importedFlow = importItems({ flow, items })
         const choice = getChoice({ flow: importedFlow })
@@ -258,7 +258,7 @@ describe('getChoice', () => {
           }
           return earliestOperation
         }, longestOperations[0])
-        expect(operationWithEarliestUid.uid).toBe(choice.operationUid)
+        expect(operationWithEarliestUid.uid).toBe(choice.operation)
       })
     })
   })

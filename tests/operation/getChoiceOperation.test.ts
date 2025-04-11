@@ -1,4 +1,4 @@
-import { addOperation, createFlow, createOperation, getChoiceOperation, getOperationDistance, isFlowComplete } from '../../src'
+import { addOperation, createFlow, createOperation, getChoiceOperation, getOptionIndex, isFlowComplete } from '../../src'
 import insertOperation from '../operation/insertOperation'
 
 describe('getChoiceOperation', () => {
@@ -13,8 +13,8 @@ describe('getChoiceOperation', () => {
     const flow = createFlow({ uid: 'test' })
     const insertedFlow = insertOperation({
       flow,
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       output: ['a', 'b']
     })
     const completed = isFlowComplete({ flow: insertedFlow })
@@ -25,8 +25,8 @@ describe('getChoiceOperation', () => {
   it('should return an operation from the flow', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e']
     })
@@ -37,35 +37,35 @@ describe('getChoiceOperation', () => {
     expect(choiceOperation).toBe(operation)
   })
 
-  it('should return the operation with the longest distance', () => {
+  it('should return the operation with the highest option index', () => {
     const flow = createFlow({ uid: 'test' })
     const operation1 = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e']
     })
-    const distance1 = getOperationDistance({ operation: operation1 })
-    expect(distance1).toBe(4)
+    const optionIndex1 = getOptionIndex({ operation: operation1 })
+    expect(optionIndex1).toBe(0)
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const operation2 = createOperation({
-      aInput: ['f', 'g'],
-      bInput: ['h', 'i', 'j', 'k', 'l', 'm'],
+      queue: ['f', 'g'],
+      catalog: ['h', 'i', 'j', 'k', 'l'],
       flow: addedFlow1,
       output: []
     })
-    const distance2 = getOperationDistance({ operation: operation2 })
-    expect(distance2).toBe(8)
+    const optionIndex2 = getOptionIndex({ operation: operation2 })
+    expect(optionIndex2).toBe(2)
     const addedFlow2 = addOperation({ flow: addedFlow1, operation: operation2 })
     const operation3 = createOperation({
-      aInput: ['n', 'o', 'p', 'q', 'r', 's'],
-      bInput: ['t', 'u', 'v', 'w', 'x', 'y'],
+      queue: ['n', 'o', 'p', 'q', 'r', 's'],
+      catalog: ['t', 'u', 'v', 'w', 'x', 'y'],
       flow: addedFlow2,
       output: ['z']
     })
-    operation3.better = 5
-    const distance3 = getOperationDistance({ operation: operation3 })
-    expect(distance3).toBe(7)
+    operation3.better = 2
+    const optionIndex3 = getOptionIndex({ operation: operation3 })
+    expect(optionIndex3).toBe(1)
     const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
     const choiceOperation = getChoiceOperation({ flow: addedFlow3 })
     expect(choiceOperation).toBe(operation2)
@@ -74,37 +74,36 @@ describe('getChoiceOperation', () => {
   it('should return the tied operation with the earlier UID if there is a tie for longest distance', () => {
     const flow = createFlow({ uid: 'test' })
     const operation1 = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e']
     })
     operation1.uid = 'a'
-    const distance1 = getOperationDistance({ operation: operation1 })
-    expect(distance1).toBe(4)
+    const optionIndex1 = getOptionIndex({ operation: operation1 })
+    expect(optionIndex1).toBe(0)
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const operation2 = createOperation({
-      aInput: ['f', 'g'],
-      bInput: ['h', 'i', 'j', 'k', 'l', 'm'],
+      queue: ['f', 'g'],
+      catalog: ['h', 'i', 'j', 'k', 'l', 'm'],
       flow: addedFlow1,
       output: []
     })
-    operation2.uid = 'c'
-    const distance2 = getOperationDistance({ operation: operation2 })
-    expect(distance2).toBe(8)
+    operation2.uid = 'b'
+    const optionIndex2 = getOptionIndex({ operation: operation2 })
+    expect(optionIndex2).toBe(2)
     const addedFlow2 = addOperation({ flow: addedFlow1, operation: operation2 })
     const operation3 = createOperation({
-      aInput: ['n', 'o', 'p', 'q', 'r', 's'],
-      bInput: ['t', 'u', 'v', 'w', 'x', 'y'],
+      queue: ['n', 'o', 'p', 'q', 'r', 's'],
+      catalog: ['t', 'u', 'v', 'w', 'x', 'y'],
       flow: addedFlow2,
       output: ['z']
     })
-    operation3.uid = 'b'
-    operation3.better = 4
-    const distance3 = getOperationDistance({ operation: operation3 })
-    expect(distance3).toBe(8)
+    operation3.uid = 'c'
+    const optionIndex3 = getOptionIndex({ operation: operation3 })
+    expect(optionIndex3).toBe(2)
     const addedFlow3 = addOperation({ flow: addedFlow2, operation: operation3 })
     const choiceOperation = getChoiceOperation({ flow: addedFlow3 })
-    expect(choiceOperation).toBe(operation3)
+    expect(choiceOperation).toBe(operation2)
   })
 })

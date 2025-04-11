@@ -5,32 +5,32 @@ export default function createOperation (props: {
   flow: Flow
 } & OperationDef): Operation {
   if (
-    props.aInput == null ||
-    props.bInput == null ||
+    props.queue == null ||
+    props.catalog == null ||
     props.output == null
   ) {
     throw new Error('Operation definition is required')
   }
 
-  const inputsEmpty = props.aInput.length === 0 && props.bInput.length === 0
+  const inputsEmpty = props.queue.length === 0 && props.catalog.length === 0
   const outputEmpty = props.output.length === 0
   const empty = inputsEmpty && outputEmpty
   if (empty) {
     throw new Error('Operation cannot be empty')
   }
 
-  const aPresent = props.aInput.length > 0
-  const bPresent = props.bInput.length > 0
+  const aPresent = props.queue.length > 0
+  const bPresent = props.catalog.length > 0
   const oneSided = aPresent !== bPresent
   if (oneSided) {
     throw new Error('Cannot have input on only one side')
   }
 
-  if (props.aInput.length > props.bInput.length) {
-    throw new Error('A cannot be longer than B')
+  if (props.queue.length > props.catalog.length) {
+    throw new Error('queue cannot be longer than catalog')
   }
 
-  const allUids = [...props.aInput, ...props.bInput, ...props.output]
+  const allUids = [...props.queue, ...props.catalog, ...props.output]
   const uniqueUids = new Set(allUids)
   const duplicate = allUids.length !== uniqueUids.size
   if (duplicate) {
@@ -43,9 +43,9 @@ export default function createOperation (props: {
 
   const operation: Operation = {
     uid,
-    aInput: props.aInput,
+    queue: props.queue,
     better: undefined,
-    bInput: props.bInput,
+    catalog: props.catalog,
     output: props.output
   }
 

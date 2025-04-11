@@ -1,6 +1,6 @@
 import { Flow, Operation } from './flowTypes'
 import isFlowComplete from './isFlowComplete'
-import getOperationDistance from './getOperationDistance'
+import getOptionIndex from './getOptionIndex'
 
 export default function getChoiceOperation (props: { flow: Flow }): Operation {
   const operations = Object.values(props.flow.operations)
@@ -14,16 +14,16 @@ export default function getChoiceOperation (props: { flow: Flow }): Operation {
   }
 
   const choiceOperation = operations.reduce<Operation | null>((bestOperation, currentOperation) => {
-    const currentDistance = getOperationDistance({ operation: currentOperation })
-    const bestDistance = bestOperation != null
-      ? getOperationDistance({ operation: bestOperation })
+    const currentIndex = getOptionIndex({ operation: currentOperation })
+    const bestIndex = bestOperation != null
+      ? getOptionIndex({ operation: bestOperation })
       : -1
 
-    if (currentDistance > bestDistance) {
+    if (currentIndex > bestIndex) {
       return currentOperation
     }
 
-    if (currentDistance === bestDistance &&
+    if (currentIndex === bestIndex &&
         bestOperation != null &&
         currentOperation.uid < bestOperation.uid) {
       return currentOperation

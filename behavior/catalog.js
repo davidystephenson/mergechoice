@@ -1,6 +1,6 @@
 export const operation1 = {
-  aInput: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  bInput: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: undefined,
   output: ['comics']
 }
@@ -24,8 +24,8 @@ User chooses B
 */
 
 export const operation2 = {
-  aInput: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  bInput: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: 2,
   output: ['comics']
 }
@@ -49,8 +49,8 @@ User chooses B
 */
 
 export const operation3 = {
-  aInput: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  bInput: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: 1,
   output: ['comics']
 }
@@ -63,8 +63,8 @@ b: revisited
 2. path: 5
 3. animatrix: 4
 3. online: 4
-4. revolutions: 3
 4. enter: 3
+4. revolutions: 3
 5. reloaded: 2
 6. original: 1
 6. revisited: 1
@@ -74,8 +74,8 @@ User chooses B
 */
 
 export const operation4 = {
-  aInput: ['reloaded', 'revolutions', 'animatrix'],
-  bInput: ['enter', 'online', 'path', 'awakens'],
+  queue: ['reloaded', 'revolutions', 'animatrix'],
+  catalog: ['enter', 'online', 'path', 'awakens'],
   better: undefined,
   output: ['comics', 'original', 'revisited']
 }
@@ -99,8 +99,8 @@ User chooses B
 */
 
 export const operation5 = {
-  aInput: ['reloaded', 'revolutions', 'animatrix'],
-  bInput: ['enter', 'online', 'path', 'awakens'],
+  queue: ['reloaded', 'revolutions', 'animatrix'],
+  catalog: ['enter', 'online', 'path', 'awakens'],
   better: 1,
   output: ['comics', 'original', 'revisited']
 }
@@ -124,8 +124,8 @@ User chooses B
 */
 
 export const operation6 = {
-  aInput: ['revolutions', 'animatrix'],
-  bInput: ['online', 'path', 'awakens'],
+  queue: ['revolutions', 'animatrix'],
+  catalog: ['online', 'path', 'awakens'],
   better: undefined,
   output: ['comics', 'original', 'revisited', 'reloaded', 'enter']
 }
@@ -149,8 +149,8 @@ User chooses B
 */
 
 export const operation7 = {
-  aInput: ['revolutions', 'animatrix'],
-  bInput: ['online', 'path', 'awakens'],
+  queue: ['revolutions', 'animatrix'],
+  catalog: ['online', 'path', 'awakens'],
   better: 1,
   output: ['comics', 'original', 'revisited', 'reloaded', 'enter']
 }
@@ -174,8 +174,8 @@ User chooses B
 */
 
 export const operation8 = {
-  aInput: ['animatrix'],
-  bInput: ['path', 'awakens'],
+  queue: ['animatrix'],
+  catalog: ['path', 'awakens'],
   better: undefined,
   output: ['comics', 'original', 'revisited', 'reloaded', 'enter', 'revolutions', 'online']
 }
@@ -198,8 +198,8 @@ User chooses B
 */
 
 export const operation9 = {
-  aInput: [],
-  bInput: [],
+  queue: [],
+  catalog: [],
   output: ['comics', 'original', 'revisited', 'reloaded', 'enter', 'revolutions', 'online', 'animatrix', 'path', 'awakens']
 }
 /*

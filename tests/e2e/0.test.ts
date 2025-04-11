@@ -6,6 +6,6 @@ describe('if zero items are imported', () => {
     choice: undefined,
     ranking: [],
     createInitialFlow: () => createFlow({ uid: 'test' }),
-    options: []
+    queues: []
   })
 })

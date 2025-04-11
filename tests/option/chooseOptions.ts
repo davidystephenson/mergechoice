@@ -3,11 +3,11 @@ import getVerifiedChoice from '../choice/getVerifiedChoice'
 
 export default function chooseOptions (props: {
   flow: Flow
-  options: Array<'A' | 'B'>
+  queues: boolean[]
 }): Flow {
-  const chosen = props.options.reduce((flow, option) => {
+  const chosen = props.queues.reduce((flow, queue) => {
     const choice = getVerifiedChoice({ flow })
-    const itemUid = option === 'A' ? choice.aItemUid : choice.bItemUid
+    const itemUid = queue ? choice.queue : choice.catalog
     const chosenFlow = chooseOption({
       flow, option: itemUid
     })

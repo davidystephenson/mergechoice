@@ -6,12 +6,12 @@ describe('getRanking', () => {
   it('should throw an error if an operation item UID is missing from the items', () => {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      a: { name: 'a', seed: 0, uid: 'a' },
-      b: { name: 'b', seed: 0, uid: 'b' }
+      a: { label: 'a', seed: 0, uid: 'a' },
+      b: { label: 'b', seed: 0, uid: 'b' }
     }
     const operation = createOperation({
-      aInput: ['a'],
-      bInput: ['b'],
+      queue: ['a'],
+      catalog: ['b'],
       flow,
       output: ['c']
     })
@@ -22,13 +22,13 @@ describe('getRanking', () => {
   it('should throw an error if an item UID is missing from the operations', () => {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      a: { name: 'a', seed: 0, uid: 'a' },
-      b: { name: 'b', seed: 0, uid: 'b' },
-      c: { name: 'c', seed: 0, uid: 'c' }
+      a: { label: 'a', seed: 0, uid: 'a' },
+      b: { label: 'b', seed: 0, uid: 'b' },
+      c: { label: 'c', seed: 0, uid: 'c' }
     }
     const operation = createOperation({
-      aInput: ['a'],
-      bInput: ['b'],
+      queue: ['a'],
+      catalog: ['b'],
       flow,
       output: []
     })
@@ -39,24 +39,24 @@ describe('getRanking', () => {
   it('should throw an error if a UID is duplicated in the operations', () => {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      a: { name: 'a', seed: 0, uid: 'a' },
-      b: { name: 'b', seed: 0, uid: 'b' },
-      c: { name: 'c', seed: 0, uid: 'c' },
-      d: { name: 'd', seed: 0, uid: 'd' },
-      e: { name: 'e', seed: 0, uid: 'e' },
-      f: { name: 'f', seed: 0, uid: 'f' },
-      g: { name: 'g', seed: 0, uid: 'g' }
+      a: { label: 'a', seed: 0, uid: 'a' },
+      b: { label: 'b', seed: 0, uid: 'b' },
+      c: { label: 'c', seed: 0, uid: 'c' },
+      d: { label: 'd', seed: 0, uid: 'd' },
+      e: { label: 'e', seed: 0, uid: 'e' },
+      f: { label: 'f', seed: 0, uid: 'f' },
+      g: { label: 'g', seed: 0, uid: 'g' }
     }
     const operation1 = createOperation({
-      aInput: ['a'],
-      bInput: ['b'],
+      queue: ['a'],
+      catalog: ['b'],
       flow,
       output: ['c', 'd']
     })
     const addedFlow1 = addOperation({ flow, operation: operation1 })
     const operation2 = createOperation({
-      aInput: ['e', 'b'],
-      bInput: ['g', 'f'],
+      queue: ['e', 'b'],
+      catalog: ['g', 'f'],
       flow: addedFlow1,
       output: ['d', 'c']
     })
@@ -102,15 +102,15 @@ describe('getRanking', () => {
   it('should give input items points equal to the number of preceding items in their input', () => {
     const flow = createFlow({ uid: 'bond' })
     flow.items = {
-      no: { name: 'no', seed: 0, uid: 'no' },
-      russia: { name: 'russia', seed: 0, uid: 'russia' },
-      goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
-      thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-      twice: { name: 'twice', seed: 0, uid: 'twice' }
+      no: { label: 'no', seed: 0, uid: 'no' },
+      russia: { label: 'russia', seed: 0, uid: 'russia' },
+      goldfinger: { label: 'goldfinger', seed: 0, uid: 'goldfinger' },
+      thunderball: { label: 'thunderball', seed: 0, uid: 'thunderball' },
+      twice: { label: 'twice', seed: 0, uid: 'twice' }
     }
     const operation = createOperation({
-      aInput: ['no', 'russia'],
-      bInput: ['goldfinger', 'thunderball', 'twice'],
+      queue: ['no', 'russia'],
+      catalog: ['goldfinger', 'thunderball', 'twice'],
       flow,
       output: []
     })
@@ -132,18 +132,18 @@ describe('getRanking', () => {
     it('should add 1 to all B items starting with the better index', () => {
       const flow = createFlow({ uid: 'bond' })
       flow.items = {
-        no: { name: 'no', seed: 0, uid: 'no' },
-        russia: { name: 'russia', seed: 0, uid: 'russia' },
-        goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
-        thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-        twice: { name: 'twice', seed: 0, uid: 'twice' },
-        casino1: { name: 'casino1', seed: 0, uid: 'casino1' },
-        service: { name: 'service', seed: 0, uid: 'service' },
-        diamonds: { name: 'diamonds', seed: 0, uid: 'diamonds' }
+        no: { label: 'no', seed: 0, uid: 'no' },
+        russia: { label: 'russia', seed: 0, uid: 'russia' },
+        goldfinger: { label: 'goldfinger', seed: 0, uid: 'goldfinger' },
+        thunderball: { label: 'thunderball', seed: 0, uid: 'thunderball' },
+        twice: { label: 'twice', seed: 0, uid: 'twice' },
+        casino1: { label: 'casino1', seed: 0, uid: 'casino1' },
+        service: { label: 'service', seed: 0, uid: 'service' },
+        diamonds: { label: 'diamonds', seed: 0, uid: 'diamonds' }
       }
       const operation = createOperation({
-        aInput: ['no', 'russia'],
-        bInput: ['goldfinger', 'thunderball', 'twice', 'casino1', 'service', 'diamonds'],
+        queue: ['no', 'russia'],
+        catalog: ['goldfinger', 'thunderball', 'twice', 'casino1', 'service', 'diamonds'],
         flow,
         output: []
       })
@@ -169,16 +169,16 @@ describe('getRanking', () => {
     it('should add the number output items to the input points', () => {
       const flow = createFlow({ uid: 'bond' })
       flow.items = {
-        no: { name: 'no', seed: 0, uid: 'no' },
-        russia: { name: 'russia', seed: 0, uid: 'russia' },
-        goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
-        thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-        twice: { name: 'twice', seed: 0, uid: 'twice' },
-        casino1: { name: 'casino1', seed: 0, uid: 'casino1' }
+        no: { label: 'no', seed: 0, uid: 'no' },
+        russia: { label: 'russia', seed: 0, uid: 'russia' },
+        goldfinger: { label: 'goldfinger', seed: 0, uid: 'goldfinger' },
+        thunderball: { label: 'thunderball', seed: 0, uid: 'thunderball' },
+        twice: { label: 'twice', seed: 0, uid: 'twice' },
+        casino1: { label: 'casino1', seed: 0, uid: 'casino1' }
       }
       const operation = createOperation({
-        aInput: ['no'],
-        bInput: ['russia', 'goldfinger', 'thunderball'],
+        queue: ['no'],
+        catalog: ['russia', 'goldfinger', 'thunderball'],
         flow,
         output: ['twice', 'casino1']
       })
@@ -198,15 +198,15 @@ describe('getRanking', () => {
     it('should give output items points equal to the number of preceding output items', () => {
       const flow = createFlow({ uid: 'bond' })
       flow.items = {
-        no: { name: 'no', seed: 0, uid: 'no' },
-        russia: { name: 'russia', seed: 0, uid: 'russia' },
-        goldfinger: { name: 'goldfinger', seed: 0, uid: 'goldfinger' },
-        thunderball: { name: 'thunderball', seed: 0, uid: 'thunderball' },
-        twice: { name: 'twice', seed: 0, uid: 'twice' }
+        no: { label: 'no', seed: 0, uid: 'no' },
+        russia: { label: 'russia', seed: 0, uid: 'russia' },
+        goldfinger: { label: 'goldfinger', seed: 0, uid: 'goldfinger' },
+        thunderball: { label: 'thunderball', seed: 0, uid: 'thunderball' },
+        twice: { label: 'twice', seed: 0, uid: 'twice' }
       }
       const operation = createOperation({
-        aInput: ['no'],
-        bInput: ['russia', 'goldfinger'],
+        queue: ['no'],
+        catalog: ['russia', 'goldfinger'],
         flow,
         output: ['thunderball', 'twice']
       })
@@ -222,17 +222,17 @@ describe('getRanking', () => {
   it('should give every item a rank equal to the number of unique point values that are greater than it', () => {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      a: { name: 'a', seed: 0, uid: 'a' },
-      b: { name: 'b', seed: 0, uid: 'b' },
-      c: { name: 'c', seed: 0, uid: 'c' },
-      d: { name: 'd', seed: 0, uid: 'd' },
-      e: { name: 'e', seed: 0, uid: 'e' },
-      f: { name: 'f', seed: 0, uid: 'f' },
-      g: { name: 'g', seed: 0, uid: 'g' }
+      a: { label: 'a', seed: 0, uid: 'a' },
+      b: { label: 'b', seed: 0, uid: 'b' },
+      c: { label: 'c', seed: 0, uid: 'c' },
+      d: { label: 'd', seed: 0, uid: 'd' },
+      e: { label: 'e', seed: 0, uid: 'e' },
+      f: { label: 'f', seed: 0, uid: 'f' },
+      g: { label: 'g', seed: 0, uid: 'g' }
     }
     const operation = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e', 'f', 'g']
     })
@@ -254,20 +254,20 @@ describe('getRanking', () => {
     expect(rankingItemG.rank).toBe(3)
   })
 
-  it('should sort the ranking items by rank first, then name', () => {
+  it('should sort the ranking items by rank first, then label', () => {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      a: { name: 'a', seed: 0, uid: 'a' },
-      b: { name: 'b', seed: 0, uid: 'b' },
-      c: { name: 'c', seed: 0, uid: 'c' },
-      d: { name: 'd', seed: 0, uid: 'd' },
-      e: { name: 'e', seed: 0, uid: 'e' },
-      f: { name: 'f', seed: 0, uid: 'f' },
-      g: { name: 'g', seed: 0, uid: 'g' }
+      a: { label: 'a', seed: 0, uid: 'a' },
+      b: { label: 'b', seed: 0, uid: 'b' },
+      c: { label: 'c', seed: 0, uid: 'c' },
+      d: { label: 'd', seed: 0, uid: 'd' },
+      e: { label: 'e', seed: 0, uid: 'e' },
+      f: { label: 'f', seed: 0, uid: 'f' },
+      g: { label: 'g', seed: 0, uid: 'g' }
     }
     const operation = createOperation({
-      aInput: ['a', 'b'],
-      bInput: ['c', 'd'],
+      queue: ['a', 'b'],
+      catalog: ['c', 'd'],
       flow,
       output: ['e', 'f', 'g']
     })

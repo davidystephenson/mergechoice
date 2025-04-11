@@ -6,19 +6,19 @@ describe('behavior5', () => {
   function createFiveFlow (): Flow {
     const flow = createFlow({ uid: 'test' })
     flow.items = {
-      original: { uid: 'original', name: 'original', seed: 0 },
-      reloaded: { uid: 'reloaded', name: 'reloaded', seed: 1 },
-      resurrections: { uid: 'resurrections', name: 'resurrections', seed: 2 },
-      revolutions: { uid: 'revolutions', name: 'revolutions', seed: 3 },
-      animatrix: { uid: 'animatrix', name: 'animatrix', seed: 4 },
-      enter: { uid: 'enter', name: 'enter', seed: 5 },
-      online: { uid: 'online', name: 'online', seed: 6 },
-      path: { uid: 'path', name: 'path', seed: 7 },
-      awakens: { uid: 'awakens', name: 'awakens', seed: 8 }
+      original: { uid: 'original', label: 'original', seed: 0 },
+      reloaded: { uid: 'reloaded', label: 'reloaded', seed: 1 },
+      resurrections: { uid: 'resurrections', label: 'resurrections', seed: 2 },
+      revolutions: { uid: 'revolutions', label: 'revolutions', seed: 3 },
+      animatrix: { uid: 'animatrix', label: 'animatrix', seed: 4 },
+      enter: { uid: 'enter', label: 'enter', seed: 5 },
+      online: { uid: 'online', label: 'online', seed: 6 },
+      path: { uid: 'path', label: 'path', seed: 7 },
+      awakens: { uid: 'awakens', label: 'awakens', seed: 8 }
     }
     const insertedFlow = insertOperation({
-      aInput: ['reloaded', 'revolutions', 'resurrections', 'animatrix'],
-      bInput: ['enter', 'online', 'path', 'awakens'],
+      queue: ['reloaded', 'revolutions', 'resurrections', 'animatrix'],
+      catalog: ['enter', 'online', 'path', 'awakens'],
       flow,
       output: ['original']
     })
@@ -27,11 +27,11 @@ describe('behavior5', () => {
   describe('operation1', () => {
     verifyFlowStep({
       choice: {
-        a: 'reloaded',
-        b: 'enter'
+        queue: 'reloaded',
+        catalog: 'enter'
       },
       createInitialFlow: createFiveFlow,
-      options: [],
+      queues: [],
       ranking: [
         { uid: 'animatrix', rank: 1, points: 4 },
         { uid: 'awakens', rank: 1, points: 4 },
@@ -48,11 +48,11 @@ describe('behavior5', () => {
   describe('operation2', () => {
     verifyFlowStep({
       choice: {
-        a: 'enter',
-        b: 'animatrix'
+        queue: 'enter',
+        catalog: 'animatrix'
       },
       createInitialFlow: createFiveFlow,
-      options: ['B'],
+      queues: ['B'],
       ranking: [
         { uid: 'awakens', rank: 1, points: 5 },
         { uid: 'animatrix', rank: 2, points: 4 },
@@ -69,11 +69,11 @@ describe('behavior5', () => {
   describe('operation3', () => {
     verifyFlowStep({
       choice: {
-        a: 'enter',
-        b: 'revolutions'
+        queue: 'enter',
+        catalog: 'revolutions'
       },
       createInitialFlow: createFiveFlow,
-      options: ['B', 'B'],
+      queues: ['B', 'B'],
       ranking: [
         { uid: 'awakens', rank: 1, points: 5 },
         { uid: 'animatrix', rank: 2, points: 4 },
@@ -90,11 +90,11 @@ describe('behavior5', () => {
   describe('operation4', () => {
     verifyFlowStep({
       choice: {
-        a: 'enter',
-        b: 'resurrections'
+        queue: 'enter',
+        catalog: 'resurrections'
       },
       createInitialFlow: createFiveFlow,
-      options: ['B', 'B', 'B'],
+      queues: ['B', 'B', 'B'],
       ranking: [
         { uid: 'awakens', rank: 1, points: 6 },
         { uid: 'path', rank: 2, points: 5 },
@@ -111,11 +111,11 @@ describe('behavior5', () => {
   describe('operation5', () => {
     verifyFlowStep({
       choice: {
-        a: 'animatrix',
-        b: 'online'
+        queue: 'animatrix',
+        catalog: 'online'
       },
       createInitialFlow: createFiveFlow,
-      options: ['B', 'B', 'B', 'B'],
+      queues: ['B', 'B', 'B', 'B'],
       ranking: [
         { uid: 'awakens', rank: 1, points: 7 },
         { uid: 'path', rank: 2, points: 6 },

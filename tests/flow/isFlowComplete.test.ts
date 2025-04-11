@@ -11,8 +11,8 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation1 = createOperation({
-      aInput: ['item1'],
-      bInput: ['item2'],
+      queue: ['item1'],
+      catalog: ['item2'],
       flow,
       output: []
     })
@@ -22,8 +22,8 @@ describe('isFlowComplete', () => {
     })
 
     const operation2 = createOperation({
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       flow: addedFlow1,
       output: ['item3']
     })
@@ -40,8 +40,8 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation = createOperation({
-      aInput: ['item1'],
-      bInput: ['item2'],
+      queue: ['item1'],
+      catalog: ['item2'],
       flow,
       output: []
     })
@@ -58,8 +58,8 @@ describe('isFlowComplete', () => {
     const flow = createFlow({ uid: 'test' })
 
     const operation = createOperation({
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       flow,
       output: ['item1']
     })

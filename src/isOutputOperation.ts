@@ -8,12 +8,12 @@ export default function isOutputOperation (props: {
     return false
   }
 
-  const hasAInputs = props.operation.aInput.length !== 0
+  const hasAInputs = props.operation.queue.length !== 0
   if (hasAInputs) {
     return false
   }
 
-  const hasBInputs = props.operation.bInput.length !== 0
+  const hasBInputs = props.operation.catalog.length !== 0
   if (hasBInputs) {
     return false
   }

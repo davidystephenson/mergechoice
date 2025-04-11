@@ -4,8 +4,8 @@ describe('isOutputOperation', () => {
   it('should return true for output operations', () => {
     const operation: Operation = {
       uid: '1',
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       output: ['a', 'b'],
       better: undefined
     }
@@ -16,8 +16,8 @@ describe('isOutputOperation', () => {
   it('should return false for input operations', () => {
     const operation: Operation = {
       uid: '1',
-      aInput: ['a'],
-      bInput: ['b'],
+      queue: ['a'],
+      catalog: ['b'],
       output: [],
       better: undefined
     }
@@ -28,8 +28,8 @@ describe('isOutputOperation', () => {
   it('should return false for mixed operations', () => {
     const operation: Operation = {
       uid: '1',
-      aInput: ['a'],
-      bInput: ['b'],
+      queue: ['a'],
+      catalog: ['b'],
       output: ['c', 'd'],
       better: undefined
     }

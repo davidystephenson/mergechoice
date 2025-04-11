@@ -12,7 +12,7 @@ export default function getChoice (props: {
 
   const operations = Object.values(props.flow.operations)
   const operationsWithInputs = operations.filter(operation =>
-    operation.aInput.length > 0 && operation.bInput.length > 0
+    operation.queue.length > 0 && operation.catalog.length > 0
   )
 
   if (operationsWithInputs.length === 0) {
@@ -21,13 +21,13 @@ export default function getChoice (props: {
 
   const selectedOperation = getChoiceOperation({ flow: props.flow })
 
-  const aItem = selectedOperation.aInput[0]
+  const aItem = selectedOperation.queue[0]
   const optionIndex = getOptionIndex({ operation: selectedOperation })
-  const bItem = selectedOperation.bInput[optionIndex]
+  const bItem = selectedOperation.catalog[optionIndex]
 
   return {
-    aItemUid: aItem,
-    bItemUid: bItem,
-    operationUid: selectedOperation.uid
+    queue: aItem,
+    catalog: bItem,
+    operation: selectedOperation.uid
   }
 }

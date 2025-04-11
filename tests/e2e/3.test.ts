@@ -4,8 +4,8 @@ import verifyFlowStep from '../flow/verifyFlowStep'
 describe('if the first three Matrix movies are imported with the seed "test"', () => {
   verifyFlowStep({
     choice: {
-      a: 'revolutions',
-      b: 'reloaded'
+      queue: 'revolutions',
+      catalog: 'reloaded'
     },
     ranking: [
       { uid: 'original', rank: 1, points: 0 },
@@ -13,14 +13,14 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
       { uid: 'revolutions', rank: 1, points: 0 }
     ],
     createInitialFlow: createThreeFlow,
-    options: []
+    queues: []
   })
 
   describe('if a is chosen', () => {
     verifyFlowStep({
       choice: {
-        a: 'reloaded',
-        b: 'original'
+        queue: 'reloaded',
+        catalog: 'original'
       },
       ranking: [
         { uid: 'revolutions', rank: 1, points: 1 },
@@ -28,7 +28,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
         { uid: 'reloaded', rank: 2, points: 0 }
       ],
       createInitialFlow: createThreeFlow,
-      options: ['A']
+      queues: ['A']
     })
 
     describe('if a is chosen', () => {
@@ -40,15 +40,15 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
           { uid: 'original', rank: 3, points: 0 }
         ],
         createInitialFlow: createThreeFlow,
-        options: ['A', 'A']
+        queues: ['A', 'A']
       })
     })
 
     describe('if b is chosen', () => {
       verifyFlowStep({
         choice: {
-          a: 'revolutions',
-          b: 'original'
+          queue: 'revolutions',
+          catalog: 'original'
         },
         ranking: [
           { uid: 'original', rank: 1, points: 1 },
@@ -56,7 +56,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
           { uid: 'reloaded', rank: 2, points: 0 }
         ],
         createInitialFlow: createThreeFlow,
-        options: ['A', 'B']
+        queues: ['A', 'B']
       })
 
       describe('if a is chosen', () => {
@@ -68,7 +68,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
             { uid: 'reloaded', rank: 3, points: 0 }
           ],
           createInitialFlow: createThreeFlow,
-          options: ['A', 'B', 'A']
+          queues: ['A', 'B', 'A']
         })
       })
 
@@ -81,7 +81,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
             { uid: 'reloaded', rank: 3, points: 0 }
           ],
           createInitialFlow: createThreeFlow,
-          options: ['A', 'B', 'B']
+          queues: ['A', 'B', 'B']
         })
       })
     })
@@ -90,8 +90,8 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
   describe('if b is chosen', () => {
     verifyFlowStep({
       choice: {
-        a: 'revolutions',
-        b: 'original'
+        queue: 'revolutions',
+        catalog: 'original'
       },
       ranking: [
         { uid: 'reloaded', rank: 1, points: 1 },
@@ -99,7 +99,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
         { uid: 'revolutions', rank: 2, points: 0 }
       ],
       createInitialFlow: createThreeFlow,
-      options: ['B']
+      queues: ['B']
     })
 
     describe('if a is chosen', () => {
@@ -111,15 +111,15 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
           { uid: 'original', rank: 3, points: 0 }
         ],
         createInitialFlow: createThreeFlow,
-        options: ['B', 'A']
+        queues: ['B', 'A']
       })
     })
 
     describe('if b is chosen', () => {
       verifyFlowStep({
         choice: {
-          a: 'reloaded',
-          b: 'original'
+          queue: 'reloaded',
+          catalog: 'original'
         },
         ranking: [
           { uid: 'original', rank: 1, points: 1 },
@@ -127,7 +127,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
           { uid: 'revolutions', rank: 2, points: 0 }
         ],
         createInitialFlow: createThreeFlow,
-        options: ['B', 'B']
+        queues: ['B', 'B']
       })
 
       describe('if a is chosen', () => {
@@ -139,7 +139,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
             { uid: 'revolutions', rank: 3, points: 0 }
           ],
           createInitialFlow: createThreeFlow,
-          options: ['B', 'B', 'A']
+          queues: ['B', 'B', 'A']
         })
       })
 
@@ -152,7 +152,7 @@ describe('if the first three Matrix movies are imported with the seed "test"', (
             { uid: 'revolutions', rank: 3, points: 0 }
           ],
           createInitialFlow: createThreeFlow,
-          options: ['B', 'B', 'B']
+          queues: ['B', 'B', 'B']
         })
       })
     })

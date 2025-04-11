@@ -8,15 +8,15 @@ describe('importItems', () => {
   })
 
   it('throws an error if the new items have duplicate UIDs', () => {
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
     expect(() => importItems({ flow: createFlow({ uid: 'test' }), items: [item1, item1] })).toThrow()
   })
 
   it('should throw an error if the items UIDs are not unique', () => {
     expect(() => {
       const flow = createFlow({ uid: 'test' })
-      const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-      const item2 = { name: 'The Matrix Leaked', uid: '1', seed: 90 }
+      const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+      const item2 = { label: 'The Matrix Leaked', uid: '1', seed: 90 }
       const importedFlow = importItems({ flow, items: [item1, item2] })
       importItems({ flow: importedFlow, items: [item1] })
     }).toThrow()
@@ -24,9 +24,9 @@ describe('importItems', () => {
 
   it('should include the items indexed by uid', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
     const importedFlow = importItems({ flow, items: [item1, item2, item3] })
     expect(importedFlow.items[item1.uid]).toEqual(item1)
     expect(importedFlow.items[item2.uid]).toEqual(item2)
@@ -35,9 +35,9 @@ describe('importItems', () => {
 
   it('should include the items in operations', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
     const importedFlow = importItems({ flow, items: [item1, item2, item3] })
     expect(importedFlow.items[item1.uid]).toEqual(item1)
     expect(importedFlow.items[item2.uid]).toEqual(item2)
@@ -49,11 +49,11 @@ describe('importItems', () => {
 
   it('should return the same operation UIDs with the same flow UID', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -69,11 +69,11 @@ describe('importItems', () => {
 
   it('should return the same inputs with the same flow UID', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -82,11 +82,11 @@ describe('importItems', () => {
     const duplicateOperations = Object.values(duplicateImportedFlow.operations)
     const same = operations.every((operation, index) => {
       const sameOperation = duplicateOperations[index]
-      const sameA = sameOperation.aInput[0] === operation.aInput[0]
+      const sameA = sameOperation.queue[0] === operation.queue[0]
       if (!sameA) {
         return false
       }
-      const sameB = sameOperation.bInput[0] === operation.bInput[0]
+      const sameB = sameOperation.catalog[0] === operation.catalog[0]
       return sameB
     })
     expect(same).toBe(true)
@@ -94,11 +94,11 @@ describe('importItems', () => {
 
   it('should return the same outputs with the same flow UID', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -115,11 +115,11 @@ describe('importItems', () => {
 
   it('should return the same number of operations with a different flow UID', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -131,11 +131,11 @@ describe('importItems', () => {
 
   it('should return different operation UIDs with a different flow UID', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -153,9 +153,9 @@ describe('importItems', () => {
 
   it('should index operations by uid', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
     const items = [item1, item2, item3]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -167,10 +167,10 @@ describe('importItems', () => {
 
   it('should give operations unique UIDs distinct from item UIDs', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
     const items = [item1, item2, item3, item4]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -184,18 +184,18 @@ describe('importItems', () => {
 
   it('should include each item only once in the operations', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
     const items = [item1, item2, item3]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
     const everyItemIsOnlyInOneOperation = items.every((item) => {
       const itemOperations = operations.filter((operation) => {
-        if (operation.aInput.includes(item.uid)) {
+        if (operation.queue.includes(item.uid)) {
           return true
         }
-        if (operation.bInput.includes(item.uid)) {
+        if (operation.catalog.includes(item.uid)) {
           return true
         }
         if (operation.output.includes(item.uid)) {
@@ -210,11 +210,11 @@ describe('importItems', () => {
 
   it('should create as many input operations as possible, with at most one output operation', () => {
     const flow = createFlow({ uid: 'test' })
-    const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-    const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-    const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-    const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-    const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+    const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+    const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+    const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+    const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+    const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
     const items = [item1, item2, item3, item4, item5]
     const importedFlow = importItems({ flow, items })
     const operations = Object.values(importedFlow.operations)
@@ -223,10 +223,10 @@ describe('importItems', () => {
       if (operation.output.length > 0) {
         return false
       }
-      return operation.aInput.length > 0 || operation.bInput.length > 0
+      return operation.queue.length > 0 || operation.catalog.length > 0
     })
     const outputOperations = operations.filter((operation) => {
-      if (operation.aInput.length > 0 || operation.bInput.length > 0) {
+      if (operation.queue.length > 0 || operation.catalog.length > 0) {
         return false
       }
       return operation.output.length > 0
@@ -238,7 +238,7 @@ describe('importItems', () => {
   describe('if only one item is imported', () => {
     it('should not include an operation with two new items in the inputs', () => {
       const flow = createFlow({ uid: 'test' })
-      const items = [{ name: 'The Matrix', uid: '1', seed: 90 }]
+      const items = [{ label: 'The Matrix', uid: '1', seed: 90 }]
       const importedFlow = importItems({ flow, items })
       const operation = getImportInputsOperation({ flow: importedFlow, items })
       expect(operation).toBeUndefined()
@@ -246,7 +246,7 @@ describe('importItems', () => {
 
     it('should create an output operation with the new item', () => {
       const flow = createFlow({ uid: 'test' })
-      const items = [{ name: 'The Matrix', uid: '1', seed: 90 }]
+      const items = [{ label: 'The Matrix', uid: '1', seed: 90 }]
       const importedFlow = importItems({ flow, items })
       const operations = Object.values(importedFlow.operations)
       const operation = operations.find((operation) => {
@@ -262,8 +262,8 @@ describe('importItems', () => {
   describe('if at least two items are imported', () => {
     it('should include an operation with only two of the new items in the inputs', () => {
       const flow = createFlow({ uid: 'test' })
-      const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-      const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
+      const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+      const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
       const importedFlow = importItems({ flow, items: [item1, item2] })
       const operation = getImportInputsOperation({ flow: importedFlow, items: [item1, item2] })
       expect(operation).toBeDefined()
@@ -274,8 +274,8 @@ describe('importItems', () => {
     it('should create only one operation', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
-        { name: 'The Matrix', uid: '1', seed: 90 },
-        { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
+        { label: 'The Matrix', uid: '1', seed: 90 },
+        { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
       ]
       const importedFlow = importItems({ flow, items })
       const operations = Object.values(importedFlow.operations)
@@ -285,8 +285,8 @@ describe('importItems', () => {
     it('should create an input operation with the two new items', () => {
       const flow = createFlow({ uid: 'test' })
       const items = [
-        { name: 'The Matrix', uid: '1', seed: 90 },
-        { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
+        { label: 'The Matrix', uid: '1', seed: 90 },
+        { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
       ]
       const importedFlow = importItems({ flow, items })
       const operation = getImportInputsOperation({ flow: importedFlow, items })
@@ -297,8 +297,8 @@ describe('importItems', () => {
   describe('if an even number of items are imported', () => {
     it('should not include an operation no inputs and a new item in the output', () => {
       const flow = createFlow({ uid: 'test' })
-      const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-      const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
+      const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+      const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
       const itemIds = [item1.uid, item2.uid]
       const importedFlow = importItems({ flow, items: [item1, item2] })
       const operations = Object.values(importedFlow.operations)
@@ -311,10 +311,10 @@ describe('importItems', () => {
 
     it('should create half as many operations as there are items', () => {
       const flow = createFlow({ uid: 'test' })
-      const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-      const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-      const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-      const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
+      const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+      const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+      const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+      const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
       const importedFlow = importItems({ flow, items: [item1, item2, item3, item4] })
       const operations = Object.values(importedFlow.operations)
       expect(operations.length).toBe(2)
@@ -324,11 +324,11 @@ describe('importItems', () => {
   describe('if an odd number of items are imported', () => {
     it('should include an operation no inputs and only one of the new items in the output', () => {
       const flow = createFlow({ uid: 'test' })
-      const item1 = { name: 'The Matrix', uid: '1', seed: 90 }
-      const item2 = { name: 'The Matrix Reloaded', uid: '2', seed: 30 }
-      const item3 = { name: 'The Matrix Revolutions', uid: '3', seed: 40 }
-      const item4 = { name: 'The Matrix Resurrections', uid: '4', seed: 0 }
-      const item5 = { name: 'The Animatrix', uid: '5', seed: 80 }
+      const item1 = { label: 'The Matrix', uid: '1', seed: 90 }
+      const item2 = { label: 'The Matrix Reloaded', uid: '2', seed: 30 }
+      const item3 = { label: 'The Matrix Revolutions', uid: '3', seed: 40 }
+      const item4 = { label: 'The Matrix Resurrections', uid: '4', seed: 0 }
+      const item5 = { label: 'The Animatrix', uid: '5', seed: 80 }
       const items = [item1, item2, item3, item4, item5]
       const itemIds = items.map((item) => item.uid)
       const importedFlow = importItems({ flow, items })

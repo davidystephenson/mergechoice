@@ -34,8 +34,8 @@ export default function importItems (props: {
 
   if (props.items.length === 1) {
     const operation = createOperation({
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       flow: baseFlow,
       output: [props.items[0].uid]
     })
@@ -58,8 +58,8 @@ export default function importItems (props: {
 
   const flowWithPairs = pairs.reduce((currentFlow, pair) => {
     const operation = createOperation({
-      aInput: [pair[0].uid],
-      bInput: [pair[1].uid],
+      queue: [pair[0].uid],
+      catalog: [pair[1].uid],
       flow: currentFlow,
       output: []
     })
@@ -80,8 +80,8 @@ export default function importItems (props: {
   const remainingItem = items[lastIndex]
 
   const operation = createOperation({
-    aInput: [],
-    bInput: [],
+    queue: [],
+    catalog: [],
     flow: flowWithPairs,
     output: [remainingItem.uid]
   })

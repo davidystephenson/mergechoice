@@ -4,8 +4,8 @@ import verifyFlowStep from '../flow/verifyFlowStep'
 describe('if the four Matrix movies are imported with the seed "test"', () => {
   verifyFlowStep({
     choice: {
-      a: 'original',
-      b: 'revolutions'
+      queue: 'original',
+      catalog: 'revolutions'
     },
     ranking: [
       { uid: 'original', rank: 1, points: 0 },
@@ -14,14 +14,14 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
       { uid: 'revolutions', rank: 1, points: 0 }
     ],
     createInitialFlow: createFourFlow,
-    options: []
+    queues: []
   })
 
   describe('if a is chosen', () => {
     verifyFlowStep({
       choice: {
-        a: 'original',
-        b: 'revolutions'
+        queue: 'original',
+        catalog: 'revolutions'
       },
       ranking: [
         { uid: 'original', rank: 1, points: 1 },
@@ -30,14 +30,14 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
         { uid: 'revolutions', rank: 2, points: 0 }
       ],
       createInitialFlow: createFourFlow,
-      options: ['A']
+      queues: ['A']
     })
 
     xdescribe('if a is chosen', () => {
       verifyFlowStep({
         choice: {
-          a: 'revolutions',
-          b: 'reloaded'
+          queue: 'revolutions',
+          catalog: 'reloaded'
         },
         ranking: [
           { uid: 'original', rank: 1, points: 1 },
@@ -46,14 +46,14 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
           { uid: 'revolutions', rank: 2, points: 0 }
         ],
         createInitialFlow: createFourFlow,
-        options: ['A', 'A']
+        queues: ['A', 'A']
       })
 
       xdescribe('if a is chosen', () => {
         verifyFlowStep({
           choice: {
-            a: 'revolutions',
-            b: 'resurrections'
+            queue: 'revolutions',
+            catalog: 'resurrections'
           },
           ranking: [
             { uid: 'original', rank: 1, points: 2 },
@@ -62,7 +62,7 @@ describe('if the four Matrix movies are imported with the seed "test"', () => {
             { uid: 'reloaded', rank: 3, points: 0 }
           ],
           createInitialFlow: createFourFlow,
-          options: ['A', 'A', 'A']
+          queues: ['A', 'A', 'A']
         })
       })
     })

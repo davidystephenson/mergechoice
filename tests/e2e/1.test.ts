@@ -8,6 +8,6 @@ describe('if one item is imported', () => {
       { uid: 'original', rank: 1, points: 0 }
     ],
     createInitialFlow: createOneFlow,
-    options: []
+    queues: []
   })
 })

@@ -5,8 +5,8 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => createOperation({
       flow,
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       output: []
     })).toThrow()
   })
@@ -15,8 +15,8 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => {
       createOperation({
-        aInput: ['1'],
-        bInput: ['1'],
+        queue: ['1'],
+        catalog: ['1'],
         flow,
         output: ['1']
       })
@@ -27,8 +27,8 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => {
       createOperation({
-        aInput: ['1'],
-        bInput: [],
+        queue: ['1'],
+        catalog: [],
         flow,
         output: []
       })
@@ -39,8 +39,8 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => {
       createOperation({
-        aInput: [],
-        bInput: ['1'],
+        queue: [],
+        catalog: ['1'],
         flow,
         output: []
       })
@@ -51,8 +51,8 @@ describe('createOperation', () => {
     const flow = createFlow({ uid: 'test' })
     expect(() => {
       createOperation({
-        aInput: ['1', '2'],
-        bInput: ['3'],
+        queue: ['1', '2'],
+        catalog: ['3'],
         flow,
         output: []
       })
@@ -64,13 +64,13 @@ describe('createOperation', () => {
     // @ts-expect-error
     expect(() => createOperation({ flow })).toThrow()
     // @ts-expect-error
-    expect(() => createOperation({ flow, aInput: ['1'], bInput: ['2'], output: null })).toThrow()
+    expect(() => createOperation({ flow, queue: ['1'], catalog: ['2'], output: null })).toThrow()
     // @ts-expect-error
     expect(() => createOperation({ flow, output: ['3'] })).toThrow()
     expect(() => {
       const operationDef: OperationDef = {
-        aInput: ['1'],
-        bInput: ['2'],
+        queue: ['1'],
+        catalog: ['2'],
         output: []
       }
       createOperation({ flow, ...operationDef })
@@ -80,8 +80,8 @@ describe('createOperation', () => {
   it('should create an operation with better undefined', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
-      aInput: ['1'],
-      bInput: ['2', '3', '4'],
+      queue: ['1'],
+      catalog: ['2', '3', '4'],
       flow,
       output: []
     })
@@ -91,28 +91,28 @@ describe('createOperation', () => {
   it('should create an operation with specified inputs', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow,
       output: []
     })
     expect(operation.uid).toBeDefined()
-    expect(operation.aInput).toEqual(['1'])
-    expect(operation.bInput).toEqual(['2'])
+    expect(operation.queue).toEqual(['1'])
+    expect(operation.catalog).toEqual(['2'])
     expect(operation.output).toEqual([])
   })
 
   it('should create an operation with specified output', () => {
     const flow = createFlow({ uid: 'test' })
     const operation = createOperation({
-      aInput: [],
-      bInput: [],
+      queue: [],
+      catalog: [],
       flow,
       output: ['1']
     })
     expect(operation.uid).toBeDefined()
-    expect(operation.aInput).toEqual([])
-    expect(operation.bInput).toEqual([])
+    expect(operation.queue).toEqual([])
+    expect(operation.catalog).toEqual([])
     expect(operation.output).toEqual(['1'])
   })
 
@@ -125,36 +125,36 @@ describe('createOperation', () => {
     const differentUidDifferentCount = createFlow({ uid: 'different' })
     differentUidDifferentCount.count = 1
     const operation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow,
       output: []
     })
     expect(operation.uid).toBeDefined()
     const sameUidSameCountOperation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow: sameUidSameCount,
       output: []
     })
     expect(sameUidSameCountOperation.uid).toEqual(operation.uid)
     const differentUidSameCountOperation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow: differentUidSameCount,
       output: []
     })
     expect(differentUidSameCountOperation.uid).not.toEqual(operation.uid)
     const sameUidDifferentCountOperation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow: sameUidDifferentCount,
       output: []
     })
     expect(sameUidDifferentCountOperation.uid).not.toEqual(operation.uid)
     const differentUidDifferentCountOperation = createOperation({
-      aInput: ['1'],
-      bInput: ['2'],
+      queue: ['1'],
+      catalog: ['2'],
       flow: differentUidDifferentCount,
       output: []
     })

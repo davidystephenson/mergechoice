@@ -4,15 +4,15 @@ import verifyFlowStep from '../flow/verifyFlowStep'
 describe('if two items are imported', () => {
   verifyFlowStep({
     choice: {
-      a: 'reloaded',
-      b: 'original'
+      queue: 'reloaded',
+      catalog: 'original'
     },
     ranking: [
       { uid: 'original', rank: 1, points: 0 },
       { uid: 'reloaded', rank: 1, points: 0 }
     ],
     createInitialFlow: createTwoFlow,
-    options: []
+    queues: []
   })
 
   describe('if a is chosen', () => {
@@ -23,7 +23,7 @@ describe('if two items are imported', () => {
         { uid: 'original', rank: 2, points: 0 }
       ],
       createInitialFlow: createTwoFlow,
-      options: ['A']
+      queues: ['A']
     })
   })
 
@@ -35,7 +35,7 @@ describe('if two items are imported', () => {
         { uid: 'reloaded', rank: 2, points: 0 }
       ],
       createInitialFlow: createTwoFlow,
-      options: ['B']
+      queues: ['B']
     })
   })
 })

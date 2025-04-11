@@ -23,8 +23,8 @@ export default function combineOperations (props: {
 
   const newOperation = createOperation({
     flow: props.flow,
-    aInput: earlierOperation.output,
-    bInput: laterOperation.output,
+    queue: earlierOperation.output,
+    catalog: laterOperation.output,
     output: []
   })
 

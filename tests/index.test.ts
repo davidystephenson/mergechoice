@@ -16,13 +16,13 @@ import {
 describe('index', () => {
   it('should export the Choice type and schema', () => {
     const choice: Choice = {
-      aItemUid: '123',
-      bItemUid: '456',
-      operationUid: '111'
+      queue: '123',
+      catalog: '456',
+      operation: '111'
     }
-    expect(choice.aItemUid).toBe('123')
-    expect(choice.bItemUid).toBe('456')
-    expect(choice.operationUid).toBe('111')
+    expect(choice.queue).toBe('123')
+    expect(choice.catalog).toBe('456')
+    expect(choice.operation).toBe('111')
     const parsed = choiceSchema.parse(choice)
     expect(parsed).toEqual(choice)
   })
@@ -41,8 +41,8 @@ describe('index', () => {
   })
 
   it('should export the Item type and schema', () => {
-    const item: Item = { name: 'The Matrix', uid: '123', seed: 42 }
-    const seedlessItem: Item = { name: 'The Matrix Reloaded', uid: '666' }
+    const item: Item = { label: 'The Matrix', uid: '123', seed: 42 }
+    const seedlessItem: Item = { label: 'The Matrix Reloaded', uid: '666' }
     const parsed = itemSchema.parse(item)
     expect(parsed).toEqual(item)
     const seedlessParsed = itemSchema.parse(seedlessItem)
@@ -50,8 +50,8 @@ describe('index', () => {
   })
 
   it('should export the RankingItem type and schema', () => {
-    const rankingItem: RankingItem = { name: 'The Matrix', uid: '123', seed: 42, points: 0, rank: 2 }
-    const seedlessRankingItem: RankingItem = { name: 'The Matrix Reloaded', uid: '666', points: 1, rank: 1 }
+    const rankingItem: RankingItem = { label: 'The Matrix', uid: '123', seed: 42, points: 0, rank: 2 }
+    const seedlessRankingItem: RankingItem = { label: 'The Matrix Reloaded', uid: '666', points: 1, rank: 1 }
     const parsed = rankingItemSchema.parse(rankingItem)
     expect(parsed).toEqual(rankingItem)
     const seedlessParsed = rankingItemSchema.parse(seedlessRankingItem)
@@ -60,18 +60,18 @@ describe('index', () => {
 
   it('should export the Operation type and schema', () => {
     const operation1: Operation = {
-      aInput: ['123', '456'],
+      queue: ['123', '456'],
       better: 0,
-      bInput: ['789', '101'],
+      catalog: ['789', '101'],
       output: ['102', '103'],
       uid: '111'
     }
     const parsed1 = operationSchema.parse(operation1)
     expect(parsed1).toEqual(operation1)
     const operation2: Operation = {
-      aInput: [],
+      queue: [],
       better: undefined,
-      bInput: [],
+      catalog: [],
       output: ['102', '103'],
       uid: '111'
     }
@@ -81,8 +81,8 @@ describe('index', () => {
 
   it('should export the OperationDef type and schema', () => {
     const operationDef: OperationDef = {
-      aInput: ['123', '456'],
-      bInput: ['789', '101'],
+      queue: ['123', '456'],
+      catalog: ['789', '101'],
       output: ['102', '103']
     }
     const parsed = operationDefSchema.parse(operationDef)
