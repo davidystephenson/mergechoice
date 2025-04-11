@@ -39,42 +39,47 @@ export default function chooseOperationOption (props: {
     }
   }
 
+  if (operation.catalog.length <= 2 && operation.better != null) {
+    throw new Error('Better cannot be defined when catalog is two or less long')
+  }
+
   const updatedOperation = { ...operation }
   const singleCatalog = operation.catalog.length === 1
   const queueChosen = props.option === choice.queue
 
-  if (singleCatalog) {
-    if (updatedOperation.better != null) {
-      throw new Error('Better cannot be defined when catalog is single')
-    }
-    if (queueChosen) {
+  if (queueChosen) {
+    updatedOperation.better = undefined
+    if (singleCatalog) {
       updatedOperation.output = [...operation.output, ...operation.catalog, ...operation.queue]
       updatedOperation.queue = []
       updatedOperation.catalog = []
+    } else {
+      const optionIndex = operation.catalog.indexOf(choice.catalog) + 1
+      const elementsToMove = operation.catalog.slice(0, optionIndex)
+      updatedOperation.output = [...operation.output, ...elementsToMove, operation.queue[0]]
+      updatedOperation.queue = operation.queue.slice(1)
+      updatedOperation.catalog = operation.catalog.slice(elementsToMove.length)
     }
   } else {
-    if (queueChosen) {
+    const optionIndex = operation.catalog.indexOf(choice.catalog)
+    if (optionIndex === 0) {
       updatedOperation.better = undefined
-      const bElementsToMove = updatedOperation.better != null
-        ? operation.catalog.slice(0, updatedOperation.better)
-        : operation.catalog.slice(0, operation.catalog.indexOf(choice.catalog) + 1)
-      updatedOperation.output = [...operation.output, ...bElementsToMove, operation.queue[0]]
-      updatedOperation.queue = operation.queue.slice(1)
-      updatedOperation.catalog = operation.catalog.slice(bElementsToMove.length)
+      if (operation.queue.length === 1) {
+        updatedOperation.output = [...operation.output, ...operation.queue, ...operation.catalog]
+        updatedOperation.queue = []
+        updatedOperation.catalog = []
+      } else {
+        const [firstQueue, ...restQueue] = operation.queue
+        const [firstCatalog, ...restCatalog] = operation.catalog
+        updatedOperation.output = [...operation.output, firstQueue, firstCatalog]
+        updatedOperation.queue = restQueue
+        updatedOperation.catalog = restCatalog
+      }
     } else {
       if (updatedOperation.better == null) {
         updatedOperation.better = getInitialOptionIndex({ length: operation.catalog.length })
       } else {
-        if (updatedOperation.better === 1) {
-          const [firstQueue, ...restQueue] = operation.queue
-          const [firstCatalog, ...restCatalog] = operation.catalog
-          updatedOperation.output = [...operation.output, firstQueue, firstCatalog]
-          updatedOperation.queue = restQueue
-          updatedOperation.catalog = restCatalog
-          updatedOperation.better = undefined
-        } else {
-          updatedOperation.better = getFloorHalf({ value: updatedOperation.better })
-        }
+        updatedOperation.better = getFloorHalf({ value: updatedOperation.better })
       }
     }
   }
@@ -90,10 +95,8 @@ export default function chooseOperationOption (props: {
     [operation.uid]: updatedOperation
   }
 
-  const updatedFlow = {
+  return {
     ...props.flow,
     operations: updatedOperations
   }
-
-  return updatedFlow
 }

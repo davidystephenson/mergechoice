@@ -7,8 +7,8 @@ export const operation1 = {
 /*
 CHOICE
 index: 2
-a: original
-b: online
+queue: original
+catalog: online
 
 RANKING
 1. awakens: 5
@@ -22,7 +22,7 @@ RANKING
 5. revisited: 1
 6. comics: 0
 
-User chooses A
+User chooses queue
 */
 
 export const operation2 = {
@@ -34,8 +34,8 @@ export const operation2 = {
 /*
 CHOICE
 index: 1
-a: path
-b: revolutions
+queue: path
+catalog: revolutions
 
 RANKING
 1. animatrix: 7
@@ -49,7 +49,7 @@ RANKING
 8. revisited: 1
 9. comics: 0
 
-User chooses A
+User chooses queue
 */
 
 export const operation3 = {
@@ -61,8 +61,8 @@ export const operation3 = {
 /*
 CHOICE
 index: 0
-a: animatrix
-b: awakens
+queue: animatrix
+catalog: awakens
 
 RANKING
 1. animatrix: 8
@@ -76,7 +76,7 @@ RANKING
 8. revisited: 1
 9. comics: 0
 
-User chooses A
+User chooses queue
 */
 
 export const operation4 = {

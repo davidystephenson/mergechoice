@@ -117,4 +117,116 @@ describe('catalog', () => {
       ]
     })
   })
+
+  describe('operation5', () => {
+    verifyFlowStep({
+      choice: {
+        queue: 'reloaded',
+        catalog: 'enter'
+      },
+      createInitialFlow,
+      queues: [false, false, false, false],
+      ranking: [
+        { uid: 'awakens', points: 7, rank: 1 },
+        { uid: 'path', points: 6, rank: 2 },
+        { uid: 'animatrix', points: 5, rank: 3 },
+        { uid: 'online', points: 5, rank: 3 },
+        { uid: 'revolutions', points: 4, rank: 4 },
+        { uid: 'enter', points: 3, rank: 5 },
+        { uid: 'reloaded', points: 3, rank: 5 },
+        { uid: 'revisited', points: 2, rank: 6 },
+        { uid: 'original', points: 1, rank: 7 },
+        { uid: 'comics', points: 0, rank: 8 }
+      ]
+    })
+  })
+
+  describe('operation6', () => {
+    verifyFlowStep({
+      choice: {
+        queue: 'revolutions',
+        catalog: 'path'
+      },
+      createInitialFlow,
+      queues: [false, false, false, false, false],
+      ranking: [
+        { uid: 'awakens', points: 7, rank: 1 },
+        { uid: 'animatrix', points: 6, rank: 2 },
+        { uid: 'path', points: 6, rank: 2 },
+        { uid: 'online', points: 5, rank: 3 },
+        { uid: 'revolutions', points: 5, rank: 3 },
+        { uid: 'enter', points: 4, rank: 4 },
+        { uid: 'reloaded', points: 3, rank: 5 },
+        { uid: 'revisited', points: 2, rank: 6 },
+        { uid: 'original', points: 1, rank: 7 },
+        { uid: 'comics', points: 0, rank: 8 }
+      ]
+    })
+  })
+
+  describe('operation7', () => {
+    verifyFlowStep({
+      choice: {
+        queue: 'revolutions',
+        catalog: 'online'
+      },
+      createInitialFlow,
+      queues: [false, false, false, false, false, false],
+      ranking: [
+        { uid: 'awakens', points: 8, rank: 1 },
+        { uid: 'path', points: 7, rank: 2 },
+        { uid: 'animatrix', points: 6, rank: 3 },
+        { uid: 'online', points: 5, rank: 4 },
+        { uid: 'revolutions', points: 5, rank: 4 },
+        { uid: 'enter', points: 4, rank: 5 },
+        { uid: 'reloaded', points: 3, rank: 6 },
+        { uid: 'revisited', points: 2, rank: 7 },
+        { uid: 'original', points: 1, rank: 8 },
+        { uid: 'comics', points: 0, rank: 9 }
+      ]
+    })
+  })
+
+  describe('operation8', () => {
+    verifyFlowStep({
+      choice: {
+        queue: 'animatrix',
+        catalog: 'path'
+      },
+      createInitialFlow,
+      queues: [false, false, false, false, false, false, false],
+      ranking: [
+        { uid: 'awakens', points: 8, rank: 1 },
+        { uid: 'animatrix', points: 7, rank: 2 },
+        { uid: 'path', points: 7, rank: 2 },
+        { uid: 'online', points: 6, rank: 3 },
+        { uid: 'revolutions', points: 5, rank: 4 },
+        { uid: 'enter', points: 4, rank: 5 },
+        { uid: 'reloaded', points: 3, rank: 6 },
+        { uid: 'revisited', points: 2, rank: 7 },
+        { uid: 'original', points: 1, rank: 8 },
+        { uid: 'comics', points: 0, rank: 9 }
+      ]
+    })
+  })
+
+  describe('operation9', () => {
+    verifyFlowStep({
+      choice: undefined,
+      createInitialFlow,
+      queues: [false, false, false, false, false, false, false, false],
+      ranking: [
+        { uid: 'awakens', points: 9, rank: 1 },
+        { uid: 'path', points: 8, rank: 2 },
+        { uid: 'animatrix', points: 7, rank: 3 },
+        { uid: 'online', points: 6, rank: 4 },
+        { uid: 'revolutions', points: 5, rank: 5 },
+        { uid: 'enter', points: 4, rank: 6 },
+        { uid: 'reloaded', points: 3, rank: 7 },
+        { uid: 'revisited', points: 2, rank: 8 },
+        { uid: 'original', points: 1, rank: 9 },
+        { uid: 'comics', points: 0, rank: 10 }
+      ]
+    })
+  })
 })
