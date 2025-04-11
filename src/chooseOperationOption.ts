@@ -22,6 +22,23 @@ export default function chooseOperationOption (props: {
     throw new Error('Option is not in the choice')
   }
 
+  if (operation.queue.length > operation.catalog.length) {
+    throw new Error('Queue cannot be longer than catalog')
+  }
+
+  if (operation.better != null) {
+    if (typeof operation.better !== 'number') {
+      throw new Error('Better must be a number')
+    }
+    if (operation.better <= 0) {
+      throw new Error('Better must be greater than 0')
+    }
+    const initial = getInitialOptionIndex({ length: operation.catalog.length })
+    if (operation.better > initial) {
+      throw new Error('Better must not be greater than the initial option index')
+    }
+  }
+
   const updatedOperation = { ...operation }
   const singleCatalog = operation.catalog.length === 1
   const queueChosen = props.option === choice.queue
@@ -30,48 +47,34 @@ export default function chooseOperationOption (props: {
     if (updatedOperation.better != null) {
       throw new Error('Better cannot be defined when catalog is single')
     }
-    if (operation.queue.length > 1) {
-      throw new Error('Queue cannot be longer than 1 when catalog is single')
-    }
-  }
-
-  if (queueChosen) {
-    if (singleCatalog) {
+    if (queueChosen) {
       updatedOperation.output = [...operation.output, ...operation.catalog, ...operation.queue]
       updatedOperation.queue = []
       updatedOperation.catalog = []
-    } else {
+    }
+  } else {
+    if (queueChosen) {
+      updatedOperation.better = undefined
       const bElementsToMove = updatedOperation.better != null
         ? operation.catalog.slice(0, updatedOperation.better)
         : operation.catalog.slice(0, operation.catalog.indexOf(choice.catalog) + 1)
       updatedOperation.output = [...operation.output, ...bElementsToMove, operation.queue[0]]
       updatedOperation.queue = operation.queue.slice(1)
       updatedOperation.catalog = operation.catalog.slice(bElementsToMove.length)
-    }
-    updatedOperation.better = undefined
-  } else {
-    if (updatedOperation.better == null) {
-      updatedOperation.better = getInitialOptionIndex({ length: operation.catalog.length })
     } else {
-      if (typeof updatedOperation.better !== 'number') {
-        throw new Error('Better must be a number')
-      }
-      if (updatedOperation.better <= 0) {
-        throw new Error('Better must be greater than 0')
-      }
-      const initial = getInitialOptionIndex({ length: operation.catalog.length })
-      if (updatedOperation.better > initial) {
-        throw new Error('Better must not be greater than the initial option index')
-      }
-      if (updatedOperation.better === 1) {
-        const [firstQueue, ...restQueue] = operation.queue
-        const [firstCatalog, ...restCatalog] = operation.catalog
-        updatedOperation.output = [...operation.output, firstQueue, firstCatalog]
-        updatedOperation.queue = restQueue
-        updatedOperation.catalog = restCatalog
-        updatedOperation.better = undefined
+      if (updatedOperation.better == null) {
+        updatedOperation.better = getInitialOptionIndex({ length: operation.catalog.length })
       } else {
-        updatedOperation.better = getFloorHalf({ value: updatedOperation.better })
+        if (updatedOperation.better === 1) {
+          const [firstQueue, ...restQueue] = operation.queue
+          const [firstCatalog, ...restCatalog] = operation.catalog
+          updatedOperation.output = [...operation.output, firstQueue, firstCatalog]
+          updatedOperation.queue = restQueue
+          updatedOperation.catalog = restCatalog
+          updatedOperation.better = undefined
+        } else {
+          updatedOperation.better = getFloorHalf({ value: updatedOperation.better })
+        }
       }
     }
   }
