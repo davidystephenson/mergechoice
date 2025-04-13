@@ -2,6 +2,7 @@ import { Flow } from './flowTypes'
 import getChoice from './getChoice'
 import getInitialOptionIndex from './getInitialOptionIndex'
 import getFloorHalf from './getFloorHalf'
+import getOptionIndex from './getOptionIndex'
 
 export default function chooseOperationOption (props: {
   flow: Flow
@@ -33,7 +34,7 @@ export default function chooseOperationOption (props: {
     if (operation.better <= 0) {
       throw new Error('Better must be greater than 0')
     }
-    const initial = getInitialOptionIndex({ length: operation.catalog.length })
+    const initial = getInitialOptionIndex({ operation })
     if (operation.better > initial) {
       throw new Error('Better must not be greater than the initial option index')
     }
@@ -56,12 +57,17 @@ export default function chooseOperationOption (props: {
     } else {
       const optionIndex = operation.catalog.indexOf(choice.catalog) + 1
       const elementsToMove = operation.catalog.slice(0, optionIndex)
-      updatedOperation.output = [...operation.output, ...elementsToMove, operation.queue[0]]
-      updatedOperation.queue = operation.queue.slice(1)
+      updatedOperation.output = [...operation.output, ...elementsToMove]
       updatedOperation.catalog = operation.catalog.slice(elementsToMove.length)
+
+      if (updatedOperation.queue.length >= updatedOperation.catalog.length) {
+        const catalog = updatedOperation.catalog
+        updatedOperation.catalog = operation.queue
+        updatedOperation.queue = catalog
+      }
     }
   } else {
-    const optionIndex = operation.catalog.indexOf(choice.catalog)
+    const optionIndex = getOptionIndex({ operation })
     if (optionIndex === 0) {
       updatedOperation.better = undefined
       if (operation.queue.length === 1) {
@@ -74,20 +80,20 @@ export default function chooseOperationOption (props: {
         updatedOperation.output = [...operation.output, firstQueue, firstCatalog]
         updatedOperation.queue = restQueue
         updatedOperation.catalog = restCatalog
+
+        if (updatedOperation.queue.length >= updatedOperation.catalog.length) {
+          const temp = updatedOperation.catalog
+          updatedOperation.catalog = updatedOperation.queue
+          updatedOperation.queue = temp
+        }
       }
     } else {
       if (updatedOperation.better == null) {
-        updatedOperation.better = getInitialOptionIndex({ length: operation.catalog.length })
+        updatedOperation.better = getInitialOptionIndex({ operation })
       } else {
         updatedOperation.better = getFloorHalf({ value: updatedOperation.better })
       }
     }
-  }
-
-  if (updatedOperation.queue.length >= updatedOperation.catalog.length) {
-    const temp = updatedOperation.queue
-    updatedOperation.queue = updatedOperation.catalog
-    updatedOperation.catalog = temp
   }
 
   const updatedOperations = {

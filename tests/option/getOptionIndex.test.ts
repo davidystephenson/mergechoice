@@ -43,7 +43,7 @@ describe('getOptionIndex', () => {
         output: [],
         uid: '123'
       }
-      const initialOptionIndex = getInitialOptionIndex({ length: 4 })
+      const initialOptionIndex = getInitialOptionIndex({ operation })
       expect(initialOptionIndex).toBe(1)
       expect(() => getOptionIndex({ operation })).toThrow()
     })
@@ -74,7 +74,7 @@ describe('getOptionIndex', () => {
         output: [],
         uid: '123'
       }
-      const initialOptionIndex = getInitialOptionIndex({ length: 4 })
+      const initialOptionIndex = getInitialOptionIndex({ operation })
       expect(initialOptionIndex).toBe(1)
       const index = getOptionIndex({ operation })
       expect(index).toBe(initialOptionIndex)

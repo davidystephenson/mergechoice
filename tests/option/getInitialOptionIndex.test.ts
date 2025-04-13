@@ -1,22 +1,39 @@
+import { Operation } from '../../src'
 import getInitialOptionIndex from '../../src/getInitialOptionIndex'
 
 describe('getInitialOptionIndex', () => {
-  it('should throw an error if length is not a number', () => {
-    // @ts-expect-error
-    expect(() => getInitialOptionIndex({ length: 'not a number' })).toThrow()
-    // @ts-expect-error
-    expect(() => getInitialOptionIndex({ length: null })).toThrow()
-    // @ts-expect-error
-    expect(() => getInitialOptionIndex({ length: undefined })).toThrow()
-  })
-  it('should return the floor half of the length of B minus 1', () => {
-    const ten = getInitialOptionIndex({ length: 10 })
-    expect(ten).toBe(4)
-    const eleven = getInitialOptionIndex({ length: 11 })
-    expect(eleven).toBe(5)
-    const twelve = getInitialOptionIndex({ length: 12 })
-    expect(twelve).toBe(5)
-    const thirteen = getInitialOptionIndex({ length: 13 })
-    expect(thirteen).toBe(6)
+  it('should return the floor half of the catalog length minus 1', () => {
+    const operation10: Operation = {
+      catalog: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10'],
+      output: [],
+      queue: [],
+      uid: 'ten'
+    }
+    const index10 = getInitialOptionIndex({ operation: operation10 })
+    expect(index10).toBe(4)
+    const operation11: Operation = {
+      catalog: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11'],
+      output: [],
+      queue: [],
+      uid: 'eleven'
+    }
+    const index11 = getInitialOptionIndex({ operation: operation11 })
+    expect(index11).toBe(5)
+    const operation12: Operation = {
+      catalog: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'],
+      output: [],
+      queue: [],
+      uid: 'twelve'
+    }
+    const index12 = getInitialOptionIndex({ operation: operation12 })
+    expect(index12).toBe(5)
+    const operation13: Operation = {
+      catalog: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13'],
+      output: [],
+      queue: [],
+      uid: 'thirteen'
+    }
+    const index13 = getInitialOptionIndex({ operation: operation13 })
+    expect(index13).toBe(6)
   })
 })

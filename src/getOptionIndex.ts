@@ -12,12 +12,12 @@ export default function getOptionIndex (props: {
     if (props.operation.better < 1) {
       throw new Error('Better must be positive')
     }
-    const initial = getInitialOptionIndex({ length: props.operation.catalog.length })
+    const initial = getInitialOptionIndex({ operation: props.operation })
     if (props.operation.better > initial) {
       throw new Error('Better must be less than or equal to the initial option index')
     }
     return getFloorHalf({ value: props.operation.better })
   }
 
-  return getInitialOptionIndex({ length: props.operation.catalog.length })
+  return getInitialOptionIndex({ operation: props.operation })
 }

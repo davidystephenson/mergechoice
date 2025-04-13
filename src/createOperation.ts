@@ -42,11 +42,11 @@ export default function createOperation (props: {
   })
 
   const operation: Operation = {
-    uid,
-    queue: props.queue,
     better: undefined,
     catalog: props.catalog,
-    output: props.output
+    queue: props.queue,
+    output: props.output,
+    uid
   }
 
   return operation

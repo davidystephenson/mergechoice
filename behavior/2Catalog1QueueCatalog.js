@@ -23,4 +23,3 @@ export const operation2 = {
   output: ['animatrix', 'resurrections', 'original', 'reloaded'],
   queue: []
 }
-

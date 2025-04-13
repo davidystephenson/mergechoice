@@ -1,14 +1,14 @@
 export const operation1 = {
-  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: undefined,
-  output: ['comics']
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  output: ['comics'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 2
-queue: original
 catalog: online
+queue: original
 
 1. awakens: 5
 2. animatrix: 4
@@ -21,20 +21,20 @@ catalog: online
 5. revisited: 1
 6. comics: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation2 = {
-  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: 2,
-  output: ['comics']
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  output: ['comics'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 1
-queue: original
 catalog: enter
+queue: original
 
 RANKING
 1. awakens: 6
@@ -52,16 +52,16 @@ User chooses catalog
 */
 
 export const operation3 = {
-  queue: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: 1,
-  output: ['comics']
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens'],
+  output: ['comics'],
+  queue: ['original', 'reloaded', 'revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 0
-a: original
-b: revisited
+catalog: revisited
+queue: original
 
 RANKING
 1. awakens: 6
@@ -79,16 +79,16 @@ User chooses catalog
 */
 
 export const operation4 = {
-  queue: ['reloaded', 'revolutions', 'animatrix'],
-  catalog: ['enter', 'online', 'path', 'awakens'],
   better: undefined,
-  output: ['comics', 'original', 'revisited']
+  catalog: ['enter', 'online', 'path', 'awakens'],
+  output: ['comics', 'original', 'revisited'],
+  queue: ['reloaded', 'revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 1
-a: reloaded
-b: online
+catalog: online
+queue: reloaded
 
 RANKING
 1. awakens: 6
@@ -102,20 +102,20 @@ RANKING
 6. original: 1
 7. comics: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation5 = {
-  queue: ['reloaded', 'revolutions', 'animatrix'],
-  catalog: ['enter', 'online', 'path', 'awakens'],
   better: 1,
-  output: ['comics', 'original', 'revisited']
+  catalog: ['enter', 'online', 'path', 'awakens'],
+  output: ['comics', 'original', 'revisited'],
+  queue: ['reloaded', 'revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 0
-a: reloaded
-b: enter
+catalog: enter
+queue: reloaded
 
 RANKING
 1. awakens: 7
@@ -133,16 +133,16 @@ User chooses catalog
 */
 
 export const operation6 = {
-  queue: ['revolutions', 'animatrix'],
-  catalog: ['online', 'path', 'awakens'],
   better: undefined,
-  output: ['comics', 'original', 'revisited', 'reloaded', 'enter']
+  catalog: ['online', 'path', 'awakens'],
+  output: ['comics', 'original', 'revisited', 'reloaded', 'enter'],
+  queue: ['revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 1
-queue: revolutions
 catalog: path
+queue: revolutions
 
 RANKING
 1. awakens: 7
@@ -160,16 +160,16 @@ User chooses catalog
 */
 
 export const operation7 = {
-  queue: ['revolutions', 'animatrix'],
-  catalog: ['online', 'path', 'awakens'],
   better: 1,
-  output: ['comics', 'original', 'revisited', 'reloaded', 'enter']
+  catalog: ['online', 'path', 'awakens'],
+  output: ['comics', 'original', 'revisited', 'reloaded', 'enter'],
+  queue: ['revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 0
-queue: revolutions
 catalog: online
+queue: revolutions
 
 RANKING
 1. awakens: 8
@@ -195,8 +195,8 @@ export const operation8 = {
 /*
 CHOICE
 index: 0
-queue: animatrix
 catalog: path
+queue: animatrix
 
 RANKING
 1. awakens: 8
@@ -214,9 +214,9 @@ User chooses catalog
 */
 
 export const operation9 = {
-  queue: [],
   catalog: [],
-  output: ['comics', 'original', 'revisited', 'reloaded', 'enter', 'revolutions', 'online', 'animatrix', 'path', 'awakens']
+  output: ['comics', 'original', 'revisited', 'reloaded', 'enter', 'revolutions', 'online', 'animatrix', 'path', 'awakens'],
+  queue: []
 }
 /*
 complete

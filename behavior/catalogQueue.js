@@ -1,14 +1,14 @@
 export const operation1 = {
-  aInput: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  bInput: ['revisited', 'enter', 'online', 'path', 'awakens'],
   better: undefined,
-  output: ['comics']
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens', 'animatrix', 'revolutions'],
+  output: ['comics'],
+  queue: ['original', 'reloaded']
 }
 /*
 CHOICE
-index: 2
-a: original
-b: online
+index: 3
+catalog: path
+queue: original
 
 RANKING
 1. awakens: 5
@@ -22,20 +22,20 @@ RANKING
 5. revisited: 1
 6. comics: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation2 = {
-  aInput: ['original', 'reloaded', 'revolutions', 'animatrix'],
-  bInput: ['revisited', 'enter', 'online', 'path', 'awakens'],
-  better: 2,
-  output: ['comics']
+  better: 3,
+  catalog: ['revisited', 'enter', 'online', 'path', 'awakens', 'animatrix', 'revolutions'],
+  output: ['comics'],
+  queue: ['original', 'reloaded']
 }
 /*
 CHOICE
 index: 1
-a: original
-b: enter
+catalog: enter
+queue: original
 
 RANKING
 1. awakens: 6
@@ -49,24 +49,24 @@ RANKING
 6. revisited: 1
 7. comics: 0
 
-User chooses A
+User chooses queue
 */
 
 export const operation3 = {
-  aInput: ['online', 'path', 'awakens'],
-  bInput: ['reloaded', 'revolutions', 'animatrix'],
   better: undefined,
-  output: ['comics', 'revisited', 'enter', 'original']
+  catalog: ['reloaded', 'revolutions', 'animatrix'],
+  output: ['comics', 'revisited', 'enter', 'original'],
+  queue: ['online', 'path', 'awakens']
 }
 /*
 CHOICE
 index: 1
-a: online
-b: revolutions
+catalog: revolutions
+queue: online
 
 RANKING
-1. awakens: 6
 1. animatrix: 6
+1. awakens: 6
 2. path: 5
 2. revolutions: 5
 3. online: 4
@@ -76,20 +76,20 @@ RANKING
 6. revisited: 1
 7. comics: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation4 = {
-  aInput: ['online', 'path', 'awakens'],
-  bInput: ['reloaded', 'revolutions', 'animatrix'],
   better: 1,
-  output: ['comics', 'revisited', 'enter', 'original']
+  catalog: ['reloaded', 'revolutions', 'animatrix'],
+  output: ['comics', 'revisited', 'enter', 'original'],
+  queue: ['online', 'path', 'awakens']
 }
 /*
 CHOICE
 index: 0
-a: online
-b: reloaded
+catalog: reloaded
+queue: online
 
 RANKING
 1. animatrix: 7
@@ -103,52 +103,81 @@ RANKING
 7. revisited: 1
 8. comics: 0
 
-User chooses A
+User chooses queue
 */
 
 export const operation5 = {
-  aInput: ['animatrix'],
-  bInput: ['path', 'awakens'],
   better: undefined,
-  output: ['comics', 'revisited', 'enter', 'original', 'reloaded', 'revolutions']
+  catalog: ['path', 'awakens'],
+  output: ['comics', 'revisited', 'enter', 'original', 'reloaded', 'online'],
+  queue: ['revolutions', 'animatrix']
 }
 /*
 CHOICE
 index: 0
-a: animatrix
-b: path
+catalog: path
+queue: revolutions
 
 RANKING
+1. animatrix: 7
 1. awakens: 7
-2. animatrix: 6
 2. path: 6
-3. revolutions: 5
+2. revolutions: 6
+3. online: 5
 4. reloaded: 4
 5. original: 3
 6. enter: 2
 7. revisited: 1
 8. comics: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation6 = {
-  aInput: [],
-  bInput: [],
   better: undefined,
-  output: ['comics', 'revisited', 'enter', 'original', 'reloaded', 'revolutions', 'animatrix', 'path', 'awakens']
+  catalog: ['animatrix'],
+  output: ['comics', 'revisited', 'enter', 'original', 'reloaded', 'online', 'revolutions', 'path'],
+  queue: ['awakens']
 }
 /*
-complete
+CHOICE
+index: 0
+catalog: animatrix
+queue: awakens
 
 RANKING
+1. animatrix: 8
 1. awakens: 8
 2. path: 7
-3. animatrix: 6
-4. revolutions: 5
+3. revolutions: 6
+4. online: 5
 5. reloaded: 4
 6. original: 3
 7. enter: 2
 8. revisited: 1
 9. comics: 0
+
+// User chooses queue
+*/
+
+export const operation7 = {
+  better: undefined,
+  catalog: [],
+  output: ['comics', 'revisited', 'enter', 'original', 'reloaded', 'online', 'revolutions', 'path', 'animatrix', 'awakens'],
+  queue: []
+}
+/*
+complete
+
+RANKING
+1. awakens: 9
+2. animatrix: 8
+3. path: 7
+4. revolutions: 6
+5. online: 5
+6. reloaded: 4
+7. original: 3
+8. enter: 2
+9. revisited: 1
+10. comics: 0
 */

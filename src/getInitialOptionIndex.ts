@@ -1,12 +1,10 @@
+import { Operation } from './flowTypes'
 import getFloorHalf from './getFloorHalf'
 
 export default function getInitialOptionIndex (props: {
-  length: number
+  operation: Operation
 }): number {
-  if (typeof props.length !== 'number') {
-    throw new Error('Length must be a number')
-  }
-  const difference = props.length - 1
+  const difference = props.operation.catalog.length - 1
   const half = getFloorHalf({ value: difference })
   return half
 }

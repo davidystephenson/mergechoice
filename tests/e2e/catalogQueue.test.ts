@@ -1,7 +1,7 @@
 import { createFlow, Flow } from '../../src'
 import verifyFlowStep from '../flow/verifyFlowStep'
 
-describe('catalog', () => {
+describe('catalogQueue', () => {
   function createInitialFlow (): Flow {
     const flow = createFlow({ uid: 'matrix a' })
     flow.items = {
@@ -26,6 +26,7 @@ describe('catalog', () => {
     }
     return flow
   }
+
   describe('operation1', () => {
     verifyFlowStep({
       choice: {
@@ -52,8 +53,8 @@ describe('catalog', () => {
   describe('operation2', () => {
     verifyFlowStep({
       choice: {
-        catalog: 'enter',
-        queue: 'original'
+        queue: 'original',
+        catalog: 'enter'
       },
       createInitialFlow,
       queues: [false],
@@ -75,20 +76,20 @@ describe('catalog', () => {
   describe('operation3', () => {
     verifyFlowStep({
       choice: {
-        catalog: 'revisited',
-        queue: 'original'
+        catalog: 'revolutions',
+        queue: 'online'
       },
       createInitialFlow,
-      queues: [false, false],
+      queues: [false, true],
       ranking: [
+        { uid: 'animatrix', points: 6, rank: 1 },
         { uid: 'awakens', points: 6, rank: 1 },
         { uid: 'path', points: 5, rank: 2 },
-        { uid: 'animatrix', points: 4, rank: 3 },
+        { uid: 'revolutions', points: 5, rank: 2 },
         { uid: 'online', points: 4, rank: 3 },
-        { uid: 'enter', points: 3, rank: 4 },
-        { uid: 'revolutions', points: 3, rank: 4 },
-        { uid: 'reloaded', points: 2, rank: 5 },
-        { uid: 'original', points: 1, rank: 6 },
+        { uid: 'reloaded', points: 4, rank: 3 },
+        { uid: 'original', points: 3, rank: 4 },
+        { uid: 'enter', points: 2, rank: 5 },
         { uid: 'revisited', points: 1, rank: 6 },
         { uid: 'comics', points: 0, rank: 7 }
       ]
@@ -98,22 +99,22 @@ describe('catalog', () => {
   describe('operation4', () => {
     verifyFlowStep({
       choice: {
-        catalog: 'online',
-        queue: 'reloaded'
+        queue: 'online',
+        catalog: 'reloaded'
       },
       createInitialFlow,
-      queues: [false, false, false],
+      queues: [false, true, false],
       ranking: [
-        { uid: 'awakens', points: 6, rank: 1 },
-        { uid: 'animatrix', points: 5, rank: 2 },
-        { uid: 'path', points: 5, rank: 2 },
-        { uid: 'online', points: 4, rank: 3 },
-        { uid: 'revolutions', points: 4, rank: 3 },
-        { uid: 'enter', points: 3, rank: 4 },
-        { uid: 'reloaded', points: 3, rank: 4 },
-        { uid: 'revisited', points: 2, rank: 5 },
-        { uid: 'original', points: 1, rank: 6 },
-        { uid: 'comics', points: 0, rank: 7 }
+        { uid: 'animatrix', points: 7, rank: 1 },
+        { uid: 'awakens', points: 6, rank: 2 },
+        { uid: 'revolutions', points: 6, rank: 2 },
+        { uid: 'path', points: 5, rank: 3 },
+        { uid: 'online', points: 4, rank: 4 },
+        { uid: 'reloaded', points: 4, rank: 4 },
+        { uid: 'original', points: 3, rank: 5 },
+        { uid: 'enter', points: 2, rank: 6 },
+        { uid: 'revisited', points: 1, rank: 7 },
+        { uid: 'comics', points: 0, rank: 8 }
       ]
     })
   })
@@ -121,21 +122,21 @@ describe('catalog', () => {
   describe('operation5', () => {
     verifyFlowStep({
       choice: {
-        catalog: 'enter',
-        queue: 'reloaded'
+        catalog: 'path',
+        queue: 'revolutions'
       },
       createInitialFlow,
-      queues: [false, false, false, false],
+      queues: [false, true, false, true],
       ranking: [
+        { uid: 'animatrix', points: 7, rank: 1 },
         { uid: 'awakens', points: 7, rank: 1 },
         { uid: 'path', points: 6, rank: 2 },
-        { uid: 'animatrix', points: 5, rank: 3 },
+        { uid: 'revolutions', points: 6, rank: 2 },
         { uid: 'online', points: 5, rank: 3 },
-        { uid: 'revolutions', points: 4, rank: 4 },
-        { uid: 'enter', points: 3, rank: 5 },
-        { uid: 'reloaded', points: 3, rank: 5 },
-        { uid: 'revisited', points: 2, rank: 6 },
-        { uid: 'original', points: 1, rank: 7 },
+        { uid: 'reloaded', points: 4, rank: 4 },
+        { uid: 'original', points: 3, rank: 5 },
+        { uid: 'enter', points: 2, rank: 6 },
+        { uid: 'revisited', points: 1, rank: 7 },
         { uid: 'comics', points: 0, rank: 8 }
       ]
     })
@@ -144,87 +145,41 @@ describe('catalog', () => {
   describe('operation6', () => {
     verifyFlowStep({
       choice: {
-        catalog: 'path',
-        queue: 'revolutions'
+        catalog: 'animatrix',
+        queue: 'awakens'
       },
       createInitialFlow,
-      queues: [false, false, false, false, false],
+      queues: [false, true, false, true, false],
       ranking: [
-        { uid: 'awakens', points: 7, rank: 1 },
-        { uid: 'animatrix', points: 6, rank: 2 },
-        { uid: 'path', points: 6, rank: 2 },
-        { uid: 'online', points: 5, rank: 3 },
-        { uid: 'revolutions', points: 5, rank: 3 },
-        { uid: 'enter', points: 4, rank: 4 },
-        { uid: 'reloaded', points: 3, rank: 5 },
-        { uid: 'revisited', points: 2, rank: 6 },
-        { uid: 'original', points: 1, rank: 7 },
-        { uid: 'comics', points: 0, rank: 8 }
+        { uid: 'animatrix', points: 8, rank: 1 },
+        { uid: 'awakens', points: 8, rank: 1 },
+        { uid: 'path', points: 7, rank: 2 },
+        { uid: 'revolutions', points: 6, rank: 3 },
+        { uid: 'online', points: 5, rank: 4 },
+        { uid: 'reloaded', points: 4, rank: 5 },
+        { uid: 'original', points: 3, rank: 6 },
+        { uid: 'enter', points: 2, rank: 7 },
+        { uid: 'revisited', points: 1, rank: 8 },
+        { uid: 'comics', points: 0, rank: 9 }
       ]
     })
   })
 
   describe('operation7', () => {
     verifyFlowStep({
-      choice: {
-        catalog: 'online',
-        queue: 'revolutions'
-      },
-      createInitialFlow,
-      queues: [false, false, false, false, false, false],
-      ranking: [
-        { uid: 'awakens', points: 8, rank: 1 },
-        { uid: 'path', points: 7, rank: 2 },
-        { uid: 'animatrix', points: 6, rank: 3 },
-        { uid: 'online', points: 5, rank: 4 },
-        { uid: 'revolutions', points: 5, rank: 4 },
-        { uid: 'enter', points: 4, rank: 5 },
-        { uid: 'reloaded', points: 3, rank: 6 },
-        { uid: 'revisited', points: 2, rank: 7 },
-        { uid: 'original', points: 1, rank: 8 },
-        { uid: 'comics', points: 0, rank: 9 }
-      ]
-    })
-  })
-
-  describe('operation8', () => {
-    verifyFlowStep({
-      choice: {
-        catalog: 'path',
-        queue: 'animatrix'
-      },
-      createInitialFlow,
-      queues: [false, false, false, false, false, false, false],
-      ranking: [
-        { uid: 'awakens', points: 8, rank: 1 },
-        { uid: 'animatrix', points: 7, rank: 2 },
-        { uid: 'path', points: 7, rank: 2 },
-        { uid: 'online', points: 6, rank: 3 },
-        { uid: 'revolutions', points: 5, rank: 4 },
-        { uid: 'enter', points: 4, rank: 5 },
-        { uid: 'reloaded', points: 3, rank: 6 },
-        { uid: 'revisited', points: 2, rank: 7 },
-        { uid: 'original', points: 1, rank: 8 },
-        { uid: 'comics', points: 0, rank: 9 }
-      ]
-    })
-  })
-
-  describe('operation9', () => {
-    verifyFlowStep({
       choice: undefined,
       createInitialFlow,
-      queues: [false, false, false, false, false, false, false, false],
+      queues: [false, true, false, true, false, true],
       ranking: [
         { uid: 'awakens', points: 9, rank: 1 },
-        { uid: 'path', points: 8, rank: 2 },
-        { uid: 'animatrix', points: 7, rank: 3 },
-        { uid: 'online', points: 6, rank: 4 },
-        { uid: 'revolutions', points: 5, rank: 5 },
-        { uid: 'enter', points: 4, rank: 6 },
-        { uid: 'reloaded', points: 3, rank: 7 },
-        { uid: 'revisited', points: 2, rank: 8 },
-        { uid: 'original', points: 1, rank: 9 },
+        { uid: 'animatrix', points: 8, rank: 2 },
+        { uid: 'path', points: 7, rank: 3 },
+        { uid: 'revolutions', points: 6, rank: 4 },
+        { uid: 'online', points: 5, rank: 5 },
+        { uid: 'reloaded', points: 4, rank: 6 },
+        { uid: 'original', points: 3, rank: 7 },
+        { uid: 'enter', points: 2, rank: 8 },
+        { uid: 'revisited', points: 1, rank: 9 },
         { uid: 'comics', points: 0, rank: 10 }
       ]
     })

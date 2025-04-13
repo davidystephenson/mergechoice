@@ -129,9 +129,9 @@ describe('getRanking', () => {
   })
 
   describe('if better is defined', () => {
-    it('should add 1 to all B items starting with the better index', () => {
-      const flow = createFlow({ uid: 'bond' })
-      flow.items = {
+    it('should add 1 to all catalog items starting with the better index', () => {
+      const bondFlow = createFlow({ uid: 'bond' })
+      bondFlow.items = {
         no: { label: 'no', seed: 0, uid: 'no' },
         russia: { label: 'russia', seed: 0, uid: 'russia' },
         goldfinger: { label: 'goldfinger', seed: 0, uid: 'goldfinger' },
@@ -141,27 +141,57 @@ describe('getRanking', () => {
         service: { label: 'service', seed: 0, uid: 'service' },
         diamonds: { label: 'diamonds', seed: 0, uid: 'diamonds' }
       }
-      const operation = createOperation({
+      const bondOperation = createOperation({
         queue: ['no', 'russia'],
         catalog: ['goldfinger', 'thunderball', 'twice', 'casino1', 'service', 'diamonds'],
-        flow,
+        flow: bondFlow,
         output: []
       })
-      operation.better = 2
-      const addedFlow = addOperation({ flow, operation })
-      const ranking = getRanking({ flow: addedFlow })
-      const diamonds = getVerifiedRankingItem({ ranking, uid: 'diamonds' })
+      bondOperation.better = 2
+      const bondAddedFlow = addOperation({ flow: bondFlow, operation: bondOperation })
+      const bondRanking = getRanking({ flow: bondAddedFlow })
+      const diamonds = getVerifiedRankingItem({ ranking: bondRanking, uid: 'diamonds' })
       expect(diamonds.points).toBe(6)
-      const service = getVerifiedRankingItem({ ranking, uid: 'service' })
+      const service = getVerifiedRankingItem({ ranking: bondRanking, uid: 'service' })
       expect(service.points).toBe(5)
-      const casino1 = getVerifiedRankingItem({ ranking, uid: 'casino1' })
+      const casino1 = getVerifiedRankingItem({ ranking: bondRanking, uid: 'casino1' })
       expect(casino1.points).toBe(4)
-      const twice = getVerifiedRankingItem({ ranking, uid: 'twice' })
+      const twice = getVerifiedRankingItem({ ranking: bondRanking, uid: 'twice' })
       expect(twice.points).toBe(3)
-      const thunderball = getVerifiedRankingItem({ ranking, uid: 'thunderball' })
+      const thunderball = getVerifiedRankingItem({ ranking: bondRanking, uid: 'thunderball' })
       expect(thunderball.points).toBe(1)
-      const goldfinger = getVerifiedRankingItem({ ranking, uid: 'goldfinger' })
+      const goldfinger = getVerifiedRankingItem({ ranking: bondRanking, uid: 'goldfinger' })
       expect(goldfinger.points).toBe(0)
+
+      const matrixFlow = createFlow({ uid: 'matrix' })
+      matrixFlow.items = {
+      }
+      matrixFlow.operations = {
+        operation1: {
+          queue: [
+            'reloaded',
+            'revolutions',
+            'animatrix'
+          ],
+          catalog: [
+            'online',
+            'path',
+            'awakens'
+          ],
+          output: [
+            'comics',
+            'revisited',
+            'enter',
+            'original'
+          ],
+          uid: 'operation1',
+          better: 1
+        }
+      }
+      const matrixRanking = getRanking({ flow: matrixFlow })
+      const online = getVerifiedRankingItem({ ranking: matrixRanking, uid: 'online' })
+      expect(online.points).toBe(4)
+      expect(online.rank).toBe(4)
     })
   })
 

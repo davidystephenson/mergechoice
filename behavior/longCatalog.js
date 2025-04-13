@@ -1,6 +1,6 @@
 export const operation1 = {
-  aInput: ['no'],
-  bInput: [
+  better: undefined,
+  catalog: [
     'russia',
     'goldfinger',
     'thunderball',
@@ -28,14 +28,14 @@ export const operation1 = {
     'spectre',
     'time'
   ],
-  better: undefined,
-  output: ['cuaron']
+  output: ['cuaron'],
+  queue: ['no']
 }
 /*
 CHOICE
 index: 12
-a: no
-b: octopussy
+catalog: octopussy
+queue: no
 
 RANKING
 1. time: 26
@@ -67,12 +67,12 @@ RANKING
 26: russia: 1
 27. cuaron: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation2 = {
-  aInput: ['no'],
-  bInput: [
+  better: 12,
+  catalog: [
     'russia',
     'goldfinger',
     'thunderball',
@@ -100,14 +100,14 @@ export const operation2 = {
     'spectre',
     'time'
   ],
-  better: 12,
-  output: ['cuaron']
+  output: ['cuaron'],
+  queue: ['no']
 }
 /*
 CHOICE
 index: 6
-a: no
-b: diamonds
+catalog: diamonds
+queue: no
 
 RANKING
 1. time: 27
@@ -139,12 +139,12 @@ RANKING
 26: russia: 1
 27. cuaron: 0
 
-Use chooses B
+Use chooses catalog
 */
 
 export const operation3 = {
-  aInput: ['no'],
-  bInput: [
+  better: 6,
+  catalog: [
     'russia',
     'goldfinger',
     'thunderball',
@@ -172,14 +172,14 @@ export const operation3 = {
     'spectre',
     'time'
   ],
-  better: 6,
-  output: ['cuaron']
+  output: ['cuaron'],
+  queue: ['no']
 }
 /*
 CHOICE
 index: 3
-a: no
-b: twice
+catalog: twice
+queue: no
 
 RANKING
 1. time: 27
@@ -211,12 +211,12 @@ RANKING
 26: russia: 1
 27. cuaron: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation4 = {
-  aInput: ['no'],
-  bInput: [
+  better: 3,
+  catalog: [
     'russia',
     'goldfinger',
     'thunderball',
@@ -244,14 +244,14 @@ export const operation4 = {
     'spectre',
     'time'
   ],
-  better: 3,
-  output: ['cuaron']
+  output: ['cuaron'],
+  queue: ['no']
 }
 /*
 CHOICE
 index: 1
-a: no
-b: goldfinger
+catalog: goldfinger
+queue: no
 
 RANKING
 1. time: 27
@@ -283,12 +283,12 @@ RANKING
 26: russia: 1
 27. cuaron: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation5 = {
-  aInput: ['no'],
-  bInput: [
+  better: 1,
+  catalog: [
     'russia',
     'goldfinger',
     'thunderball',
@@ -316,14 +316,14 @@ export const operation5 = {
     'spectre',
     'time'
   ],
-  index: 0,
-  output: ['cuaron']
+  output: ['cuaron'],
+  queue: ['no']
 }
 /*
 CHOICE
 index: 0
-a: no
-b: russia
+catalog: russia
+queue: no
 
 RANKING
 1. time: 27
@@ -355,13 +355,12 @@ RANKING
 26: russia: 1
 27. cuaron: 0
 
-User chooses B
+User chooses catalog
 */
 
 export const operation6 = {
-  aInput: [],
-  bInput: [],
-  index: 0,
+  better: undefined,
+  catalog: [],
   output: [
     'cuaron',
     'no',
@@ -391,13 +390,11 @@ export const operation6 = {
     'skyfall',
     'spectre',
     'time'
-  ]
+  ],
+  queue: []
 }
 /*
-CHOICE
-index: 0
-a: no
-b: russia
+complete
 
 RANKING
 1. time: 27
@@ -428,6 +425,4 @@ RANKING
 26. russia: 2
 27: no: 1
 28. cuaron: 0
-
-User chooses B
 */
