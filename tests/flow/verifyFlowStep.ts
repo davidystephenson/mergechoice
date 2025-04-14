@@ -34,7 +34,6 @@ export default function verifyFlowStep (props: {
   }
 
   const flow = setupFlow()
-  console.log('operations', JSON.stringify(flow.operations, null, 2))
   const ranking = getRanking({ flow })
   verifyRankingItems({ ranking, items: props.ranking })
 

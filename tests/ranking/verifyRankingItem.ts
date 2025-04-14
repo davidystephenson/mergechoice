@@ -7,7 +7,7 @@ export default function verifyRankingItem (props: {
   rank: number
   points: number
 }): void {
-  const label = `should set element ${props.index} as ${props.uid} with rank ${props.rank} and ${props.points} points`
+  const label = `should list ${props.uid} at index ${props.index} with rank ${props.rank} and ${props.points} points`
   it(label, () => {
     const rankingItem = props.ranking[props.index]
     expect(rankingItem.uid).toBe(props.uid)
