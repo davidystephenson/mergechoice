@@ -1,9 +1,9 @@
 import { chooseOption, combineOperations, createFlow } from '../../src'
-import chooseOperationOption from '../../src/chooseOperationOption'
+import operate from '../../src/operate'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
 
 describe('chooseOption', () => {
-  it('should choose the operation option', () => {
+  it('should operate', () => {
     const flow = createFlow({ uid: 'matrix' })
     flow.items = {
       original: { label: 'original', seed: 0, uid: 'original' },
@@ -20,9 +20,9 @@ describe('chooseOption', () => {
       }
     }
     const choice = getVerifiedChoice({ flow })
-    const operationChosenFlow = chooseOperationOption({ flow, option: choice.queue })
+    const operatedFlow = operate({ flow, option: choice.queue })
     const chosenFlow = chooseOption({ flow, option: choice.queue })
-    expect(chosenFlow).toEqual(operationChosenFlow)
+    expect(chosenFlow).toEqual(operatedFlow)
   })
 
   it('should combine chosen operations', () => {
@@ -49,7 +49,7 @@ describe('chooseOption', () => {
       }
     }
     const choice = getVerifiedChoice({ flow })
-    const operationChosenFlow = chooseOperationOption({ flow, option: choice.queue })
+    const operationChosenFlow = operate({ flow, option: choice.queue })
     const combinedFlow = combineOperations({ flow: operationChosenFlow })
     const chosenFlow = chooseOption({ flow, option: choice.queue })
     expect(chosenFlow).toEqual(combinedFlow)

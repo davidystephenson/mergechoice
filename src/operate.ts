@@ -3,7 +3,7 @@ import getChoice from './getChoice'
 import getFloorHalf from './getFloorHalf'
 import getOptionIndex from './getOptionIndex'
 
-export default function chooseOperationOption (props: {
+export default function operate (props: {
   flow: Flow
   option: string
 }): Flow {
@@ -67,14 +67,24 @@ export default function chooseOperationOption (props: {
       newOperation.catalog = []
       newOperation.queue = operation.queue.slice(1)
     } else {
-      newOperation.output = [
-        ...operation.output,
-        ...operation.catalog.slice(0, optionIndex + 1)
-      ]
-      newOperation.catalog = operation.catalog.slice(optionIndex + 1)
-      if (operation.queue.length >= newOperation.catalog.length) {
+      if (operation.better === 1) {
+        newOperation.output = [
+          ...operation.output,
+          operation.catalog[0],
+          operation.queue[0]
+        ]
+        newOperation.catalog = operation.catalog.slice(1)
+        newOperation.queue = operation.queue.slice(1)
+      } else {
+        newOperation.output = [
+          ...operation.output,
+          ...operation.catalog.slice(0, optionIndex + 1)
+        ]
+        newOperation.catalog = operation.catalog.slice(optionIndex + 1)
+      }
+      if (newOperation.queue.length >= newOperation.catalog.length) {
         const temp = newOperation.catalog
-        newOperation.catalog = operation.queue
+        newOperation.catalog = newOperation.queue
         newOperation.queue = temp
       }
     }
