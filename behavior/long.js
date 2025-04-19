@@ -60,11 +60,11 @@ RANKING
 21. twice: 5
 22. thunderball: 4
 23. goldfinger: 3
-24. russia: 2
 24. cuaron: 2
-25. time: 1
-25. no: 1
-26. spectre: 0
+25. russia: 2
+26. no: 1
+27. time: 1
+28. spectre: 0
 
 User chooses catalog
 */
@@ -131,11 +131,11 @@ RANKING
 21. twice: 5
 22. thunderball: 4
 23. goldfinger: 3
-24. russia: 2
 24. cuaron: 2
-25. no: 1
-25. time: 1
-26. spectre: 0
+25. russia: 2
+26. no: 1
+27. time: 1
+28. spectre: 0
 
 User chooses queue
 */
@@ -200,18 +200,18 @@ RANKING
 14. moonraker: 12
 15. loved: 11
 16. golden: 10
-17. live: 9
 17. cuaron: 9
-18. diamonds: 8
-18. time: 8
-19. service: 7
-20. casino1: 6
-21. twice: 5
-22. thunderball: 4
-23. goldfinger: 3
-24. russia: 2
-25. no: 1
-26. spectre: 0
+18. live: 9
+19. diamonds: 8
+20. time: 8
+21. service: 7
+22. casino1: 6
+23. twice: 5
+24. thunderball: 4
+25. goldfinger: 3
+26. russia: 2
+27. no: 1
+28. spectre: 0
 
 User chooses queue
 */
@@ -273,21 +273,21 @@ RANKING
 11. never: 16
 12. octopussy: 15
 13. eyes: 14
-14. moonraker: 12
 14. cuaron: 12
-15. loved: 11
-15. time: 11
-16. golden: 10
-17. live: 9
-18. diamonds: 8
-19. service: 7
-20. casino1: 6
-21. twice: 5
-22. thunderball: 4
-23. goldfinger: 3
-24. russia: 2
-25. no: 1
-26. spectre: 0
+15. moonraker: 12
+16. loved: 11
+17. time: 11
+18. golden: 10
+19. live: 9
+20. diamonds: 8
+21. service: 7
+22. casino1: 6
+23. twice: 5
+24. thunderball: 4
+25. goldfinger: 3
+26. russia: 2
+27. no: 1
+28. spectre: 0
 
 User chooses queue
 */
@@ -348,22 +348,22 @@ RANKING
 10. view: 17
 11. never: 16
 12. octopussy: 15
-13. eyes: 14
 13. cuaron: 14
-14. time: 13
-15. moonraker: 12
-16. loved: 11
-17. golden: 10
-18. live: 9
-19. diamonds: 8
-20. service: 7
-21. casino1: 6
-22. twice: 5
-23. thunderball: 4
-24. goldfinger: 3
-25. russia: 2
-26. no: 1
-27. spectre: 0
+14. eyes: 14
+15. time: 13
+16. moonraker: 12
+17. loved: 11
+18. golden: 10
+19. live: 9
+20. diamonds: 8
+21. service: 7
+22. casino1: 6
+23. twice: 5
+24. thunderball: 4
+25. goldfinger: 3
+26. russia: 2
+27. no: 1
+28. spectre: 0
 
 User chooses catalog
 */
@@ -424,24 +424,24 @@ RANKING
 10. view: 17
 11. never: 16
 12. octopussy: 15
-13. eyes: 14
 13. cuaron: 14
-14. time: 13
-15. moonraker: 12
-16. loved: 11
-17. golden: 10
-18. live: 9
-19. diamonds: 8
-20. service: 7
-21. casino1: 6
-22. twice: 5
-23. thunderball: 4
-24. goldfinger: 3
-25. russia: 2
-26. no: 1
-27. spectre: 0
+14. eyes: 14
+15. time: 13
+16. moonraker: 12
+17. loved: 11
+18. golden: 10
+19. live: 9
+20. diamonds: 8
+21. service: 7
+22. casino1: 6
+23. twice: 5
+24. thunderball: 4
+25. goldfinger: 3
+26. russia: 2
+27. no: 1
+28. spectre: 0
 
-User chooses catalog
+User chooses queue
 */
 
 export const operation7 = {
@@ -497,25 +497,25 @@ RANKING
 7. goldeneye: 21
 8. license: 19
 9. cuaron: 18
-9. daylights: 18
-10. view: 17
-11. never: 16
-12. octopussy: 15
-13. eyes: 14
-14. time: 13
-15. moonraker: 12
-16. loved: 11
-17. golden: 10
-18. live: 9
-19. diamonds: 8
-20. service: 7
-21. casino1: 6
-22. twice: 5
-23. thunderball: 4
-24. goldfinger: 3
-25. russia: 2
-26. no: 1
-27. spectre: 0
+10. daylights: 18
+11. view: 17
+12. never: 16
+13. octopussy: 15
+14. eyes: 14
+15. time: 13
+16. moonraker: 12
+17. loved: 11
+18. golden: 10
+19. live: 9
+20. diamonds: 8
+21. service: 7
+22. casino1: 6
+23. twice: 5
+24. thunderball: 4
+25. goldfinger: 3
+26. russia: 2
+27. no: 1
+28. spectre: 0
 
 User chooses queue
 */

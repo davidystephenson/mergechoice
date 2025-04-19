@@ -6,6 +6,7 @@ import { RankingTest } from '../ranking/rankingTypes'
 import verifyRankingItems from '../ranking/verifyRankingItems'
 
 export default function verifyFlowStep (props: {
+  debugChosenOperations?: boolean
   choice: OptionsTest | undefined
   createInitialFlow: () => Flow
   ranking: RankingTest[]
@@ -16,6 +17,12 @@ export default function verifyFlowStep (props: {
     const chosenFlow = chooseOptions({
       flow: initialFlow, queues: props.queues
     })
+    if (props.debugChosenOperations === true) {
+      for (const operationUid in chosenFlow.operations) {
+        const operation = chosenFlow.operations[operationUid]
+        console.log(operation)
+      }
+    }
     return chosenFlow
   }
 

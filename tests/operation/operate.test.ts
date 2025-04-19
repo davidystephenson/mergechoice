@@ -21,55 +21,55 @@ it('should throw an error if the option is not the a UID or b UID', () => {
   }).toThrow('Option is not in the choice')
 })
 
-// if better is defined
-
-it('should throw an error if better is not a number', () => {
-  const flow = createFlow({ uid: 'matrix' })
-  const operation = createOperation({
-    catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
-    flow,
-    queue: ['original', 'reloaded'],
-    output: ['comics']
+describe('if better is defined', () => {
+  it('should throw an error if better is not a number', () => {
+    const flow = createFlow({ uid: 'matrix' })
+    const operation = createOperation({
+      catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
+      flow,
+      queue: ['original', 'reloaded'],
+      output: ['comics']
+    })
+    // @ts-expect-error
+    operation.better = 'not a number'
+    const addedFlow = addOperation({
+      flow,
+      operation
+    })
+    expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
   })
-  // @ts-expect-error
-  operation.better = 'not a number'
-  const addedFlow = addOperation({
-    flow,
-    operation
+  it('should throw an error if better is less than 1', () => {
+    const flow = createFlow({ uid: 'matrix' })
+    const operation = createOperation({
+      catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
+      flow,
+      queue: ['original', 'reloaded'],
+      output: ['comics']
+    })
+    operation.better = 0
+    const addedFlow = addOperation({
+      flow,
+      operation
+    })
+    expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
   })
-  expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
-})
-it('should throw an error if better is less than 1', () => {
-  const flow = createFlow({ uid: 'matrix' })
-  const operation = createOperation({
-    catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
-    flow,
-    queue: ['original', 'reloaded'],
-    output: ['comics']
+  it('should throw an error if better is greater than the initial option index', () => {
+    const flow = createFlow({ uid: 'matrix' })
+    const operation = createOperation({
+      catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
+      flow,
+      queue: ['original', 'reloaded'],
+      output: ['comics']
+    })
+    const initial = getInitialOptionIndex({ operation })
+    expect(initial).toEqual(3)
+    operation.better = 4
+    const addedFlow = addOperation({
+      flow,
+      operation
+    })
+    expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
   })
-  operation.better = 0
-  const addedFlow = addOperation({
-    flow,
-    operation
-  })
-  expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
-})
-it('should throw an error if better is greater than the initial option index', () => {
-  const flow = createFlow({ uid: 'matrix' })
-  const operation = createOperation({
-    catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
-    flow,
-    queue: ['original', 'reloaded'],
-    output: ['comics']
-  })
-  const initial = getInitialOptionIndex({ operation })
-  expect(initial).toEqual(3)
-  operation.better = 4
-  const addedFlow = addOperation({
-    flow,
-    operation
-  })
-  expect(() => operate({ flow: addedFlow, option: 'original' })).toThrow()
 })
 
 it('should throw an error if queue is longer than catalog', () => {
@@ -300,90 +300,214 @@ describe('if queue is chosen', () => {
       expect(chosenOperation.catalog).toEqual([])
       expect(chosenOperation.output).toEqual(['empire', 'hope', 'jedi'])
     })
-    it('should set better to undefined', () => {
-      const flow = createFlow({ uid: 'matrix' })
-      const operation = createOperation({
-        catalog: ['revolutions', 'resurrections', 'animatrix', 'revisited', 'enter', 'online', 'path', 'awakens'],
-        flow,
-        output: ['comics'],
-        queue: ['original', 'reloaded']
-      })
-      operation.better = 3
-      const addedFlow = addOperation({
-        flow,
-        operation
-      })
-      const choice = getVerifiedChoice({ flow: addedFlow })
-      expect(choice.catalog).toEqual('resurrections')
-      expect(choice.queue).toEqual('original')
-      const chosenFlow = operate({
-        flow: addedFlow,
-        option: choice.queue
-      })
-      const chosenOperation = chosenFlow.operations[choice.operation]
-      expect(chosenOperation.better).toEqual(undefined)
-    })
   })
 
   describe('if catalog is more than 1 long', () => {
-    // if the difference between better and the option index is 1
-    //   it should move the catalog items through the option index to the end of the output followed by the first queue item
-    //   it should set better to undefined
-    // if the difference between better and the option index is greater than 1
+    // if better is undefined
     //   it should move the catalog items through the option index to the end of the output
-    //   it should set better to the floor half of better - 1
-    describe('if better is 1', () => {
-      it('should move the first catalog item to the end of the output followed by the first queue item', () => {
+    //   it should leave better undefined
+    // if better is defined
+    //   if the difference between better and the option index is 1
+    //     it should set better to undefined
+    //     if queue is 1 long
+    //       it should move the catalog items through the option index to the end of the output followed by the first queue item, then the remaining catalog items
+    //     if queue is more than 1 long
+    //       it should move the catalog items through the option index to the end of the output followed by the first queue item
+    //   if the difference between better and the option index is greater than 1
+    //     it should move the catalog items through the option index to the end of the output
+    //     it should set better to the floor half of better - 1
+    describe('if better is undefined', () => {
+      it('should move the catalog items through the option index to the end of the output', () => {
         const flow = createFlow({ uid: 'star-wars' })
         const operation = createOperation({
-          catalog: ['hope', 'empire', 'jedi', 'phantom'],
+          catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge'],
           flow,
-          output: ['clones'],
-          queue: ['revenge', 'awakens']
+          output: ['awakens'],
+          queue: ['rogue', 'last']
         })
-        operation.better = 1
         const addedFlow = addOperation({
           flow,
           operation
         })
         const choice = getVerifiedChoice({ flow: addedFlow })
-        expect(choice.catalog).toEqual('empire')
-        expect(choice.queue).toEqual('revenge')
+        const choiceOperation = addedFlow.operations[choice.operation]
+        expect(choiceOperation.better).toEqual(undefined)
+        expect(choice.catalog).toEqual('return')
+        expect(choice.queue).toEqual('rogue')
         const chosenFlow = operate({
           flow: addedFlow, option: choice.queue
         })
         const chosenOperation = chosenFlow.operations[choice.operation]
-        expect(chosenOperation.catalog).toEqual(['empire', 'jedi', 'phantom'])
-        expect(chosenOperation.output).toEqual(['clones', 'hope', 'revenge'])
-        expect(chosenOperation.queue).toEqual(['awakens'])
+        expect(chosenOperation.catalog).toEqual(['phantom', 'clones', 'revenge'])
+        expect(chosenOperation.output).toEqual(['awakens', 'hope', 'empire', 'return'])
+        expect(chosenOperation.queue).toEqual(['rogue', 'last'])
+      })
+      it('should leave better undefined', () => {
+        const flow = createFlow({ uid: 'star-wars' })
+        const operation = createOperation({
+          catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge'],
+          flow,
+          output: ['awakens'],
+          queue: ['rogue', 'last']
+        })
+        const addedFlow = addOperation({
+          flow,
+          operation
+        })
+        const choice = getVerifiedChoice({ flow: addedFlow })
+        const choiceOperation = addedFlow.operations[choice.operation]
+        expect(choiceOperation.better).toEqual(undefined)
+        expect(choice.catalog).toEqual('return')
+        expect(choice.queue).toEqual('rogue')
+        const chosenFlow = operate({
+          flow: addedFlow, option: choice.queue
+        })
+        const chosenOperation = chosenFlow.operations[choice.operation]
+        expect(chosenOperation.better).toEqual(undefined)
       })
     })
-    describe('if better is not 1', () => {
-      it('should move catalog through the option index to the end of the output', () => {
-        const flow = createFlow({ uid: 'star-wars' })
-        const operation = createOperation({
-          catalog: ['hope', 'empire', 'jedi', 'phantom'],
-          flow,
-          output: ['clones'],
-          queue: ['revenge']
+    describe('if better is defined', () => {
+      describe('if the difference between better and the option index is 1', () => {
+        it('should set better to undefined', () => {
+          const flow = createFlow({ uid: 'star-wars' })
+          const operation = createOperation({
+            catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge'],
+            flow,
+            output: ['awakens'],
+            queue: ['rogue', 'last']
+          })
+          operation.better = 2
+          const addedFlow = addOperation({
+            flow,
+            operation
+          })
+          const choice = getVerifiedChoice({ flow: addedFlow })
+          expect(choice.catalog).toEqual('empire')
+          expect(choice.queue).toEqual('rogue')
+          const choiceOperation = addedFlow.operations[choice.operation]
+          const index = getOptionIndex({ operation: choiceOperation })
+          expect(index).toEqual(1)
+          const chosenFlow = operate({
+            flow: addedFlow, option: choice.queue
+          })
+          const chosenOperation = chosenFlow.operations[choice.operation]
+          expect(chosenOperation.better).toEqual(undefined)
         })
-        const addedFlow = addOperation({
-          flow,
-          operation
+        describe('if queue is 1 long', () => {
+          it('should move the catalog items through the option index to the end of the output followed by the first queue item, then the remaining catalog items', () => {
+            const flow = createFlow({ uid: 'star-wars' })
+            const operation = createOperation({
+              catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge'],
+              flow,
+              output: ['awakens'],
+              queue: ['rogue']
+            })
+            operation.better = 2
+            const addedFlow = addOperation({
+              flow,
+              operation
+            })
+            const choice = getVerifiedChoice({ flow: addedFlow })
+            expect(choice.catalog).toEqual('empire')
+            expect(choice.queue).toEqual('rogue')
+            const choiceOperation = addedFlow.operations[choice.operation]
+            const index = getOptionIndex({ operation: choiceOperation })
+            expect(index).toEqual(1)
+            const chosenFlow = operate({
+              flow: addedFlow, option: choice.queue
+            })
+            const chosenOperation = chosenFlow.operations[choice.operation]
+            expect(chosenOperation.catalog).toEqual([])
+            expect(chosenOperation.output).toEqual(['awakens', 'hope', 'empire', 'rogue', 'return', 'phantom', 'clones', 'revenge'])
+            expect(chosenOperation.queue).toEqual([])
+          })
         })
-        const choice = getVerifiedChoice({ flow: addedFlow })
-        expect(choice.catalog).toEqual('empire')
-        expect(choice.queue).toEqual('revenge')
-        const choiceOperation = addedFlow.operations[choice.operation]
-        const index = getOptionIndex({ operation: choiceOperation })
-        expect(index).toEqual(1)
-        const chosenFlow = operate({
-          flow: addedFlow, option: choice.queue
+        describe('if queue is more than 1 long', () => {
+          it('should move the catalog items through the option index to the end of the output followed by the first queue item', () => {
+            const flow = createFlow({ uid: 'star-wars' })
+            const operation = createOperation({
+              catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge'],
+              flow,
+              output: ['awakens'],
+              queue: ['rogue', 'last']
+            })
+            operation.better = 2
+            const addedFlow = addOperation({
+              flow,
+              operation
+            })
+            const choice = getVerifiedChoice({ flow: addedFlow })
+            expect(choice.catalog).toEqual('empire')
+            expect(choice.queue).toEqual('rogue')
+            const choiceOperation = addedFlow.operations[choice.operation]
+            const index = getOptionIndex({ operation: choiceOperation })
+            expect(index).toEqual(1)
+            const chosenFlow = operate({
+              flow: addedFlow, option: choice.queue
+            })
+            const chosenOperation = chosenFlow.operations[choice.operation]
+            expect(chosenOperation.catalog).toEqual(['return', 'phantom', 'clones', 'revenge'])
+            expect(chosenOperation.output).toEqual(['awakens', 'hope', 'empire', 'rogue'])
+            expect(chosenOperation.queue).toEqual(['last'])
+          })
         })
-        const chosenOperation = chosenFlow.operations[choice.operation]
-        expect(chosenOperation.catalog).toEqual(['jedi', 'phantom'])
-        expect(chosenOperation.output).toEqual(['clones', 'hope', 'empire'])
-        expect(chosenOperation.queue).toEqual(['revenge'])
+      })
+      describe('if the difference between better and the option index is greater than 1', () => {
+        it('should move catalog through the option index to the end of the output', () => {
+          const flow = createFlow({ uid: 'star-wars' })
+          const operation = createOperation({
+            catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge', 'awakens', 'rogue', 'last'],
+            flow,
+            output: ['solo'],
+            queue: ['rise']
+          })
+          operation.better = 4
+          const addedFlow = addOperation({
+            flow,
+            operation
+          })
+          const choice = getVerifiedChoice({ flow: addedFlow })
+          const choiceOperation = addedFlow.operations[choice.operation]
+          const index = getOptionIndex({ operation: choiceOperation })
+          expect(index).toEqual(2)
+          expect(choice.catalog).toEqual('return')
+          expect(choice.queue).toEqual('rise')
+          const chosenFlow = operate({
+            flow: addedFlow, option: choice.queue
+          })
+          const chosenOperation = chosenFlow.operations[choice.operation]
+          expect(chosenOperation.catalog).toEqual(['phantom', 'clones', 'revenge', 'awakens', 'rogue', 'last'])
+          expect(chosenOperation.output).toEqual(['solo', 'hope', 'empire', 'return'])
+          expect(chosenOperation.queue).toEqual(['rise'])
+        })
+        it('should set better to the floor half of better - 1', () => {
+          const flow = createFlow({ uid: 'star-wars' })
+          const operation = createOperation({
+            catalog: ['hope', 'empire', 'return', 'phantom', 'clones', 'revenge', 'awakens', 'rogue', 'last'],
+            flow,
+            output: ['solo'],
+            queue: ['rise']
+          })
+          operation.better = 4
+          const difference = operation.better - 1
+          const floorHalf = getFloorHalf({ value: difference })
+          expect(floorHalf).toEqual(1)
+          const addedFlow = addOperation({
+            flow,
+            operation
+          })
+          const choice = getVerifiedChoice({ flow: addedFlow })
+          const choiceOperation = addedFlow.operations[choice.operation]
+          const index = getOptionIndex({ operation: choiceOperation })
+          expect(index).toEqual(2)
+          expect(choice.catalog).toEqual('return')
+          expect(choice.queue).toEqual('rise')
+          const chosenFlow = operate({
+            flow: addedFlow, option: choice.queue
+          })
+          const chosenOperation = chosenFlow.operations[choice.operation]
+          expect(chosenOperation.better).toEqual(floorHalf)
+        })
       })
     })
   })
