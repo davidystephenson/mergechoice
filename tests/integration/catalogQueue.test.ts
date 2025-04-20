@@ -143,7 +143,6 @@ describe('catalogQueue', () => {
         queue: 'awakens'
       },
       createInitialFlow,
-      debugChosenOperations: true,
       queues: [false, true, false, true, false],
       ranking: [
         { uid: 'resurrections', points: 7, rank: 1 },

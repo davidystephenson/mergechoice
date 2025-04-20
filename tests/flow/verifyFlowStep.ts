@@ -38,7 +38,7 @@ export default function verifyFlowStep (props: {
   if (props.debugChosenOperations === true) {
     for (const operationUid in flow.operations) {
       const operation = flow.operations[operationUid]
-      console.log(operation)
+      console.debug(operation)
     }
   }
   const ranking = getRanking({ flow })

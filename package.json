@@ -22,6 +22,7 @@
   "main": "index.js",
   "scripts": {
     "check": "npx tsc && npm run test && npm run deadcode && npm run lint",
+    "check:notify": "npm run check ; npm run notify",
     "deadcode": "npx knip --reporter ./my-reporter.js",
     "lint": "npx ts-standard --fix",
     "notify": "pw-play --playback /usr/share/sounds/freedesktop/stereo/message.oga",
@@ -48,10 +49,12 @@
   "knip": {
     "ignore": [
       "my-reporter.js",
-      "tests/**"
+      "behavior/**"
+    ],
+    "ignoreBinaries": [
+      "pw-play"
     ],
     "ignoreDependencies": [
-      "ts-standard",
       "ts-node"
     ]
   }

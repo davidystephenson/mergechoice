@@ -17,19 +17,42 @@ export default function combineOperations (props: {
     return props.flow
   }
 
-  outputOperations.sort((a, b) => a.uid.localeCompare(b.uid))
-  const earlierOperation = outputOperations[0]
-  const laterOperation = outputOperations[1]
+  const [first, second] = outputOperations
+  const firstLength = first.output.length
+  const secondLength = second.output.length
+
+  let catalogOperation
+  let queueOperation
+
+  if (firstLength === secondLength) {
+    // If same length, earlier UID goes to catalog
+    if (first.uid < second.uid) {
+      catalogOperation = first
+      queueOperation = second
+    } else {
+      catalogOperation = second
+      queueOperation = first
+    }
+  } else {
+    // If different length, longer goes to catalog
+    if (firstLength > secondLength) {
+      catalogOperation = first
+      queueOperation = second
+    } else {
+      catalogOperation = second
+      queueOperation = first
+    }
+  }
 
   const newOperation = createOperation({
     flow: props.flow,
-    queue: earlierOperation.output,
-    catalog: laterOperation.output,
+    catalog: catalogOperation.output,
+    queue: queueOperation.output,
     output: []
   })
 
   const operationsToKeep = Object.entries(props.flow.operations)
-    .filter(([uid]) => uid !== earlierOperation.uid && uid !== laterOperation.uid)
+    .filter(([uid]) => uid !== first.uid && uid !== second.uid)
     .reduce<Record<string, Operation>>((acc, [uid, operation]) => {
     acc[uid] = operation
     return acc

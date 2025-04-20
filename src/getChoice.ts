@@ -10,24 +10,23 @@ export default function getChoice (props: {
     return undefined
   }
 
-  const operations = Object.values(props.flow.operations)
-  const operationsWithInputs = operations.filter(operation =>
-    operation.queue.length > 0 && operation.catalog.length > 0
-  )
+  try {
+    const selectedOperation = getChoiceOperation({ flow: props.flow })
 
-  if (operationsWithInputs.length === 0) {
+    if (selectedOperation.queue.length === 0 || selectedOperation.catalog.length === 0) {
+      return undefined
+    }
+
+    const aItem = selectedOperation.queue[0]
+    const optionIndex = getOptionIndex({ operation: selectedOperation })
+    const bItem = selectedOperation.catalog[optionIndex]
+
+    return {
+      queue: aItem,
+      catalog: bItem,
+      operation: selectedOperation.uid
+    }
+  } catch {
     return undefined
-  }
-
-  const selectedOperation = getChoiceOperation({ flow: props.flow })
-
-  const aItem = selectedOperation.queue[0]
-  const optionIndex = getOptionIndex({ operation: selectedOperation })
-  const bItem = selectedOperation.catalog[optionIndex]
-
-  return {
-    queue: aItem,
-    catalog: bItem,
-    operation: selectedOperation.uid
   }
 }
