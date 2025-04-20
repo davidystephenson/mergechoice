@@ -1,7 +1,11 @@
-import { addOperation, createFlow, createOperation, getOptionIndex, isFlowComplete, isOutputOperation } from '../../src'
+import { createFlow, isFlowComplete } from '../../src'
+import addOperation from '../../src/addOperation'
+import createOperation from '../../src/createOperation'
 import getChoiceOperation from '../../src/getChoiceOperation'
+import getOptionIndex from '../../src/getOptionIndex'
 import insertOperation from './insertOperation'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
+import isOutputOperation from '../../src/isOutputOperation'
 
 describe('if the flow is complete', () => {
   it('should throw an error', () => {

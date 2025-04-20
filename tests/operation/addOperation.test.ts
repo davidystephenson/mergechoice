@@ -1,4 +1,6 @@
-import { addOperation, createFlow, createOperation } from '../../src'
+import { createFlow } from '../../src'
+import addOperation from '../../src/addOperation'
+import createOperation from '../../src/createOperation'
 
 describe('addOperation', () => {
   it('should return a new flow with the operation added and an incremented operation count', () => {

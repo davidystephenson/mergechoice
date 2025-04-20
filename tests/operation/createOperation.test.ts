@@ -1,4 +1,5 @@
-import { createFlow, createOperation, OperationDef } from '../../src'
+import { createFlow, OperationDef } from '../../src'
+import createOperation from '../../src/createOperation'
 
 describe('createOperation', () => {
   it('should throw an error if the operation is empty', () => {

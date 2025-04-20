@@ -1,6 +1,7 @@
-import { chooseOption, combineOperations, createFlow } from '../../src'
-import operate from '../../src/operate'
+import { chooseOption, createFlow } from '../../src'
+import combineOperations from '../../src/combineOperations'
 import getVerifiedChoice from '../choice/getVerifiedChoice'
+import operate from '../../src/operate'
 
 describe('chooseOption', () => {
   it('should operate', () => {

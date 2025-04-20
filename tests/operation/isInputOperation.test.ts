@@ -1,4 +1,5 @@
-import { isInputOperation, Operation } from '../../src'
+import { Operation } from '../../src'
+import isInputOperation from '../../src/isInputOperation'
 
 describe('isInputOperation', () => {
   it('should return true for input operations', () => {

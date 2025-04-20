@@ -1,4 +1,6 @@
-import { createFlow, isFlowComplete, addOperation, createOperation } from '../../src/index'
+import { createFlow, isFlowComplete } from '../../src'
+import addOperation from '../../src/addOperation'
+import createOperation from '../../src/createOperation'
 
 describe('isFlowComplete', () => {
   it('should consider flows with no items complete ', () => {

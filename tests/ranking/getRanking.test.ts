@@ -1,4 +1,6 @@
-import { addOperation, createFlow, createOperation, getRanking, rankingItemSchema } from '../../src'
+import { createFlow, getRanking, rankingItemSchema } from '../../src'
+import addOperation from '../../src/addOperation'
+import createOperation from '../../src/createOperation'
 import createThreeFlow from '../flow/createThreeFlow'
 import getVerifiedRankingItem from './getVerifiedRankingItem'
 

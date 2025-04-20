@@ -1,4 +1,7 @@
-import { addOperation, combineOperations, createFlow, createOperation } from '../../src'
+import addOperation from '../../src/addOperation'
+import combineOperations from '../../src/combineOperations'
+import createFlow from '../../src/createFlow'
+import createOperation from '../../src/createOperation'
 import insertOperation from './insertOperation'
 
 it('should throw an error if the flow has more than two output operations', () => {

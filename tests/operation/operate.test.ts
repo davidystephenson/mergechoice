@@ -1,12 +1,13 @@
-import { createFlow, getOptionIndex, Operation } from '../../src'
+import { createFlow, Operation } from '../../src'
 import addOperation from '../../src/addOperation'
 import createOperation from '../../src/createOperation'
 import createThreeFlow from '../flow/createThreeFlow'
-import operate from '../../src/operate'
-import getVerifiedChoice from '../choice/getVerifiedChoice'
-import insertOperation from './insertOperation'
-import getInitialOptionIndex from '../../src/getInitialOptionIndex'
 import getFloorHalf from '../../src/getFloorHalf'
+import getVerifiedChoice from '../choice/getVerifiedChoice'
+import getInitialOptionIndex from '../../src/getInitialOptionIndex'
+import getOptionIndex from '../../src/getOptionIndex'
+import insertOperation from './insertOperation'
+import operate from '../../src/operate'
 
 it('should throw an error if the flow has no choice', () => {
   const flowWithoutChoice = createFlow({ uid: 'test' })

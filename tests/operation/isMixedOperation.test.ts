@@ -1,4 +1,5 @@
-import { isMixedOperation, Operation } from '../../src'
+import { Operation } from '../../src'
+import isMixedOperation from '../../src/isMixedOperation'
 
 describe('isMixedOperation', () => {
   it('should return true for mixed operations', () => {

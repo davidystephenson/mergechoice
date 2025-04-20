@@ -1,4 +1,8 @@
-import { addOperation, createFlow, createOperation, getChoice, getChoiceOperation, getOptionIndex, isFlowComplete } from '../../src'
+import { createFlow, getChoice, isFlowComplete } from '../../src'
+import addOperation from '../../src/addOperation'
+import createOperation from '../../src/createOperation'
+import getChoiceOperation from '../../src/getChoiceOperation'
+import getOptionIndex from '../../src/getOptionIndex'
 import insertOperation from '../operation/insertOperation'
 import getVerifiedChoice from './getVerifiedChoice'
 

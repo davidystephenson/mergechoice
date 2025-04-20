@@ -1,6 +1,7 @@
-import { getOptionIndex, Operation } from '../../src'
+import { Operation } from '../../src'
 import getFloorHalf from '../../src/getFloorHalf'
 import getInitialOptionIndex from '../../src/getInitialOptionIndex'
+import getOptionIndex from '../../src/getOptionIndex'
 
 describe('getOptionIndex', () => {
   describe('if better is defined', () => {
