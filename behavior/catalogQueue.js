@@ -68,7 +68,7 @@ RANKING
 2. path: 4,
 2. revolutions: 4
 3. online: 3
-3. reloaded: 2
+3. reloaded: 3
 4. enter: 2
 5. original: 1
 6. comics: 0
@@ -92,12 +92,12 @@ RANKING
 1. awakens: 6,
 2. path: 5,
 2. resurrections: 5.
-2. revolutions: 4
-3. online: 3
-3. reloaded: 2
-4. enter: 2
-5. original: 1
-6. comics: 0
+3. revolutions: 4
+4. online: 3
+4. reloaded: 3
+5. enter: 2
+6. original: 1
+7. comics: 0
 
 User chooses queue
 */

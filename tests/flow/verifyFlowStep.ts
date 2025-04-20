@@ -17,12 +17,6 @@ export default function verifyFlowStep (props: {
     const chosenFlow = chooseOptions({
       flow: initialFlow, queues: props.queues
     })
-    if (props.debugChosenOperations === true) {
-      for (const operationUid in chosenFlow.operations) {
-        const operation = chosenFlow.operations[operationUid]
-        console.log(operation)
-      }
-    }
     return chosenFlow
   }
 
@@ -41,6 +35,12 @@ export default function verifyFlowStep (props: {
   }
 
   const flow = setupFlow()
+  if (props.debugChosenOperations === true) {
+    for (const operationUid in flow.operations) {
+      const operation = flow.operations[operationUid]
+      console.log(operation)
+    }
+  }
   const ranking = getRanking({ flow })
   verifyRankingItems({ ranking, items: props.ranking })
 
